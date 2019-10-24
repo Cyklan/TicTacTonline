@@ -4,7 +4,7 @@
 
 ### Tech Stack
 
-.Net Core 3, MySQL
+.Net Core 3 (Server), .Net Framework 4.7 (Client), MySQL
 
 ### Features
 
