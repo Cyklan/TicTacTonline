@@ -1,0 +1,2 @@
+Ip adressen der sockets in room module speichern und zu nutzerobjekt packen, damit wir
+socket listener auf client seite ansprechen können.
