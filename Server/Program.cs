@@ -21,6 +21,8 @@ namespace Server
             int exitCode = 0;
             Log.Start();
 
+            CheckConfig();
+
             try
             {
                 Log.Add("Starting server");
@@ -67,6 +69,23 @@ namespace Server
             server.MessageReceived += MessageReceived;
 
             Log.Add($"Server running at {serverConfig.Ip}:{serverConfig.Port}");
+        }
+
+        private static void CheckConfig()
+        {
+            Configurations.DatabaseConfiguration dbConf = new Configurations.DatabaseConfiguration();
+
+            if (!serverConfig.IsAvailable())
+            {
+                Log.Add("Server configuration not present. Initiating server configuration dialogue.");
+                serverConfig.Setup();
+            }
+
+            if (!dbConf.IsAvailable())
+            {
+                Log.Add("Database configuration not present. Initiating database configuration dialogue");
+                dbConf.Setup();
+            }
         }
 
         private static void InitializeModules()

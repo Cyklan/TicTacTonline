@@ -8,7 +8,8 @@ namespace Server.General
         Normal,
         Warning,
         Error,
-        Debug
+        Debug,
+        Question
     }
 
     public class Message

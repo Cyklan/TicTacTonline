@@ -65,11 +65,20 @@ namespace Server.General
                         case MessageType.Debug:
                             Console.ForegroundColor = ConsoleColor.Gray;
                             break;
+                        case MessageType.Question:
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            break;
                     }
 
 
                     System.IO.File.AppendAllText(Pathmanager.LogFilePath, message.ToString() + Environment.NewLine);
-                    Console.WriteLine(message);
+                    if (message.MessageType == MessageType.Question)
+                    {
+                        Console.Write(message);
+                    } else
+                    {
+                        Console.WriteLine(message);
+                    }
                 }
 
                 System.Threading.Thread.Sleep(10);
