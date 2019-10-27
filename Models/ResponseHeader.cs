@@ -6,7 +6,8 @@ namespace Models
 {
     public class ResponseHeader
     {
-        public int Code { get; set; }
+        public List<User> Targets { get; set; }
+        public ResposneCode Code { get; set; }
         public string Message { get; set; }
     }
 }

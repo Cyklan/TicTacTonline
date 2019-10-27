@@ -6,7 +6,7 @@ namespace Server.Configurations
     {
         protected T LoadConfiguration<T>(string pathToFile)
         {
-            return JsonConvert.DeserializeObject<T>(System.IO.File.ReadAllText(pathToFile));
+            return General.Converter.ConvertJsonToObject<T>(System.IO.File.ReadAllText(pathToFile));
         }
 
         public abstract void Load();

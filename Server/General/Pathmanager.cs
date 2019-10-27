@@ -46,7 +46,7 @@ namespace Server.General
         {
             get
             {
-                return Path.Combine(ConfigurationDirectory, "DatabaseConfigurationPath.json");
+                return Path.Combine(ConfigurationDirectory, "DatabaseConfiguration.json");
             }
         }
 

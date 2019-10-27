@@ -1,26 +1,26 @@
 ﻿using Newtonsoft.Json;
 using System.Text;
 
-namespace Server.Communication
+namespace Server.General
 {
-    public class CommunicationConverter
+    public static class Converter
     {
-        public string ConvertBytesToString(byte[] bytes)
+        public static string ConvertBytesToString(byte[] bytes)
         {
             return new ASCIIEncoding().GetString(bytes);
         }
 
-        public T ConvertJsonToObject<T>(string json)
+        public static T ConvertJsonToObject<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public string ConvertObjectToJson<T>(T obj)
+        public static string ConvertObjectToJson<T>(T obj)
         {
             return JsonConvert.SerializeObject(obj);
         }
 
-        public byte[] ConvertStringToBytes(string data)
+        public static byte[] ConvertStringToBytes(string data)
         {
             return new ASCIIEncoding().GetBytes(data);
         }

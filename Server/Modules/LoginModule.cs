@@ -2,38 +2,57 @@
 using System.Collections.Generic;
 using Server.Communication;
 using Models;
+using System.Reflection;
+using Server.Database;
+using System.Linq;
 
 namespace Server.Modules
 {
     public class LoginModule : Module
     {
-        public LoginModule() : base("LoginController") { }
+        public LoginModule() : base("LoginModule") { }
 
-        public override CommunicationWrapper ProcessRequest(CommunicationWrapper request)
+        private Response Login(Request request)
         {
-            switch (request.Request.Header.Identifier.Function.ToLower())
+            ResponseHeader header = new ResponseHeader() { Targets = new List<User> { request.Header.User } };
+
+            using (DatabaseQueries db = new DatabaseQueries())
             {
-                case "login":
-                    Login(request);
-                    break;
-                case "register":
-                    Register(request);
-                    break;
-                default:
-                    throw new NotImplementedException($"Function {request.Request.Header.Identifier.Function} is not part of module {request.Request.Header.Identifier.Module}");
+                if (db.LoginUser(request.Header.User))
+                {
+                    header.Code = ResposneCode.Ok;
+                    header.Message = "Logged in successfully";
+                }
+                else
+                {
+                    header.Code = ResposneCode.PlannedError;
+                    header.Message = "Incorrect username or password";
+                }
             }
 
-            return request;
+            return new Response() { Header = header, Body = new Document() };
         }
 
-        private void Login(CommunicationWrapper request)
+        private Response Register(Request request)
         {
+            ResponseHeader header = new ResponseHeader() { Targets = new List<User> { request.Header.User } };
 
-        }
+            using (DatabaseQueries db = new DatabaseQueries())
+            {
+                if (db.GetUsers().Any(x => x.Name.ToLower() != request.Header.User.Name.ToLower()))
+                {
+                    db.RegisterUser(request.Header.User);
+                    header.Code = ResposneCode.Ok;
+                    header.Message = "Registered successfully";
+                }
+                else
+                {
+                    header.Code = ResposneCode.PlannedError;
+                    header.Message = "User name is already taken";
+                }
+            }
 
-        private void Register(CommunicationWrapper request)
-        {
-
+            return new Response() { Header = header, Body = new Document() };
         }
 
     }

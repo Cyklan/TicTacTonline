@@ -6,12 +6,13 @@ using Models;
 using System.Threading.Tasks;
 using System.Net;
 using System.Linq;
+using Server.Communication;
 
 namespace Server
 {
     class Program
     {
-        private static Configurations.ServerConfiguration serverConfig = new Configurations.ServerConfiguration();
+        private readonly static Configurations.ServerConfiguration serverConfig = new Configurations.ServerConfiguration();
         private static WatsonWsServer server;
         private static List<User> clients;
 
@@ -25,7 +26,9 @@ namespace Server
                 Log.Add("Starting server");
 
                 serverConfig.Load();
+
                 clients = new List<User>();
+                InitializeModules();
 
                 InitializeServer();
                 server.Start();
@@ -46,8 +49,7 @@ namespace Server
                 {
                     server.Dispose();
                 }
-                catch
-                { /* in case server has not been initialized yet */}
+                catch { /* in case server has not been initialized yet */}
 
                 Log.Stop();
                 GC.Collect();
@@ -66,6 +68,13 @@ namespace Server
 
             Log.Add($"Server running at {serverConfig.Ip}:{serverConfig.Port}");
         }
+
+        private static void InitializeModules()
+        {
+            RequestHandler.Modules.Add(new Modules.LoginModule());
+
+        }
+
         // supresses warning because of missing await
 #pragma warning disable CS1998
 
@@ -106,18 +115,18 @@ namespace Server
         {
             try
             {
-                if (!(data != null && data.Length > 0)) return;
+                if (!(data != null && data.Length > 0)) throw new ArgumentNullException("Data is empty.");
 
-                Communication.CommunicationWrapper communicationWrapper = new Communication.RequestHandler().HandleRequest(data);
+                Response response = new RequestHandler().HandleRequest(data);
 
-                foreach (User user in communicationWrapper.Targets)
+                foreach (User user in response.Header.Targets)
                 {
-                    await server.SendAsync(user.IpPort, communicationWrapper.ResponseData);
+                    await server.SendAsync(user.IpPort, Converter.ConvertStringToBytes(Converter.ConvertObjectToJson(response)));
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Log.Add($"Message of client {ipPort} could not be handled");
+                Log.Add($"Message of client {ipPort} could not be handled: {Environment.NewLine} {ex.ToString()}");
             }
 
         }

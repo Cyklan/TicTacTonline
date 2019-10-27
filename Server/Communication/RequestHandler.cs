@@ -9,53 +9,39 @@ namespace Server.Communication
 {
     public class RequestHandler
     {
-        private CommunicationConverter converter = new CommunicationConverter();
-        private List<Module> Modules = new List<Module>();
+        public static List<Module> Modules = new List<Module>();
 
-        public RequestHandler()
+        public Response HandleRequest(byte[] request)
         {
-            Modules.Add(new LoginModule());
-        }
+            Request requestObject = Converter.ConvertJsonToObject<Request>(Converter.ConvertBytesToString(request));
+            Response responseObject = new Response();
+            Log.Add($"Received {Converter.ConvertObjectToJson(requestObject)} from {requestObject.Header.User}", requestObject.Header.User, MessageType.Normal);
 
-        public CommunicationWrapper HandleRequest(byte[] request)
-        {
-            CommunicationWrapper communicationWrapper = new CommunicationWrapper();
-            communicationWrapper.RequestData = request;
-            communicationWrapper.Request = converter.ConvertJsonToObject<Request>(converter.ConvertBytesToString(request));
-            communicationWrapper.Response = new Response();
-
-            Log.Add($"Received {converter.ConvertObjectToJson(communicationWrapper.Request)} from {communicationWrapper.Request.Header.User}", communicationWrapper.Request.Header.User, MessageType.Normal);
-
-            Module module = Modules.FirstOrDefault(x => x.Name == communicationWrapper.Request.Header.Identifier.Module);
+            Module module = Modules.FirstOrDefault(x => x.Name == requestObject.Header.Identifier.Module);
             if (module is null)
             {
-                communicationWrapper.Response = GetErrorResponse($"Failed to call function {communicationWrapper.Request.Header.Identifier.Function} at unkown module {communicationWrapper.Request.Header.Identifier.Module}");
-                if (!communicationWrapper.Targets.Contains(communicationWrapper.Request.Header.User)) communicationWrapper.Targets.Add(communicationWrapper.Request.Header.User);
+                responseObject = GetErrorResponse($"Failed to call function {requestObject.Header.Identifier.Function} at unkown module {requestObject.Header.Identifier.Module}", new List<User>{requestObject.Header.User});
             }
             else
             {
                 try
                 {
-                    communicationWrapper = module.ProcessRequest(communicationWrapper);
+                    responseObject = module.ProcessRequest(requestObject);
                 }
                 catch (Exception ex)
                 {
-                    communicationWrapper.Response = GetErrorResponse($"Failed to process request for function {communicationWrapper.Request.Header.Identifier.Function} at module {communicationWrapper.Request.Header.Identifier.Module}: {Environment.NewLine} {ex.ToString()}");
-                    if (!communicationWrapper.Targets.Contains(communicationWrapper.Request.Header.User)) communicationWrapper.Targets.Add(communicationWrapper.Request.Header.User);
+                    responseObject = GetErrorResponse($"Failed to process request for function {requestObject.Header.Identifier.Function} at module {requestObject.Header.Identifier.Module}: {Environment.NewLine} {ex.ToString()}",new List<User> { requestObject.Header.User });
                 }
             }
 
-            communicationWrapper.ResponseData = converter.ConvertStringToBytes(converter.ConvertObjectToJson(communicationWrapper.Response));
-
-            Log.Add($"Sending {converter.ConvertObjectToJson(communicationWrapper.Response)} to {string.Join(",", communicationWrapper.Targets.Select(x => x.ToString()))}", communicationWrapper.Request.Header.User, MessageType.Normal);
-            return communicationWrapper;
+            Log.Add($"Sending {Converter.ConvertObjectToJson(responseObject)} to {string.Join(",", responseObject.Header.Targets.Select(x => x.ToString()))}", requestObject.Header.User, MessageType.Normal);
+            return responseObject;
         }
 
-        private Response GetErrorResponse(string message)
+        private Response GetErrorResponse(string message, List<User> targets)
         {
-            ResponseHeader header = new ResponseHeader() { Code = 1, Message = message };
-            Log.Add(message);
-            return new Response() { Header = header, Body = new Body() };
+            ResponseHeader header = new ResponseHeader() { Code = ResposneCode.UnplannedError, Message = message, Targets = targets };
+            return new Response() { Header = header, Body = new Document() };
         }
     }
 }

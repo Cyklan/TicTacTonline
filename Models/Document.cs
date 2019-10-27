@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-    public abstract class Document
+    public class Document
     {
     }
 }
