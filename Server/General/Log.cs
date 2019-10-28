@@ -18,10 +18,12 @@ namespace Server.General
             logThread = new System.Threading.Thread(new System.Threading.ThreadStart(HandleLogQueue));
             run = true;
             logThread.Start();
+            Add("Log started");
         }
 
         public static void Stop()
         {
+            Add("Stopping log");
             run = false;
             // logThread.Abort(); - not supported by .net core
 

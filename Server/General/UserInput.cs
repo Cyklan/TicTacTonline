@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Server.General
 {
@@ -9,26 +10,22 @@ namespace Server.General
         public static bool InputBoolean(string question, bool yesDefault)
         {
             string output = question;
+
             if (yesDefault) output += " [Y/n]: ";
             else output += " [y/N]: ";
             Log.Add(output, MessageType.Question);
-            string userInput = Console.ReadLine();
 
-            if (String.IsNullOrEmpty(userInput))
-            {
-                if (yesDefault) return true;
-                return false;
-            }
+            string userInput = Console.ReadLine();
+            if (string.IsNullOrEmpty(userInput)) return yesDefault;
 
             userInput = userInput.ToLower();
             if (yesDefault)
             {
-                if (userInput == "n") return false;
-                return true;
-            } else
+                return userInput != "n";
+            }
+            else
             {
-                if (userInput == "y") return true;
-                return false;
+                return userInput == "y";
             }
         }
 
@@ -40,7 +37,7 @@ namespace Server.General
                 Log.Add(output, MessageType.Question);
 
                 string userInput = Console.ReadLine();
-                if (String.IsNullOrEmpty(userInput)) return defaultAnswer;
+                if (string.IsNullOrEmpty(userInput)) return defaultAnswer;
                 return userInput;
             }
         }
@@ -54,10 +51,10 @@ namespace Server.General
 
                 string userInput = Console.ReadLine();
 
-                if (String.IsNullOrEmpty(userInput)) return defaultAnswer;
+                if (string.IsNullOrEmpty(userInput)) return defaultAnswer;
 
-                int ret = 0;
-                if (!Int32.TryParse(userInput, out ret))
+                int ret;
+                if (!int.TryParse(userInput, out ret))
                 {
                     Log.Add("Please enter a valid integer.", MessageType.Error);
                     continue;
@@ -77,6 +74,23 @@ namespace Server.General
 
                 return ret;
             }
+        }
+
+        public static string InputIp()
+        {
+            bool invalidIp = true;
+            string ip;
+            do
+            {
+                ip = InputString("Ip Address", "127.0.0.1");
+                Regex regex = new Regex(@"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+                Match ipMatch = regex.Match(ip);
+
+                if (ipMatch.Success) invalidIp = false;
+                else Log.Add("Please enter a valid IP address", MessageType.Error);
+            } while (invalidIp);
+
+            return ip;
         }
     }
 }

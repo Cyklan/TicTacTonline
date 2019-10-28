@@ -10,7 +10,7 @@ namespace Server.Configurations
             return Converter.ConvertJsonToObject<T>(System.IO.File.ReadAllText(pathToFile));
         }
 
-        protected void SaveConfiguration<T> (string pathToFile)
+        protected void SaveConfiguration(string pathToFile)
         {
             string json = Converter.ConvertObjectToJson(this);
             try

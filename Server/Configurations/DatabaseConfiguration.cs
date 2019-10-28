@@ -27,29 +27,13 @@ namespace Server.Configurations
 
         public override void Setup()
         {
-            string configDirectory = Pathmanager.ConfigurationDirectory;
-            string databaseConfigPath = Pathmanager.DatabaseConfigurationPath;
-
-            bool invalidIp = true;
-            do
-            {
-                Ip = UserInput.InputString("Ip Address", "127.0.0.1");
-
-                Regex regex = new Regex(@"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
-                Match ipMatch = regex.Match(Ip);
-
-                if (ipMatch.Success) invalidIp = false;
-                else Log.Add("Please enter a valid IP address", MessageType.Error);
-            } while (invalidIp);
-
+            Ip = UserInput.InputIp();
             Port = UserInput.InputInteger("Port", 3306, true, false);
             Database = UserInput.InputString("Database schema", "tictactonline");
             User = UserInput.InputString("Database user", "TTO");
             Password = UserInput.InputString("User password", "tictactonline");
 
-            Directory.CreateDirectory(configDirectory);
-            SaveConfiguration<DatabaseConfiguration>(databaseConfigPath);
-
+            SaveConfiguration(Pathmanager.DatabaseConfigurationPath);
         }
     }
 }
