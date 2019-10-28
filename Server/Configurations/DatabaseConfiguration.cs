@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using Server.General;
-using System.Text.RegularExpressions;
 
 namespace Server.Configurations
 {

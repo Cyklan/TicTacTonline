@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Models
+﻿namespace Models
 {
-    public enum ResposneCode
+    public enum ResponseCode
     {
         Ok,
         UnplannedError,

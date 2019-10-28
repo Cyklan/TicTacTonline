@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Modules;
 using Models;
 using Server.General;
+using Server.Modules;
 
 namespace Server.Communication
 {
@@ -44,8 +44,8 @@ namespace Server.Communication
 
         private Response GetErrorResponse(string message, List<User> targets)
         {
-            ResponseHeader header = new ResponseHeader() { Code = ResposneCode.UnplannedError, Message = message, Targets = targets };
-            return new Response() { Header = header, Body = new Document() };
+            ResponseHeader header = new ResponseHeader { Code = ResponseCode.UnplannedError, Message = message, Targets = targets };
+            return new Response { Header = header, Body = new Document() };
         }
     }
 }

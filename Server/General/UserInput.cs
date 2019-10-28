@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Server.General
@@ -21,12 +19,12 @@ namespace Server.General
             userInput = userInput.ToLower();
             if (yesDefault)
             {
-                return userInput != "n";
+                if (userInput == "n") return false;
+                return true;
             }
-            else
-            {
-                return userInput == "y";
-            }
+
+            if (userInput == "y") return true;
+            return false;
         }
 
         public static string InputString(string question, string defaultAnswer)

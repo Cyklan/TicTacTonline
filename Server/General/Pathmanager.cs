@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace Server.General
 {
@@ -10,7 +10,7 @@ namespace Server.General
         {
             get
             {
-                return Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             }
         }
 

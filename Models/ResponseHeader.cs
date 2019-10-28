@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Models
 {
     public class ResponseHeader: Header
     {
         public List<User> Targets { get; set; }
-        public ResposneCode Code { get; set; }
+        public ResponseCode Code { get; set; }
         public string Message { get; set; }
     }
 }
