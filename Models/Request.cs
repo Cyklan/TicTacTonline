@@ -8,5 +8,6 @@ namespace Models
     {
         public RequestHeader Header { get; set; }
         public Document Body { get; set; }
+
     }
 }

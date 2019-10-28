@@ -4,9 +4,12 @@ using System.Text;
 
 namespace Models
 {
-    public class RequestHeader
+    public class RequestHeader : Header
     {
         public Identifier Identifier { get; set; }
         public User User { get; set; }
+
+        public RequestHeader() { MessageNumber = DateTime.Now.Ticks + " - " + new Random().Next(0, 999999) + ""; }
+
     }
 }

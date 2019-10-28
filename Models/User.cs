@@ -12,7 +12,15 @@ namespace Models
         public string IpAddress { get; set; }
         public int Port { get; set; }
         public string PasswordHash { get; set; }
-        public string IpPort => $"{IpAddress}:{Port}";
+        public string IpPort
+        {
+            get { return $"{IpAddress}:{Port}"; }
+            set 
+            { 
+                IpAddress = value.Split(':')[0];
+                Port = Convert.ToInt32(value.Split(':')[1]);
+            }
+        }
 
         public User()
         {

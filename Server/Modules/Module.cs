@@ -17,7 +17,7 @@ namespace Server.Modules
 
         public Response ProcessRequest(Request request)
         {
-            foreach (MethodInfo m in GetType().GetMethods())
+            foreach (MethodInfo m in GetType().GetRuntimeMethods())
             {
                 if (m.Name.ToLower() == request.Header.Identifier.Function.ToLower())
                 {

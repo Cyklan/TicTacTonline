@@ -35,7 +35,7 @@ namespace Server
                 InitializeServer();
                 server.Start();
 
-                while (UserInput.InputString("Type '.stop' to stop the server", "") != ".stop") { Log.Add("Invalid Input", MessageType.Debug); }
+                while (UserInput.InputString("Type '.stop' to stop the server" + Environment.NewLine, "") != ".stop") { Log.Add("Invalid Input", MessageType.Debug); }
 
             }
             catch (Exception ex)
@@ -141,7 +141,7 @@ namespace Server
             {
                 if (!(data != null && data.Length > 0)) throw new ArgumentNullException("Data is empty.");
 
-                Response response = new RequestHandler().HandleRequest(data);
+                Response response = new RequestHandler().HandleRequest(data, ipPort);
 
                 foreach (User user in response.Header.Targets)
                 {
@@ -150,7 +150,7 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Log.Add($"Message of client {ipPort} could not be handled: {Environment.NewLine} {ex.ToString()}");
+                Log.Add($"Message of client {ipPort} could not be handled: {Environment.NewLine} {ex.ToString()}", MessageType.Error);
             }
 
         }
