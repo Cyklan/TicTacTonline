@@ -76,7 +76,7 @@ namespace Server
         private static void CheckConfig()
         {
             Log.Add("Checking Configurations");
-            Configurations.DatabaseConfiguration dbConf = new Configurations.DatabaseConfiguration();
+            DatabaseConfiguration dbConf = new DatabaseConfiguration();
 
             if (!serverConfig.IsAvailable())
             {
@@ -96,10 +96,10 @@ namespace Server
         {
             Log.Add("Initializing Modules");
 
-            RequestHandler.Modules.Add(new Modules.LoginModule());
-            RequestHandler.Modules.Add(new Modules.GameModule());
+            RequestHandler.Modules.Add(new LoginModule());
+            RequestHandler.Modules.Add(new GameModule());
 
-            foreach (Modules.Module m in RequestHandler.Modules) { Log.Add("Initialized " + m.Name); }
+            foreach (Module m in RequestHandler.Modules) { Log.Add("Initialized " + m.Name); }
         }
 
         // supresses warning because of missing await
