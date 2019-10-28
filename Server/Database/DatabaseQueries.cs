@@ -1,7 +1,6 @@
-﻿using Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Models;
 
 namespace Server.Database
 {
@@ -15,7 +14,7 @@ namespace Server.Database
 
             foreach (Dictionary<string, object> row in database.ExecuteQuery("SELECT * FROM users;"))
             {
-                result.Add(new User() { Name = row["name"].ToString() });
+                result.Add(new User { Name = row["name"].ToString() });
             }
 
             return result;

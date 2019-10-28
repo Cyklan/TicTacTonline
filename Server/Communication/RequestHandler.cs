@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Modules;
 using Models;
 using Server.General;
+using Server.Modules;
 
 namespace Server.Communication
 {
@@ -30,7 +30,7 @@ namespace Server.Communication
                 }
                 catch (Exception ex)
                 {
-                    responseObject = GetErrorResponse($"Failed to process request for function {requestObject.Header.Identifier.Function} at module {requestObject.Header.Identifier.Module}: {Environment.NewLine} {ex.ToString()}",new List<User> { requestObject.Header.User });
+                    responseObject = GetErrorResponse($"Failed to process request for function {requestObject.Header.Identifier.Function} at module {requestObject.Header.Identifier.Module}: {Environment.NewLine} {ex}",new List<User> { requestObject.Header.User });
                 }
             }
 
@@ -40,8 +40,8 @@ namespace Server.Communication
 
         private Response GetErrorResponse(string message, List<User> targets)
         {
-            ResponseHeader header = new ResponseHeader() { Code = ResposneCode.UnplannedError, Message = message, Targets = targets };
-            return new Response() { Header = header, Body = new Document() };
+            ResponseHeader header = new ResponseHeader { Code = ResponseCode.UnplannedError, Message = message, Targets = targets };
+            return new Response { Header = header, Body = new Document() };
         }
     }
 }

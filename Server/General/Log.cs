@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using Models;
 
 namespace Server.General
@@ -9,13 +11,13 @@ namespace Server.General
     {
 
         private static Queue<Message> logQueue;
-        private static System.Threading.Thread logThread;
+        private static Thread logThread;
         private static bool run;
 
         public static void Start()
         {
             logQueue = new Queue<Message>();
-            logThread = new System.Threading.Thread(new System.Threading.ThreadStart(HandleLogQueue));
+            logThread = new Thread(HandleLogQueue);
             run = true;
             logThread.Start();
         }
@@ -25,7 +27,7 @@ namespace Server.General
             run = false;
             // logThread.Abort(); - not supported by .net core
 
-            while (logThread.IsAlive) { System.Threading.Thread.Sleep(100); } // wait till thread finished
+            while (logThread.IsAlive) { Thread.Sleep(100); } // wait till thread finished
         }
 
         public static void Add(string message, User user, MessageType messageType)
@@ -35,12 +37,12 @@ namespace Server.General
 
         public static void Add(string message, MessageType messageType)
         {
-            logQueue.Enqueue(new Message(DateTime.Now, messageType, new User() { Name = "Global"} , message));
+            logQueue.Enqueue(new Message(DateTime.Now, messageType, new User { Name = "Global"} , message));
         }
 
         public static void Add(string message)
         {
-            logQueue.Enqueue(new Message(DateTime.Now, MessageType.Normal, new User() { Name = "Global" }, message));
+            logQueue.Enqueue(new Message(DateTime.Now, MessageType.Normal, new User { Name = "Global" }, message));
         }
 
         private static void HandleLogQueue()
@@ -71,7 +73,7 @@ namespace Server.General
                     }
 
 
-                    System.IO.File.AppendAllText(Pathmanager.LogFilePath, message.ToString() + Environment.NewLine);
+                    File.AppendAllText(Pathmanager.LogFilePath, message + Environment.NewLine);
                     if (message.MessageType == MessageType.Question)
                     {
                         Console.Write(message);
@@ -81,7 +83,7 @@ namespace Server.General
                     }
                 }
 
-                System.Threading.Thread.Sleep(10);
+                Thread.Sleep(10);
             }
 
         }

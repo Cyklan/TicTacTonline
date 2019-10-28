@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.IO;
 using Server.General;
 
 namespace Server.Configurations
@@ -7,7 +8,7 @@ namespace Server.Configurations
     {
         protected T LoadConfiguration<T>(string pathToFile)
         {
-            return Converter.ConvertJsonToObject<T>(System.IO.File.ReadAllText(pathToFile));
+            return Converter.ConvertJsonToObject<T>(File.ReadAllText(pathToFile));
         }
 
         protected void SaveConfiguration<T> (string pathToFile)
@@ -15,8 +16,8 @@ namespace Server.Configurations
             string json = Converter.ConvertObjectToJson(this);
             try
             {
-                System.IO.File.WriteAllText(pathToFile, json);
-            } catch (System.Exception e) 
+                File.WriteAllText(pathToFile, json);
+            } catch (Exception e) 
             {
                 Log.Add(e.ToString(), MessageType.Error);
             }

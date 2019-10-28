@@ -1,18 +1,20 @@
-﻿using Server.General;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using WatsonWebsocket;
-using Models;
-using System.Threading.Tasks;
-using System.Net;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using Models;
 using Server.Communication;
+using Server.Configurations;
+using Server.General;
+using Server.Modules;
+using WatsonWebsocket;
 
 namespace Server
 {
     class Program
     {
-        private readonly static Configurations.ServerConfiguration serverConfig = new Configurations.ServerConfiguration();
+        private static readonly ServerConfiguration serverConfig = new ServerConfiguration();
         private static WatsonWsServer server;
         private static List<User> clients;
 
@@ -73,7 +75,7 @@ namespace Server
 
         private static void CheckConfig()
         {
-            Configurations.DatabaseConfiguration dbConf = new Configurations.DatabaseConfiguration();
+            DatabaseConfiguration dbConf = new DatabaseConfiguration();
 
             if (!serverConfig.IsAvailable())
             {
@@ -90,8 +92,8 @@ namespace Server
 
         private static void InitializeModules()
         {
-            RequestHandler.Modules.Add(new Modules.LoginModule());
-
+            RequestHandler.Modules.Add(new LoginModule());
+            RequestHandler.Modules.Add(new GameModule());
         }
 
         // supresses warning because of missing await
@@ -106,7 +108,7 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Log.Add($"Client {ipPort} could not connect: {Environment.NewLine} {ex.ToString()}", MessageType.Error);
+                Log.Add($"Client {ipPort} could not connect: {Environment.NewLine} {ex}", MessageType.Error);
                 return false;
             }
 
@@ -123,7 +125,7 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Log.Add($"Client {ipPort} could not remove client: {Environment.NewLine} {ex.ToString()}", MessageType.Error);
+                Log.Add($"Client {ipPort} could not remove client: {Environment.NewLine} {ex}", MessageType.Error);
             }
 
         }
@@ -145,7 +147,7 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Log.Add($"Message of client {ipPort} could not be handled: {Environment.NewLine} {ex.ToString()}");
+                Log.Add($"Message of client {ipPort} could not be handled: {Environment.NewLine} {ex}");
             }
 
         }
