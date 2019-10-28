@@ -23,10 +23,10 @@ namespace Server
             int exitCode = 0;
             Log.Start();
 
-            CheckConfig();
-
             try
             {
+                CheckConfig();
+
                 Log.Add("Starting server");
 
                 serverConfig.Load();
@@ -37,7 +37,7 @@ namespace Server
                 InitializeServer();
                 server.Start();
 
-                while (Console.ReadLine() != ".stop") { Log.Add("Type '.stop' to stop the server", MessageType.Debug); }
+                while (UserInput.InputString("Type '.stop' to stop the server", "") != ".stop") { Log.Add("Invalid Input", MessageType.Debug); }
 
             }
             catch (Exception ex)
@@ -75,7 +75,8 @@ namespace Server
 
         private static void CheckConfig()
         {
-            DatabaseConfiguration dbConf = new DatabaseConfiguration();
+            Log.Add("Checking Configurations");
+            Configurations.DatabaseConfiguration dbConf = new Configurations.DatabaseConfiguration();
 
             if (!serverConfig.IsAvailable())
             {
@@ -88,12 +89,17 @@ namespace Server
                 Log.Add("Database configuration not present. Initiating database configuration dialogue");
                 dbConf.Setup();
             }
+
         }
 
         private static void InitializeModules()
         {
-            RequestHandler.Modules.Add(new LoginModule());
-            RequestHandler.Modules.Add(new GameModule());
+            Log.Add("Initializing Modules");
+
+            RequestHandler.Modules.Add(new Modules.LoginModule());
+            RequestHandler.Modules.Add(new Modules.GameModule());
+
+            foreach (Modules.Module m in RequestHandler.Modules) { Log.Add("Initialized " + m.Name); }
         }
 
         // supresses warning because of missing await
