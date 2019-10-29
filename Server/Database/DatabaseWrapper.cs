@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Models;
 using MySql.Data.MySqlClient;
 using Server.Configurations;
+using Server.General;
 
 namespace Server.Database
 {
@@ -9,11 +11,14 @@ namespace Server.Database
     {
         private readonly MySqlConnection connection;
         private readonly DatabaseConfiguration configuration = new DatabaseConfiguration();
+        private readonly User currentUser;
 
-        public DatabaseWrapper()
+        public DatabaseWrapper(User user)
         {
             configuration.Load();
             connection = new MySqlConnection($"Server={configuration.Ip}; Port={configuration.Port}; Database={configuration.Database}; Uid={configuration.User}; Pwd={configuration.Password};");
+            currentUser = user;
+            Log.Add("Created MySql-Connection", currentUser, MessageType.Normal);
         }
 
         public int ExecuteNonQuery(string statement, params string[] parameters)
@@ -66,10 +71,12 @@ namespace Server.Database
         {
             MySqlCommand command = connection.CreateCommand();
             command.CommandText = statement;
-            for(int i = 0; i < parameters.Length; i++)
+            for (int i = 0; i < parameters.Length; i++)
             {
                 command.Parameters.AddWithValue($"@{i}", parameters[i]);
             }
+
+            Log.Add($"Executing command: {statement}", currentUser, MessageType.Normal);
             return command;
         }
     }

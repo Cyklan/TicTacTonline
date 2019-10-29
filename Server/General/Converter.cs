@@ -17,7 +17,7 @@ namespace Server.General
 
         public string ConvertObjectToJson<T>(T obj)
         {
-            return JsonConvert.SerializeObject(obj);
+            return JsonConvert.SerializeObject(obj,Formatting.Indented);
         }
 
         public byte[] ConvertStringToBytes(string data)

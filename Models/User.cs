@@ -1,11 +1,11 @@
 using System;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Models
 {
     public class User
     {
-        private const int SALTROUNDS = 5000;
 
         public string Name { get; set; }
         public string IpAddress { get; set; }
@@ -42,22 +42,8 @@ namespace Models
 
         private string HashPassword(string password)
         {
-            byte[] salt;
-            byte[] hash;
-            byte[] hashBytes = new byte[36];
-
-            using (var provider = new RNGCryptoServiceProvider())
-            {
-                provider.GetBytes(salt = new byte[16]);
-            }
-            using (var rfc = new Rfc2898DeriveBytes(password, salt, SALTROUNDS))
-            {
-                hash = rfc.GetBytes(20);
-            }
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 20);
-
-            return Convert.ToBase64String(hashBytes);
+            using SHA256 sha = SHA256.Create();
+            return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(password)));
         }
 
         public override string ToString()

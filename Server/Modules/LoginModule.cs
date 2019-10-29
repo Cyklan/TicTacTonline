@@ -13,7 +13,7 @@ namespace Server.Modules
         {
             ResponseHeader header = new ResponseHeader { Targets = new List<User> { request.Header.User } };
 
-            using (DatabaseQueries db = new DatabaseQueries())
+            using (DatabaseQueries db = new DatabaseQueries(request.Header.User))
             {
                 if (db.LoginUser(request.Header.User))
                 {
@@ -34,18 +34,18 @@ namespace Server.Modules
         {
             ResponseHeader header = new ResponseHeader { Targets = new List<User> { request.Header.User } };
 
-            using (DatabaseQueries db = new DatabaseQueries())
+            using (DatabaseQueries db = new DatabaseQueries(request.Header.User))
             {
-                if (db.GetUsers().Any(x => x.Name.ToLower() != request.Header.User.Name.ToLower()))
+                if (db.GetUsers().Any(x => x.Name.ToLower() == request.Header.User.Name.ToLower()))
+                {
+                    header.Code = ResponseCode.PlannedError;
+                    header.Message = "User name is already taken";
+                }
+                else
                 {
                     db.RegisterUser(request.Header.User);
                     header.Code = ResponseCode.Ok;
                     header.Message = "Registered successfully";
-                }
-                else
-                {
-                    header.Code = ResponseCode.PlannedError;
-                    header.Message = "User name is already taken";
                 }
             }
 
