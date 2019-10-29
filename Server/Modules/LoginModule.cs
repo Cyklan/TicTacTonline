@@ -7,7 +7,7 @@ namespace Server.Modules
 {
     public class LoginModule : Module
     {
-        public LoginModule() : base("LoginModule") { }
+        public LoginModule() : base("LoginModule", false) { }
 
         private Response Login(Request request)
         {

@@ -36,6 +36,8 @@ namespace Server.Database
 
         public int RegisterUser(User user) => database.ExecuteNonQuery($"INSERT INTO users(name, hash) VALUES ('{user.Name}', '{user.PasswordHash}');");
 
+        public bool IsUserLoggedIn(User user) => database.ExecuteQuery($"SELECT * FROM users WHERE name='{user.Name}' AND loggedin=1").Count == 1;
+
         public void Dispose()
         {
             database = null;

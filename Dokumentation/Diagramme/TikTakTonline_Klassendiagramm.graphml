@@ -716,7 +716,7 @@ Empty</y:AttributeLabel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="99.68000000000006" width="470.3875262135923" x="1156.602048179613" y="412.5842666666668"/>
+          <y:Geometry height="117.54193905817192" width="470.3875262135923" x="1156.6020481796127" y="412.5842666666668"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="49.49365234375" x="210.44693693492115" y="3.0">Module<y:LabelModel>
@@ -727,9 +727,11 @@ Empty</y:AttributeLabel>
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel>+Name: string</y:AttributeLabel>
-            <y:MethodLabel>+Module(string)
-+ProcessRequest(Request): Response</y:MethodLabel>
+            <y:AttributeLabel>+Name: string
+-authenticate: bool</y:AttributeLabel>
+            <y:MethodLabel>+Module(string, bool)
++ProcessRequest(Request): Response
+#Authenticate(User): void</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -821,7 +823,7 @@ Empty</y:AttributeLabel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="161.41357185502966" width="295.2000000000003" x="2263.6806750000014" y="562.3887"/>
+          <y:Geometry height="181.1138593757945" width="295.2000000000003" x="2263.6806750000014" y="562.3887"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="110.2216796875" x="92.48916015625014" y="3.0">DatabaseQueries<y:LabelModel>
@@ -831,7 +833,7 @@ Empty</y:AttributeLabel>
               <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
             </y:ModelParameter>
           </y:NodeLabel>
-          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
+          <y:UML clipContent="false" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel/>
             <y:MethodLabel>+DatabaseQueries(User)
 +LoginUser(User): bool
@@ -840,7 +842,8 @@ Empty</y:AttributeLabel>
 +GetLeaderboard(): List&lt;LeaderboardPosition&gt;
 +GetMatchHistory(User): List&lt;MatchHistoryPosition&gt;
 +SetGame(Game, User): void
-+GetUsers(): List&lt;User&gt;</y:MethodLabel>
++GetUsers(): List&lt;User&gt;
++IsUserLoggedIn(User): bool</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
