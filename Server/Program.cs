@@ -49,12 +49,7 @@ namespace Server
             {
                 Log.Add("Closing server");
 
-                try
-                {
-                    server.Dispose();
-                }
-                catch { /* in case server has not been initialized yet */}
-
+                if (!(server is null)) { clients.ForEach(x => server.DisconnectClient(x.IpPort)); server.Dispose(); }
                 Log.Stop();
                 GC.Collect();
                 Environment.Exit(exitCode);
@@ -144,11 +139,21 @@ namespace Server
             {
                 if (!(data != null && data.Length > 0)) throw new ArgumentNullException("Data is empty.");
 
-                Response response = new RequestHandler().HandleRequest(data, ipPort);
+                Converter converter = new Converter();
+                Request request = converter.ConvertJsonToObject<Request>(converter.ConvertBytesToString(data));
+                Log.Add($"Received {converter.ConvertObjectToJson(request)} from {request.Header.User}", request.Header.User, MessageType.Normal);
+
+                SyncClientData(ipPort, request.Header.User);
+
+                Response response = new RequestHandler().HandleRequest(request);
+                Log.Add($"Sending {converter.ConvertObjectToJson(response)} to {string.Join(",", response.Header.Targets.Select(x => x.ToString()))}", request.Header.User, MessageType.Normal);
 
                 foreach (User user in response.Header.Targets)
                 {
-                    await server.SendAsync(user.IpPort, Converter.ConvertStringToBytes(Converter.ConvertObjectToJson(response)));
+                    if (!await server.SendAsync(user.IpPort, converter.ConvertStringToBytes(converter.ConvertObjectToJson(response))))
+                    {
+                        Log.Add($"Message {response.Header.MessageNumber} could not be send to {user}.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -156,6 +161,16 @@ namespace Server
                 Log.Add($"Message of client {ipPort} could not be handled: {Environment.NewLine} {ex.ToString()}", MessageType.Error);
             }
 
+        }
+
+        private static void SyncClientData(string ipPortRequest, User requestUser)
+        {
+            User connectedClient = clients.FirstOrDefault(x => x.IpPort == ipPortRequest);
+
+            connectedClient.Name = requestUser.Name;
+            connectedClient.PasswordHash = requestUser.PasswordHash;
+
+            requestUser.IpPort = ipPortRequest;
         }
 
     }

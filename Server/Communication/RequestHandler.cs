@@ -11,35 +11,31 @@ namespace Server.Communication
     {
         public static List<Module> Modules = new List<Module>();
 
-        public Response HandleRequest(byte[] request, string ipPort)
+        public Response HandleRequest(Request request)
         {
-            Request requestObject = Converter.ConvertJsonToObject<Request>(Converter.ConvertBytesToString(request));
-            requestObject.Header.User.IpPort = ipPort;
-            Response responseObject = new Response();
-            Log.Add($"Received {Converter.ConvertObjectToJson(requestObject)} from {requestObject.Header.User}", requestObject.Header.User, MessageType.Normal);
+            Response response = new Response();
 
-            Module module = Modules.FirstOrDefault(x => x.Name.ToLower() == requestObject.Header.Identifier.Module.ToLower());
+            Module module = Modules.FirstOrDefault(x => x.Name.ToLower() == request.Header.Identifier.Module.ToLower());
             if (module is null)
             {
-                responseObject = GetErrorResponse($"Failed to call function {requestObject.Header.Identifier.Function} at unkown module {requestObject.Header.Identifier.Module}", new List<User> { requestObject.Header.User });
-                Log.Add($"Failed to call function {requestObject.Header.Identifier.Function} at unkown module {requestObject.Header.Identifier.Module}", requestObject.Header.User, MessageType.Error);
+                response = GetErrorResponse($"Failed to call function {request.Header.Identifier.Function} at unkown module {request.Header.Identifier.Module}", new List<User> { request.Header.User });
+                Log.Add($"Failed to call function {request.Header.Identifier.Function} at unkown module {request.Header.Identifier.Module}", request.Header.User, MessageType.Error);
             }
             else
             {
                 try
                 {
-                    responseObject = module.ProcessRequest(requestObject);
+                    response = module.ProcessRequest(request);
                 }
                 catch (Exception ex)
                 {
-                    responseObject = GetErrorResponse($"Failed to process request for function {requestObject.Header.Identifier.Function} at module {requestObject.Header.Identifier.Module}: {Environment.NewLine} {ex.ToString()}", new List<User> { requestObject.Header.User });
-                    Log.Add($"Failed to process request for function {requestObject.Header.Identifier.Function} at module {requestObject.Header.Identifier.Module}: {Environment.NewLine} {ex.ToString()}", requestObject.Header.User, MessageType.Error);
+                    response = GetErrorResponse($"Failed to process request for function {request.Header.Identifier.Function} at module {request.Header.Identifier.Module}: {Environment.NewLine} {ex.ToString()}", new List<User> { request.Header.User });
+                    Log.Add($"Failed to process request for function {request.Header.Identifier.Function} at module {request.Header.Identifier.Module}: {Environment.NewLine} {ex.ToString()}", request.Header.User, MessageType.Error);
                 }
             }
 
-            responseObject.Header.MessageNumber = requestObject.Header.MessageNumber;
-            Log.Add($"Sending {Converter.ConvertObjectToJson(responseObject)} to {string.Join(",", responseObject.Header.Targets.Select(x => x.ToString()))}", requestObject.Header.User, MessageType.Normal);
-            return responseObject;
+            response.Header.MessageNumber = request.Header.MessageNumber;
+            return response;
         }
 
         private Response GetErrorResponse(string message, List<User> targets)
@@ -47,5 +43,6 @@ namespace Server.Communication
             ResponseHeader header = new ResponseHeader { Code = ResponseCode.UnplannedError, Message = message, Targets = targets };
             return new Response { Header = header, Body = new Document() };
         }
+
     }
 }

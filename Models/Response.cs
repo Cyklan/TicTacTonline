@@ -4,7 +4,10 @@
     {
         Ok,
         UnplannedError,
-        PlannedError
+        PlannedError,
+        GameTurnProcessed,
+        GameTie,
+        GameOver
     }
 
     public class Response

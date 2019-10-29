@@ -3,24 +3,24 @@ using Newtonsoft.Json;
 
 namespace Server.General
 {
-    public static class Converter
+    public class Converter
     {
-        public static string ConvertBytesToString(byte[] bytes)
+        public string ConvertBytesToString(byte[] bytes)
         {
             return new ASCIIEncoding().GetString(bytes);
         }
 
-        public static T ConvertJsonToObject<T>(string json)
+        public T ConvertJsonToObject<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public static string ConvertObjectToJson<T>(T obj)
+        public string ConvertObjectToJson<T>(T obj)
         {
             return JsonConvert.SerializeObject(obj);
         }
 
-        public static byte[] ConvertStringToBytes(string data)
+        public byte[] ConvertStringToBytes(string data)
         {
             return new ASCIIEncoding().GetBytes(data);
         }

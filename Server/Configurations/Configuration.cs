@@ -6,14 +6,22 @@ namespace Server.Configurations
 {
     public abstract class Configuration
     {
+        protected Converter converter { get; set; }
+
+        public Configuration()
+        {
+            converter = new Converter();
+        }
+
+
         protected T LoadConfiguration<T>(string pathToFile)
         {
-            return Converter.ConvertJsonToObject<T>(File.ReadAllText(pathToFile));
+            return converter.ConvertJsonToObject<T>(File.ReadAllText(pathToFile));
         }
 
         protected void SaveConfiguration(string pathToFile)
         {
-            string json = Converter.ConvertObjectToJson(this);
+            string json = converter.ConvertObjectToJson(this);
             try
             {
                 File.WriteAllText(pathToFile, json);
