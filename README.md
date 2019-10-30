@@ -11,12 +11,12 @@
 - Tic Tac Toe online spielen
 - Frontend
 - .NET Core Server
-- Raumsystem 
+- Raumsystem
 - Simpler Nutzername durch Nutzereingabe
 
 ### Erweiterungen
 
-- Register / Login 
+- Register / Login
 - Reconnect
 - Chat
 - Leaderboards
@@ -25,6 +25,7 @@
 ### Erweiterte Erweiterungen
 
 - Lokaler Multiplayer
+- Spectating
 - SSL Verschlüsselung
 
 ### Erweteiterte Erweiterungserweiterungen
@@ -53,7 +54,7 @@
 - Neues Spiel erstellen
 - Spiel beitreten
 - Alle Spiele in Liste anzeigen
-    - Filter: aktive Spiele zeigen, volle Spiele zeigen
+  - Filter: aktive Spiele zeigen, volle Spiele zeigen
 - Raumname
 - Raum UUID
 
@@ -69,10 +70,10 @@ Chatten mit Gegner
 #### Details:
 
 - Chatlogs speichern
-    - Nutzer
-    - Nachricht
-    - Timestamp
-    - Zu Raum zuordbar
+  - Nutzer
+  - Nachricht
+  - Timestamp
+  - Zu Raum zuordbar
 
 ### Leaderboards
 
