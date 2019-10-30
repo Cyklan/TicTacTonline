@@ -10,6 +10,7 @@ namespace Server.Communication
     public class RequestHandler
     {
         public static List<Module> Modules = new List<Module>();
+        private readonly Log log = new Log();
 
         public Response HandleRequest(Request request)
         {
@@ -19,7 +20,7 @@ namespace Server.Communication
             if (module is null)
             {
                 response = GetErrorResponse($"Failed to call function {request.Header.Identifier.Function} at unkown module {request.Header.Identifier.Module}", new List<User> { request.Header.User });
-                Log.Add($"Failed to call function {request.Header.Identifier.Function} at unkown module {request.Header.Identifier.Module}", request.Header.User, MessageType.Error);
+                log.Add($"Failed to call function {request.Header.Identifier.Function} at unkown module {request.Header.Identifier.Module}", request.Header.User, MessageType.Error);
             }
             else
             {
@@ -30,7 +31,7 @@ namespace Server.Communication
                 catch (Exception ex)
                 {
                     response = GetErrorResponse($"Failed to process request for function {request.Header.Identifier.Function} at module {request.Header.Identifier.Module}: {Environment.NewLine} {ex.ToString()}", new List<User> { request.Header.User });
-                    Log.Add($"Failed to process request for function {request.Header.Identifier.Function} at module {request.Header.Identifier.Module}: {Environment.NewLine} {ex.ToString()}", request.Header.User, MessageType.Error);
+                    log.Add($"Failed to process request for function {request.Header.Identifier.Function} at module {request.Header.Identifier.Module}: {Environment.NewLine} {ex.ToString()}", request.Header.User, MessageType.Error);
                 }
             }
 

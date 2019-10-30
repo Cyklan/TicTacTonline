@@ -12,13 +12,14 @@ namespace Server.Database
         private readonly MySqlConnection connection;
         private readonly DatabaseConfiguration configuration = new DatabaseConfiguration();
         private readonly User currentUser;
+        private readonly Log log = new Log();
 
         public DatabaseWrapper(User user)
         {
             configuration.Load();
             connection = new MySqlConnection($"Server={configuration.Ip}; Port={configuration.Port}; Database={configuration.Database}; Uid={configuration.User}; Pwd={configuration.Password};");
             currentUser = user;
-            Log.Add("Created MySql-Connection", currentUser, MessageType.Normal);
+            log.Add("Created MySql-Connection", currentUser, MessageType.Normal);
         }
 
         public int ExecuteNonQuery(string statement, params string[] parameters)
@@ -76,7 +77,7 @@ namespace Server.Database
                 command.Parameters.AddWithValue($"@{i}", parameters[i]);
             }
 
-            Log.Add($"Executing command: {statement}", currentUser, MessageType.Normal);
+            log.Add($"Executing command: {statement}", currentUser, MessageType.Normal);
             return command;
         }
     }

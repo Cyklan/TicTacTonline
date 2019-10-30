@@ -7,10 +7,12 @@ namespace Server.Configurations
     public abstract class Configuration
     {
         protected Converter converter { get; set; }
+        protected Pathmanager pathmanager { get; set; }
 
         public Configuration()
         {
             converter = new Converter();
+            pathmanager = new Pathmanager();
         }
 
 
@@ -21,14 +23,7 @@ namespace Server.Configurations
 
         protected void SaveConfiguration(string pathToFile)
         {
-            string json = converter.ConvertObjectToJson(this);
-            try
-            {
-                File.WriteAllText(pathToFile, json);
-            } catch (Exception e) 
-            {
-                Log.Add(e.ToString(), MessageType.Error);
-            }
+            File.WriteAllText(pathToFile, converter.ConvertObjectToJson(this));
         }
 
         public abstract bool IsAvailable();

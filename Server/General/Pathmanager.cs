@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Server.General
 {
-    public static class Pathmanager
+    public class Pathmanager
     {
         public static string StartupDirectory
         {
@@ -14,7 +14,7 @@ namespace Server.General
             }
         }
 
-        public static string LogDirectory
+        public string LogDirectory
         {
             get
             {
@@ -24,7 +24,7 @@ namespace Server.General
             }
         }
 
-        public static string ConfigurationDirectory
+        public string ConfigurationDirectory
         {
             get
             {
@@ -34,7 +34,7 @@ namespace Server.General
             }
         }
 
-        public static string ServerConfigurationPath
+        public string ServerConfigurationPath
         {
             get
             {
@@ -42,7 +42,7 @@ namespace Server.General
             }
         }
 
-        public static string DatabaseConfigurationPath
+        public string DatabaseConfigurationPath
         {
             get
             {
@@ -50,7 +50,7 @@ namespace Server.General
             }
         }
 
-        public static string LogFilePath
+        public string LogFilePath
         {
             get
             {

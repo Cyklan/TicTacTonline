@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Reflection;
 using Models;
+using Server.General;
 
 namespace Server.Modules
 {
     public abstract class Module
     {
         public string Name { get; set; }
-        private bool authenticate;
+        private readonly bool authenticate;
+        protected Log Log { get; set; }
 
         public Module(string name, bool authenticate = true)
         {
             Name = name;
             this.authenticate = authenticate;
+            Log = new Log();
         }
 
         public Response ProcessRequest(Request request)
@@ -32,12 +35,10 @@ namespace Server.Modules
 
         protected void Authenticate(User user)
         {
-            using (Database.DatabaseQueries db = new Database.DatabaseQueries(user))
+            using Database.DatabaseQueries db = new Database.DatabaseQueries(user);
+            if (!db.IsUserLoggedIn(user))
             {
-                if (!db.IsUserLoggedIn(user))
-                {
-                    throw new Exception($"User {user} is not logged in.");
-                }
+                throw new Exception($"User {user} is not logged in.");
             }
         }
 

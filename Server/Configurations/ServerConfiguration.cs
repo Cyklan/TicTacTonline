@@ -9,11 +9,11 @@ namespace Server.Configurations
         public int Port { get; set; }
         public bool Ssl { get; set; }
 
-        public override bool IsAvailable() => File.Exists(Pathmanager.ServerConfigurationPath);
+        public override bool IsAvailable() => File.Exists(pathmanager.ServerConfigurationPath);
 
         public override void Load()
         {
-            ServerConfiguration serverConfig = LoadConfiguration<ServerConfiguration>(Pathmanager.ServerConfigurationPath);
+            ServerConfiguration serverConfig = LoadConfiguration<ServerConfiguration>(pathmanager.ServerConfigurationPath);
 
             Ip = serverConfig.Ip;
             Port = serverConfig.Port;
@@ -26,7 +26,7 @@ namespace Server.Configurations
             Port = UserInput.InputInteger("Port", 31415, true, false);
             Ssl = UserInput.InputBoolean("Use SSL", false);
 
-            SaveConfiguration(Pathmanager.ServerConfigurationPath);
+            SaveConfiguration(pathmanager.ServerConfigurationPath);
         }
     }
 }

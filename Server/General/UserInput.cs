@@ -5,6 +5,8 @@ namespace Server.General
 {
     public static class UserInput
     {
+        private static Log Log = new Log();
+
         public static bool InputBoolean(string question, bool yesDefault)
         {
             string output = question;
@@ -51,8 +53,7 @@ namespace Server.General
 
                 if (string.IsNullOrEmpty(userInput)) return defaultAnswer;
 
-                int ret;
-                if (!int.TryParse(userInput, out ret))
+                if (!int.TryParse(userInput, out int ret))
                 {
                     Log.Add("Please enter a valid integer.", MessageType.Error);
                     continue;

@@ -17,17 +17,18 @@ namespace Server
         private static readonly ServerConfiguration serverConfig = new ServerConfiguration();
         private static WatsonWsServer server;
         private static List<User> clients;
+        private static readonly Log log = new Log();
 
         static void Main(string[] args)
         {
             int exitCode = 0;
-            Log.Start();
+            log.Start();
 
             try
             {
                 CheckConfig();
 
-                Log.Add("Starting server");
+                log.Add("Starting server");
 
                 serverConfig.Load();
 
@@ -37,20 +38,20 @@ namespace Server
                 InitializeServer();
                 server.Start();
 
-                while (UserInput.InputString("Type '.stop' to stop the server" + Environment.NewLine, "") != ".stop") { Log.Add("Invalid Input", MessageType.Debug); }
+                while (UserInput.InputString("Type '.stop' to stop the server" + Environment.NewLine, "") != ".stop") { log.Add("Invalid Input", MessageType.Debug); }
 
             }
             catch (Exception ex)
             {
                 exitCode = 1;
-                Log.Add(ex.ToString(), MessageType.Error);
+                log.Add(ex.ToString(), MessageType.Error);
             }
             finally
             {
-                Log.Add("Closing server");
+                log.Add("Closing server");
 
                 if (!(server is null)) { clients.ForEach(x => server.DisconnectClient(x.IpPort)); server.Dispose(); }
-                Log.Stop();
+                log.Stop();
                 GC.Collect();
                 Environment.Exit(exitCode);
 
@@ -65,23 +66,23 @@ namespace Server
             server.ClientDisconnected += ClientDisconnected;
             server.MessageReceived += MessageReceived;
 
-            Log.Add($"Server running at {serverConfig.Ip}:{serverConfig.Port}");
+            log.Add($"Server running at {serverConfig.Ip}:{serverConfig.Port}");
         }
 
         private static void CheckConfig()
         {
-            Log.Add("Checking Configurations");
+            log.Add("Checking Configurations");
             DatabaseConfiguration dbConf = new DatabaseConfiguration();
 
             if (!serverConfig.IsAvailable())
             {
-                Log.Add("Server configuration not present. Initiating server configuration dialogue.");
+                log.Add("Server configuration not present. Initiating server configuration dialogue.");
                 serverConfig.Setup();
             }
 
             if (!dbConf.IsAvailable())
             {
-                Log.Add("Database configuration not present. Initiating database configuration dialogue");
+                log.Add("Database configuration not present. Initiating database configuration dialogue");
                 dbConf.Setup();
             }
 
@@ -89,12 +90,12 @@ namespace Server
 
         private static void InitializeModules()
         {
-            Log.Add("Initializing Modules");
+            log.Add("Initializing Modules");
 
             RequestHandler.Modules.Add(new LoginModule());
             RequestHandler.Modules.Add(new GameModule());
 
-            foreach (Module m in RequestHandler.Modules) { Log.Add("Initialized " + m.Name); }
+            foreach (Module m in RequestHandler.Modules) { log.Add("Initialized " + m.Name); }
         }
 
         // supresses warning because of missing await
@@ -105,11 +106,11 @@ namespace Server
             try
             {
                 clients.Add(new User(ipPort));
-                Log.Add($"Client {ipPort} connected");
+                log.Add($"Client {ipPort} connected");
             }
             catch (Exception ex)
             {
-                Log.Add($"Client {ipPort} could not connect: {Environment.NewLine} {ex}", MessageType.Error);
+                log.Add($"Client {ipPort} could not connect: {Environment.NewLine} {ex}", MessageType.Error);
                 return false;
             }
 
@@ -122,11 +123,11 @@ namespace Server
             try
             {
                 clients.Remove(clients.First(x => x.IpPort == ipPort));
-                Log.Add($"Client {ipPort} disconnected");
+                log.Add($"Client {ipPort} disconnected");
             }
             catch (Exception ex)
             {
-                Log.Add($"Client {ipPort} could not remove client: {Environment.NewLine} {ex}", MessageType.Error);
+                log.Add($"Client {ipPort} could not remove client: {Environment.NewLine} {ex}", MessageType.Error);
             }
 
         }
@@ -141,24 +142,24 @@ namespace Server
 
                 Converter converter = new Converter();
                 Request request = converter.ConvertJsonToObject<Request>(converter.ConvertBytesToString(data));
-                Log.Add($"Received {converter.ConvertObjectToJson(request)} from {request.Header.User}", request.Header.User, MessageType.Normal);
+                log.Add($"Received {converter.ConvertObjectToJson(request)} from {request.Header.User}", request.Header.User, MessageType.Normal);
 
                 SyncClientData(ipPort, request.Header.User);
 
                 Response response = new RequestHandler().HandleRequest(request);
-                Log.Add($"Sending {converter.ConvertObjectToJson(response)} to {string.Join(",", response.Header.Targets.Select(x => x.ToString()))}", request.Header.User, MessageType.Normal);
+                log.Add($"Sending {converter.ConvertObjectToJson(response)} to {string.Join(",", response.Header.Targets.Select(x => x.ToString()))}", request.Header.User, MessageType.Normal);
 
                 foreach (User user in response.Header.Targets)
                 {
                     if (!await server.SendAsync(user.IpPort, converter.ConvertStringToBytes(converter.ConvertObjectToJson(response))))
                     {
-                        Log.Add($"Message {response.Header.MessageNumber} could not be send to {user}.");
+                        log.Add($"Message {response.Header.MessageNumber} could not be send to {user}.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log.Add($"Message of client {ipPort} could not be handled: {Environment.NewLine} {ex.ToString()}", MessageType.Error);
+                log.Add($"Message of client {ipPort} could not be handled: {Environment.NewLine} {ex.ToString()}", MessageType.Error);
             }
 
         }

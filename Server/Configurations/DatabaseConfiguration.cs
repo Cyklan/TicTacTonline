@@ -11,11 +11,11 @@ namespace Server.Configurations
         public string User { get; set; }
         public string Password { get; set; }
 
-        public override bool IsAvailable() => File.Exists(Pathmanager.DatabaseConfigurationPath);
+        public override bool IsAvailable() => File.Exists(pathmanager.DatabaseConfigurationPath);
 
         public override void Load()
         {
-            DatabaseConfiguration databaseConfig = LoadConfiguration<DatabaseConfiguration>(Pathmanager.DatabaseConfigurationPath);
+            DatabaseConfiguration databaseConfig = LoadConfiguration<DatabaseConfiguration>(pathmanager.DatabaseConfigurationPath);
 
             Ip = databaseConfig.Ip;
             Port = databaseConfig.Port;
@@ -32,7 +32,7 @@ namespace Server.Configurations
             User = UserInput.InputString("Database user", "TTO");
             Password = UserInput.InputString("User password", "tictactonline");
 
-            SaveConfiguration(Pathmanager.DatabaseConfigurationPath);
+            SaveConfiguration(pathmanager.DatabaseConfigurationPath);
         }
     }
 }

@@ -7,14 +7,15 @@ using Models;
 
 namespace Server.General
 {
-    public static class Log
+    public class Log
     {
 
         private static Queue<Message> logQueue;
         private static Thread logThread;
         private static bool run;
+        private static readonly Pathmanager pathmanager = new Pathmanager();
 
-        public static void Start()
+        public void Start()
         {
             logQueue = new Queue<Message>();
             logThread = new Thread(HandleLogQueue);
@@ -23,7 +24,7 @@ namespace Server.General
             Add("Log started");
         }
 
-        public static void Stop()
+        public void Stop()
         {
             Add("Stopping log");
             run = false;
@@ -32,17 +33,17 @@ namespace Server.General
             while (logThread.IsAlive) { Thread.Sleep(100); } // wait till thread finished
         }
 
-        public static void Add(string message, User user, MessageType messageType)
+        public void Add(string message, User user, MessageType messageType)
         {
             logQueue.Enqueue(new Message(DateTime.Now, messageType, user, message));
         }
 
-        public static void Add(string message, MessageType messageType)
+        public void Add(string message, MessageType messageType)
         {
             logQueue.Enqueue(new Message(DateTime.Now, messageType, new User { Name = "Global"} , message));
         }
 
-        public static void Add(string message)
+        public void Add(string message)
         {
             logQueue.Enqueue(new Message(DateTime.Now, MessageType.Normal, new User { Name = "Global" }, message));
         }
@@ -74,8 +75,7 @@ namespace Server.General
                             break;
                     }
 
-
-                    File.AppendAllText(Pathmanager.LogFilePath, message + Environment.NewLine);
+                    File.AppendAllText(pathmanager.LogFilePath, message + Environment.NewLine);
                     if (message.MessageType == MessageType.Question)
                     {
                         Console.Write(message);
