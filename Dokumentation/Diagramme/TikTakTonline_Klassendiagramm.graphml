@@ -529,7 +529,7 @@ Empty</y:AttributeLabel>
           <y:Geometry height="37.0" width="141.3104000000002" x="874.9843750000025" y="-223.92198333333317"/>
           <y:Fill color="#00CCFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="30" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="40.7529296875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="100.6943359375" x="20.308032031250036" y="-1.87646484375">Server:<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="30" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="40.7529296875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="100.6943359375" x="20.30803203125015" y="-1.87646484375">Server:<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -1341,30 +1341,6 @@ GameOver</y:AttributeLabel>
       </data>
     </node>
     <node id="n63">
-      <data key="d4"/>
-      <data key="d6">
-        <y:UMLClassNode>
-          <y:Geometry height="117.54193905817186" width="253.07184466019407" x="1549.2205627513517" y="659.3319740164054"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="71.90087890625" x="90.58548287697204" y="26.701171875">UserInputs<y:LabelModel>
-              <y:SmartNodeLabelModel distance="4.0"/>
-            </y:LabelModel>
-            <y:ModelParameter>
-              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
-            </y:ModelParameter>
-          </y:NodeLabel>
-          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="static" use3DEffect="true">
-            <y:AttributeLabel>+InputBoolean(string, bool): bool
-+InputString(string, string): string
-+InputInteger(string, int, bool, bool): int
-+InputIp(): void</y:AttributeLabel>
-            <y:MethodLabel/>
-          </y:UML>
-        </y:UMLClassNode>
-      </data>
-    </node>
-    <node id="n64">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="64.5693625984851" width="141.3104000000002" x="3221.97746934315" y="59.268386172893486"/>
@@ -1381,7 +1357,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n65">
+    <node id="n64">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="965.6047029126213" width="30.0" x="3162.272244343153" y="-11.457863827106564"/>
@@ -1392,7 +1368,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n66">
+    <node id="n65">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1416,7 +1392,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n67">
+    <node id="n66">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1437,7 +1413,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n68">
+    <node id="n67">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1458,7 +1434,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n69">
+    <node id="n68">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1479,7 +1455,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n70">
+    <node id="n69">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1500,7 +1476,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n71">
+    <node id="n70">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1521,7 +1497,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n72">
+    <node id="n71">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1542,7 +1518,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n73">
+    <node id="n72">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1563,7 +1539,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n74">
+    <node id="n73">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1585,7 +1561,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n75">
+    <node id="n74">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="3579.741369518981" y="328.69343896156875"/>
@@ -1602,7 +1578,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n76">
+    <node id="n75">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1627,7 +1603,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n77">
+    <node id="n76">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1657,7 +1633,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n78">
+    <node id="n77">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="3404.8406533172792" y="750.5981454268727"/>
@@ -1674,7 +1650,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n79">
+    <node id="n78">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1695,7 +1671,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n80">
+    <node id="n79">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -1717,7 +1693,7 @@ GameOver</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n81">
+    <node id="n80">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="353.44349319371736" y="540.6885333333339"/>
@@ -1734,7 +1710,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n82">
+    <node id="n81">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="2089.0890509865017" y="-202.73367010122152"/>
@@ -1751,7 +1727,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n83">
+    <node id="n82">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="2390.6523121270757" y="-201.31210851657937"/>
@@ -1768,7 +1744,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n84">
+    <node id="n83">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="3406.8135872628304" y="514.5843930427902"/>
@@ -1785,7 +1761,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n85">
+    <node id="n84">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="3519.741369518981" y="615.3237652731567"/>
@@ -1802,7 +1778,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n86">
+    <node id="n85">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="3480.857388936457" y="806.9939179808683"/>
@@ -1819,7 +1795,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n87">
+    <node id="n86">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="2695.3769525870266" y="-201.31210851657937"/>
@@ -1836,7 +1812,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n88">
+    <node id="n87">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="2841.795281005093" y="-259.90545628702614"/>
@@ -1853,7 +1829,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n89">
+    <node id="n88">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="1264.0158228108787" y="89.06700942037332"/>
@@ -1870,7 +1846,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n90">
+    <node id="n89">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="1264.0158228108787" y="48.5706126513665"/>
@@ -1887,7 +1863,7 @@ GameOver</y:AttributeLabel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n91">
+    <node id="n90">
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="1264.0158228108787" y="1.3605569856121065"/>
@@ -2279,7 +2255,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e32" source="n67" target="n74">
+    <edge id="e32" source="n66" target="n73">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2290,7 +2266,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e33" source="n68" target="n74">
+    <edge id="e33" source="n67" target="n73">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2301,7 +2277,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e34" source="n70" target="n74">
+    <edge id="e34" source="n69" target="n73">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2312,7 +2288,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e35" source="n71" target="n74">
+    <edge id="e35" source="n70" target="n73">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2323,7 +2299,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e36" source="n72" target="n74">
+    <edge id="e36" source="n71" target="n73">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2334,7 +2310,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e37" source="n73" target="n74">
+    <edge id="e37" source="n72" target="n73">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2345,7 +2321,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e38" source="n69" target="n74">
+    <edge id="e38" source="n68" target="n73">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2356,7 +2332,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e39" source="n66" target="n74">
+    <edge id="e39" source="n65" target="n73">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2367,7 +2343,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e40" source="n76" target="n77">
+    <edge id="e40" source="n75" target="n76">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2389,7 +2365,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e42" source="n1" target="n79">
+    <edge id="e42" source="n1" target="n78">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2400,7 +2376,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e43" source="n3" target="n79">
+    <edge id="e43" source="n3" target="n78">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2411,7 +2387,7 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e44" source="n15" target="n80">
+    <edge id="e44" source="n15" target="n79">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -2492,9 +2468,8 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e51" source="n66" target="n77">
+    <edge id="e51" source="n65" target="n76">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -2504,9 +2479,8 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e52" source="n74" target="n77">
+    <edge id="e52" source="n73" target="n76">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -2518,9 +2492,8 @@ GameOver</y:AttributeLabel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e53" source="n69" target="n76">
+    <edge id="e53" source="n68" target="n75">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -2532,7 +2505,6 @@ GameOver</y:AttributeLabel>
     </edge>
     <edge id="e54" source="n49" target="n50">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="60.98412584340781" sy="-97.40626368234108" tx="6.680505845024982" ty="0.0">
@@ -2547,7 +2519,6 @@ GameOver</y:AttributeLabel>
     </edge>
     <edge id="e55" source="n51" target="n50">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="63.074016261894485" sy="-73.2203581650827" tx="0.0" ty="0.0">
@@ -2561,7 +2532,6 @@ GameOver</y:AttributeLabel>
     </edge>
     <edge id="e56" source="n57" target="n56">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -2573,7 +2543,6 @@ GameOver</y:AttributeLabel>
     </edge>
     <edge id="e57" source="n49" target="n26">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -2585,7 +2554,6 @@ GameOver</y:AttributeLabel>
     </edge>
     <edge id="e58" source="n49" target="n32">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="114.13868051214445" sy="51.356278107167796" tx="-140.24490932380172" ty="0.0">
@@ -2600,7 +2568,6 @@ GameOver</y:AttributeLabel>
     </edge>
     <edge id="e59" source="n49" target="n33">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="114.11650099382064" sy="90.39223035847685" tx="-235.1874682626178" ty="5.513082632654459">
@@ -2615,7 +2582,6 @@ GameOver</y:AttributeLabel>
     </edge>
     <edge id="e60" source="n37" target="n49">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="21.263357319543502" ty="-97.40527069993412">
