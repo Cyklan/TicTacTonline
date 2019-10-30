@@ -38,7 +38,7 @@ namespace Server
                 InitializeServer();
                 server.Start();
 
-                while (UserInput.InputString("Type '.stop' to stop the server" + Environment.NewLine, "") != ".stop") { log.Add("Invalid Input", MessageType.Debug); }
+                while (Console.ReadLine() != ".stop") { log.Add("Invalid Input", MessageType.Debug); log.Add("Type .stop to stop the server"); }
 
             }
             catch (Exception ex)
