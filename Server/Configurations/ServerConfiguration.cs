@@ -22,9 +22,9 @@ namespace Server.Configurations
 
         public override void Setup()
         {
-            Ip = UserInput.InputIp();
-            Port = UserInput.InputInteger("Port", 31415, true, false);
-            Ssl = UserInput.InputBoolean("Use SSL", false);
+            Ip = "127.0.0.1";
+            Port = 31415;
+            Ssl = false;
 
             SaveConfiguration(pathmanager.ServerConfigurationPath);
         }

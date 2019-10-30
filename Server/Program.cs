@@ -76,13 +76,13 @@ namespace Server
 
             if (!serverConfig.IsAvailable())
             {
-                log.Add("Server configuration not present. Initiating server configuration dialogue.");
+                log.Add("Server configuration not present. Applying default settings.");
                 serverConfig.Setup();
             }
 
             if (!dbConf.IsAvailable())
             {
-                log.Add("Database configuration not present. Initiating database configuration dialogue");
+                log.Add("Database configuration not present. Applying default settings.");
                 dbConf.Setup();
             }
 

@@ -26,11 +26,11 @@ namespace Server.Configurations
 
         public override void Setup()
         {
-            Ip = UserInput.InputIp();
-            Port = UserInput.InputInteger("Port", 3306, true, false);
-            Database = UserInput.InputString("Database schema", "tictactonline");
-            User = UserInput.InputString("Database user", "TTO");
-            Password = UserInput.InputString("User password", "tictactonline");
+            Ip = "127.0.0.1";
+            Port = 3306;
+            Database = "tictactonline";
+            User = "TTO";
+            Password = "tictactonline";
 
             SaveConfiguration(pathmanager.DatabaseConfigurationPath);
         }
