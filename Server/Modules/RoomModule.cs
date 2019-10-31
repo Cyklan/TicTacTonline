@@ -22,7 +22,7 @@ namespace Server.Modules
         // Only returns rooms with unfinished games
         private Response GetRooms(Request request)
         {
-
+            return new Response();
         }
 
         private Response CreateRoom(Request request)

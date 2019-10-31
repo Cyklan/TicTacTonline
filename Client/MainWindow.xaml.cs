@@ -38,7 +38,7 @@ namespace Client
             client.OnDisconnect += clientDisconnected;
             client.OnSpontaneousReceive += clientReceive;
 
-            client.Initialize();
+            if (!client.Initialize()) MessageBox.Show("Server unreachable");
         }
 
         private void bt_test_Click(object sender, RoutedEventArgs e)

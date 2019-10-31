@@ -1,5 +1,7 @@
 ﻿using Models;
 using System;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using WatsonWebsocket;
@@ -18,10 +20,12 @@ namespace Client
         public event EventHandler OnDisconnect;
         public event EventHandler OnSpontaneousReceive;
 
-        public void Initialize()
+        public bool Initialize()
         {
             if (!WebsocketConfiguration.IsAvailable()) WebsocketConfiguration.Setup();
             WebsocketConfiguration.Load();
+
+            if (!PingServer()) return false;
 
             if (client != null) client.Dispose();
             client = new WatsonWsClient(WebsocketConfiguration.GetWebsocketUri());
@@ -29,6 +33,8 @@ namespace Client
             client.ServerDisconnected += onDisconnect;
             client.MessageReceived += onReceive;
             client.Start();
+
+            return true;
         }
 
         public Response Exchange(Request request)
@@ -39,7 +45,7 @@ namespace Client
 
             client.SendAsync(converter.ConvertStringToBytes(converter.ConvertObjectToJson(request)));
 
-            while(responseToWaitFor.Header.Targets is null) { Thread.Sleep(100); }
+            while (responseToWaitFor.Header.Targets is null) { Thread.Sleep(100); }
 
             return responseToWaitFor;
         }
@@ -47,6 +53,19 @@ namespace Client
         public void Send(Request request)
         {
             client.SendAsync(converter.ConvertStringToBytes(converter.ConvertObjectToJson(request)));
+        }
+
+        public bool PingServer()
+        {
+            try
+            {
+                using TcpClient client = new TcpClient(WebsocketConfiguration.Ip, WebsocketConfiguration.Port);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 #pragma warning disable CS1998
