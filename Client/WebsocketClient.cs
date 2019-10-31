@@ -1,5 +1,7 @@
 ﻿using Models;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using WatsonWebsocket;
 
 namespace Client
@@ -8,6 +10,9 @@ namespace Client
     {
         private WatsonWsClient client;
         private WebsocketConfiguration WebsocketConfiguration = new WebsocketConfiguration();
+        private Converter converter = new Converter();
+        private Response responseToWaitFor;
+
 
         public event EventHandler OnConnect;
         public event EventHandler OnDisconnect;
@@ -15,34 +20,60 @@ namespace Client
 
         public void Initialize()
         {
-            //WebsocketConfiguration
+            if (!WebsocketConfiguration.IsAvailable()) WebsocketConfiguration.Setup();
+            WebsocketConfiguration.Load();
 
+            if (client != null) client.Dispose();
+            client = new WatsonWsClient(WebsocketConfiguration.GetWebsocketUri());
+            client.ServerConnected += onConnect;
+            client.ServerDisconnected += onDisconnect;
+            client.MessageReceived += onReceive;
+            client.Start();
         }
 
         public Response Exchange(Request request)
         {
-            return new Response();
+            DateTime startWaitTime = DateTime.Now;
+            responseToWaitFor = new Response();
+            responseToWaitFor.Header = new ResponseHeader() { MessageNumber = request.Header.MessageNumber };
+
+            client.SendAsync(converter.ConvertStringToBytes(converter.ConvertObjectToJson(request)));
+
+            while(responseToWaitFor.Header.Targets is null) { Thread.Sleep(100); if (startWaitTime.AddMinutes(1) >= DateTime.Now) throw new TimeoutException(); }
+
+            return responseToWaitFor;
         }
 
         public void Send(Request request)
         {
-
+            client.SendAsync(converter.ConvertStringToBytes(converter.ConvertObjectToJson(request)));
         }
 
-        private void onConnect()
+#pragma warning disable CS1998
+
+        private async Task onConnect()
         {
-
+            OnConnect?.Invoke(this, new EventArgs());
         }
 
-        private void onDisconnect()
+        private async Task onDisconnect()
         {
-
+            OnDisconnect?.Invoke(this, new EventArgs());
         }
 
-        private void onReceive()
+        private async Task onReceive(byte[] data)
         {
+            Response response = converter.ConvertJsonToObject<Response>(converter.ConvertBytesToString(data));
 
+            if (responseToWaitFor.Header.MessageNumber == response.Header.MessageNumber)
+            {
+                responseToWaitFor = response;
+                return;
+            }
+
+            OnSpontaneousReceive?.Invoke(response, new EventArgs());
         }
 
+#pragma warning restore CS1998
     }
 }

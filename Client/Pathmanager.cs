@@ -26,7 +26,7 @@ namespace Client
             }
         }
 
-        public string WebsocketConfigurationConfigurationPath
+        public string WebsocketConfigurationPath
         {
             get
             {
