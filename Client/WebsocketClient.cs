@@ -39,7 +39,7 @@ namespace Client
 
             client.SendAsync(converter.ConvertStringToBytes(converter.ConvertObjectToJson(request)));
 
-            while(responseToWaitFor.Header.Targets is null) { Thread.Sleep(100); if (startWaitTime.AddMinutes(1) >= DateTime.Now) throw new TimeoutException(); }
+            while(responseToWaitFor.Header.Targets is null) { Thread.Sleep(100); }
 
             return responseToWaitFor;
         }

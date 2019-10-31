@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid x:Name="grid_main">
 
         <Button x:Name="bt_test" Content="Test" HorizontalAlignment="Left" Margin="718,397,0,0" VerticalAlignment="Top" Height="27" Width="72" Click="bt_test_Click"/>
