@@ -13,7 +13,7 @@ namespace Client
 
         public bool IsAvailable()
         {
-
+            return true;
         }
 
         public void Load()
@@ -28,7 +28,7 @@ namespace Client
 
         public Uri GetWebsocketUri()
         {
-
+            return new Uri("http://");
         }
 
     }

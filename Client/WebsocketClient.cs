@@ -15,7 +15,7 @@ namespace Client
 
         public void Initialize()
         {
-            WebsocketConfiguration
+            //WebsocketConfiguration
 
         }
 
