@@ -41,15 +41,24 @@ namespace Server.Modules
             }
             else
             {
-                if(db.AddUserToGame(request.Header.User, body.Id))
+                if (db.AddUserToGame(request.Header.User, body.Id))
                 {
                     header.Code = ResponseCode.Ok;
-                    header.Message = "User could not be added to game";
+                    header.Message = "Room created successfully";
                 }
                 else
                 {
                     header.Code = ResponseCode.PlannedError;
                     header.Message = "User could not be added to game";
+
+                    if(DeleteRoom(db, body))
+                    {
+                        header.Message += Environment.NewLine + "Room deleted";
+                    }
+                    else
+                    {
+                        header.Message += Environment.NewLine + "Room could not be deleted";
+                    }
                 }
             }
 
@@ -58,17 +67,17 @@ namespace Server.Modules
 
         private Response JoinRoom(Request request)
         {
-            
+            return new Response();
         }
 
         private Response LeaveRoom(Request request)
         {
-
+            return new Response();
         }
 
-        private void DeleteRoom(DatabaseQueries db, RoomDocument room)
+        private bool DeleteRoom(DatabaseQueries db, RoomDocument room)
         {
-            db.CloseRoom(room.Id);
+            return db.ChangeRoomStatus(room.Id, RoomStatus.Closed);
         }
 
     }

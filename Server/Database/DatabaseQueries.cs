@@ -64,10 +64,9 @@ namespace Server.Database
         public List<RoomDocument> GetRooms()
         {
             List<RoomDocument> rooms = new List<RoomDocument>();
-            List<Dictionary<string, object>> dbRooms = database.ExecuteQuery($"SELECT * FROM rooms WHERE statusid != {Modules.RoomStatus.Closed}"); ;
 
             // TODO Spieler in Raum getten
-            dbRooms.ForEach(room =>
+            database.ExecuteQuery($"SELECT * FROM rooms WHERE statusid != {Modules.RoomStatus.Closed};").ForEach(room =>
             {
                 rooms.Add(new RoomDocument() { Name = room["name"].ToString(), Password = room["password"].ToString(), Id = (int)room["id"] });
             });
@@ -77,11 +76,8 @@ namespace Server.Database
 
         public bool RemoveUserFromGame(User user) => database.ExecuteNonQuery($"UPDATE users SET roomid = NULL WHERE name = '{user.Name}';") == 1;
 
-        public bool SetRoomFull(int roomId) => database.ExecuteNonQuery($"UPDATE rooms SET status = {Modules.RoomStatus.Full} WHERE id = {roomId}") == 1;
+        public bool ChangeRoomStatus(int roomId, Modules.RoomStatus status) => database.ExecuteNonQuery($"UPDATE rooms SET status = {status} WHERE id = {roomId};") == 1;
 
-        public bool SetRoomOngoing(int roomId) => database.ExecuteNonQuery($"UPDATE rooms SET status = {Modules.RoomStatus.Ongoing} WHERE id = {roomId}") == 1;
-
-        public bool CloseRoom(int roomId) => database.ExecuteNonQuery($"UPDATE rooms SET status = {Modules.RoomStatus.Closed} WHERE id = {roomId}") == 1;
         #endregion
 
 
