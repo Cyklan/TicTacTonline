@@ -6,7 +6,7 @@ using Server.Database;
 
 namespace Server.Modules
 {
-    public enum RoomStaus
+    public enum RoomStatus
     {
         Open,
         Full,
@@ -19,6 +19,7 @@ namespace Server.Modules
     {
         public RoomModule() : base("roomModule") { }
 
+        // Only returns rooms with unfinished games
         private Response GetRooms(Request request)
         {
 
@@ -57,7 +58,7 @@ namespace Server.Modules
 
         private Response JoinRoom(Request request)
         {
-
+            
         }
 
         private Response LeaveRoom(Request request)
@@ -65,9 +66,9 @@ namespace Server.Modules
 
         }
 
-        private void DeleteRoom(RoomDocument room)
+        private void DeleteRoom(DatabaseQueries db, RoomDocument room)
         {
-
+            db.CloseRoom(room.Id);
         }
 
     }
