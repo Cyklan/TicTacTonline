@@ -52,5 +52,27 @@ namespace Server.Modules
             return new Response { Header = header, Body = new Document() };
         }
 
+        private Response Logout(Request request)
+        {
+            ResponseHeader header = new ResponseHeader { Targets = new List<User> { request.Header.User } };
+
+            Authenticate(request.Header.User);
+            using (DatabaseQueries db = new DatabaseQueries(request.Header.User))
+            {
+                if (db.LogoutUser(request.Header.User))
+                {
+                    header.Code = ResponseCode.Ok;
+                    header.Message = "User logged out successfully";
+                }
+                else
+                {
+                    header.Code = ResponseCode.PlannedError;
+                    header.Message = "You need to be logged in to log out. Please log in to log out.";
+                }
+            }
+
+            return new Response { Header = header, Body = new Document() };
+        }
+
     }
 }
