@@ -23,6 +23,7 @@ namespace Client
     {
         private User user;
         private WebsocketClient client;
+        private IControl currentControl;
 
         public MainWindow()
         {
@@ -35,13 +36,16 @@ namespace Client
             client = new WebsocketClient();
             client.OnConnect += clientConnected;
             client.OnDisconnect += clientDisconnected;
+            client.OnSpontaneousReceive += clientReceive;
 
             client.Initialize();
         }
 
         private void bt_test_Click(object sender, RoutedEventArgs e)
         {
-            grid_main.Children.Add(new LoginControl(user, client));
+            LoginControl l = new LoginControl(user, client);
+            currentControl = l;
+            grid_main.Children.Add(l);
         }
 
         private void clientConnected(object sender, EventArgs e)
@@ -54,6 +58,12 @@ namespace Client
             MessageBox.Show("Verbindung verloren");
         }
 
-      
+        private void clientReceive(object sender, EventArgs e)
+        {
+            if (currentControl is null) { return; }
+            currentControl.HandleSpontaneousResponse((Response)sender);
+        }
+
+
     }
 }

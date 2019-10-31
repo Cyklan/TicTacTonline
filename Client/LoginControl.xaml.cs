@@ -18,7 +18,7 @@ namespace Client
     /// <summary>
     /// Interaction logic for LoginControl.xaml
     /// </summary>
-    public partial class LoginControl : UserControl
+    public partial class LoginControl : UserControl , IControl
     {
         private User user;
         private WebsocketClient client;
@@ -28,6 +28,11 @@ namespace Client
             InitializeComponent();
             this.user = user;
             this.client = client;
+        }
+
+        public void HandleSpontaneousResponse(Response response)
+        {
+            return;
         }
 
         private void bt_login_login_Click(object sender, RoutedEventArgs e)
