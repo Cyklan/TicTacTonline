@@ -7,6 +7,7 @@ namespace Client
     public class WebsocketClient
     {
         private WatsonWsClient client;
+        private WebsocketConfiguration WebsocketConfiguration = new WebsocketConfiguration();
 
         public event EventHandler OnConnect;
         public event EventHandler OnDisconnect;
@@ -14,6 +15,7 @@ namespace Client
 
         public void Initialize()
         {
+            WebsocketConfiguration
 
         }
 
