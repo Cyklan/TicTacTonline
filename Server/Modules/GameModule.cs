@@ -14,7 +14,6 @@ namespace Server.Modules
             ResponseHeader header = new ResponseHeader();
             RoomDocument document = (RoomDocument)request.Body;
             header.Targets = new List<User> { document.Game.Player1, document.Game.Player2 };
-            document.Uuid = Guid.NewGuid().ToString();
 
             StartNewGame(document.Game);
 
