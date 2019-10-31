@@ -1,5 +1,4 @@
-﻿using Models;
-using System;
+﻿using System;
 using WatsonWebsocket;
 
 namespace Client
@@ -18,11 +17,6 @@ namespace Client
         }
 
         public Response Exchange(Request request)
-        {
-            return new Response();
-        }
-
-        public void Send(Request request)
         {
 
         }
