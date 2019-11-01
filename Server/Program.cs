@@ -142,9 +142,9 @@ namespace Server
 
                 Converter converter = new Converter();
                 Request request = converter.ConvertJsonToObject<Request>(converter.ConvertBytesToString(data));
-                log.Add($"Received {converter.ConvertObjectToJson(request)} from {request.Header.User}", request.Header.User, MessageType.Normal);
-
                 SyncClientData(ipPort, request.Header.User);
+
+                log.Add($"Received {converter.ConvertObjectToJson(request)} from {request.Header.User}", request.Header.User, MessageType.Normal);
 
                 Response response = new RequestHandler().HandleRequest(request);
                 log.Add($"Sending {converter.ConvertObjectToJson(response)} to {string.Join(",", response.Header.Targets.Select(x => x.ToString()))}", request.Header.User, MessageType.Normal);

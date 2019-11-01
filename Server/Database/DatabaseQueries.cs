@@ -37,12 +37,12 @@ namespace Server.Database
         {
             if (database.ExecuteQuery($@"SELECT * FROM users WHERE hash='{user.PasswordHash}' AND name='{user.Name}';").Count != 1) return false;
 
-            database.ExecuteNonQuery($@"UPDATE users SET loggedin=1 WHERE name='{user.Name}';");
+            database.ExecuteNonQuery($@"UPDATE users SET loggedin=1, ip='{user.IpAddress}', port={user.Port} WHERE name='{user.Name}';");
 
             return true;
         }
 
-        public bool LogoutUser(User user) => database.ExecuteNonQuery($@"UPDATE users SET loggedin=0 WHERE name='{user.Name}';") == 1;
+        public bool LogoutUser(User user) => database.ExecuteNonQuery($@"UPDATE users SET loggedin=0, ip=NULL, port=NULL WHERE name='{user.Name}';") == 1;
 
         public int RegisterUser(User user) => database.ExecuteNonQuery($"INSERT INTO users(name, hash) VALUES ('{user.Name}', '{user.PasswordHash}');");
 
