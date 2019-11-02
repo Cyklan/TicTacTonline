@@ -151,9 +151,12 @@ namespace Server
 
                 foreach (User user in response.Header.Targets)
                 {
-                    if (!await server.SendAsync(user.IpPort, converter.ConvertStringToBytes(converter.ConvertObjectToJson(response))))
+                    User temp = user;
+                    if (string.IsNullOrEmpty(user.IpAddress) || user.Port == 0) { temp = clients.FirstOrDefault(x => x.Name == user.Name); }
+
+                    if (temp == null || !await server.SendAsync(temp.IpPort, converter.ConvertStringToBytes(converter.ConvertObjectToJson(response))))
                     {
-                        log.Add($"Message {response.Header.MessageNumber} could not be send to {user}.");
+                        log.Add($"Message {response.Header.MessageNumber} could not be send to {temp}.");
                     }
                 }
             }

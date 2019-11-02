@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Models;
 
 namespace Server.Database
 {
@@ -27,7 +27,12 @@ namespace Server.Database
 
             foreach (Dictionary<string, object> row in database.ExecuteQuery("SELECT * FROM users;"))
             {
-                result.Add(new User { Name = row["name"].ToString() });
+                string ip;
+                int port;
+                if (row["ip"] is DBNull) { ip = ""; } else { ip = row["ip"].ToString(); }
+                if (row["port"] is DBNull) { port = 0; } else { port = (int)row["port"]; }
+
+                result.Add(new User { Name = row["name"].ToString(), IpAddress = ip, Port = port });
             }
 
             return result;
@@ -42,7 +47,7 @@ namespace Server.Database
             return true;
         }
 
-        public bool LogoutUser(User user) => database.ExecuteNonQuery($@"UPDATE users SET loggedin=0, ip=NULL, port=NULL WHERE name='{user.Name}';") == 1;
+        public bool LogoutUser(User user) => database.ExecuteNonQuery($@"UPDATE users SET loggedin=0, ip=NULL, port=NULL, roomid=NULL WHERE name='{user.Name}';") == 1;
 
         public int RegisterUser(User user) => database.ExecuteNonQuery($"INSERT INTO users(name, hash) VALUES ('{user.Name}', '{user.PasswordHash}');");
 
@@ -52,31 +57,58 @@ namespace Server.Database
         #region Rooms
 
         public int CreateNewGame(string name, string password) {
-            database.ExecuteNonQuery($"INSERT INTO rooms (name, statusid, password) VALUES('{name}', {Modules.RoomStatus.Open}, '{password}');");
+            database.ExecuteNonQuery($"INSERT INTO rooms (name, statusid, password) VALUES('{name}', {RoomStatus.Open}, '{password}');");
             List<Dictionary<string, object>> rooms = database.ExecuteQuery($"SELECT * FROM rooms WHERE name='{name}' AND password='{password}';");
            
             if (rooms.Any()) return (int)rooms.Last()["id"];
             return -1;
         }
 
-        public bool AddUserToGame(User user, int roomId) => database.ExecuteNonQuery($"UPDATE users SET roomid = '{roomId}' WHERE (name='{user.Name}');") == 1;
+        public bool AddUserToRoom(User user, int roomId) => database.ExecuteNonQuery($"UPDATE users SET roomid = '{roomId}' WHERE (name='{user.Name}');") == 1;
 
         public List<RoomDocument> GetRooms()
         {
             List<RoomDocument> rooms = new List<RoomDocument>();
 
-            // TODO Spieler in Raum getten
-            database.ExecuteQuery($"SELECT * FROM rooms WHERE statusid != {Modules.RoomStatus.Closed};").ForEach(room =>
+            database.ExecuteQuery($"SELECT * FROM rooms r JOIN users u ON r.id=u.roomid WHERE statusid != {RoomStatus.Closed};").ForEach(room =>
             {
-                rooms.Add(new RoomDocument() { Name = room["name"].ToString(), Password = room["password"].ToString(), Id = (int)room["id"] });
+                if(!rooms.Any(x => x.Id == (int)room["id"]))
+                {
+                    rooms.Add(new RoomDocument()
+                    {
+                        Name = room["name"].ToString(),
+                        Password = room["password"].ToString(),
+                        Id = (int)room["id"],
+                        RoomStatus = (RoomStatus)room["statusid"],
+                        Game = new Game() {
+                            Player1 = new User() {
+                                Name = room["u.name"].ToString(),
+                                IpAddress = room["u.ip"].ToString(),
+                                Port = (int)room["u.port"]
+                            } }
+                    });
+
+                }
+                else
+                {
+                    rooms.First(x => x.Id == (int)room["id"]).Game.Player2 = new User()
+                    {
+                        Name = room["u.name"].ToString(),
+                        IpAddress = room["u.ip"].ToString(),
+                        Port = (int)room["u.port"]
+                    };
+                }
+                
             });
 
             return rooms;
         }
 
-        public bool RemoveUserFromGame(User user) => database.ExecuteNonQuery($"UPDATE users SET roomid = NULL WHERE name = '{user.Name}';") == 1;
+        public bool SaveMessage(string name, string message, int roomId) => database.ExecuteNonQuery($"INSERT INTO messages (user, content, roomid) VALUES ('{name}', '{message}', {roomId});") == 1;
+ 
+        public bool RemoveUserFromRoom(User user) => database.ExecuteNonQuery($"UPDATE users SET roomid = NULL WHERE name = '{user.Name}';") == 1;
 
-        public bool ChangeRoomStatus(int roomId, Modules.RoomStatus status) => database.ExecuteNonQuery($"UPDATE rooms SET status = {status} WHERE id = {roomId};") == 1;
+        public bool ChangeRoomStatus(int roomId, RoomStatus status) => database.ExecuteNonQuery($"UPDATE rooms SET status = {status} WHERE id = {roomId};") == 1;
 
         #endregion
 

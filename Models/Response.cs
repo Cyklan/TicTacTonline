@@ -7,7 +7,9 @@
         PlannedError,
         GameTurnProcessed,
         GameTie,
-        GameOver
+        GameOver,
+        JoinedRoom,
+        LeftRoom
     }
 
     public class Response

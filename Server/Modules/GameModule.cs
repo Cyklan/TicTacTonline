@@ -1,4 +1,5 @@
 ﻿using Models;
+using Server.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,14 @@ namespace Server.Modules
             ResponseHeader header = new ResponseHeader();
             RoomDocument document = (RoomDocument)request.Body;
             header.Targets = new List<User> { document.Game.Player1, document.Game.Player2 };
+
+            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
+            if (!db.ChangeRoomStatus(document.Id, RoomStatus.Ongoing))
+            {
+                header.Code = ResponseCode.PlannedError;
+                header.Message = "Game could not be started";
+                return new Response() { Header = header, Body = document };
+            }
 
             StartNewGame(document.Game);
 
@@ -54,6 +63,8 @@ namespace Server.Modules
                     header.Code = ResponseCode.GameOver;
                     header.Message = $"Turn {document.Game.RoundsPlayed} processed - {winner.Name} won.";
                 }
+
+                SaveGame(document);
             }
 
             return new Response() { Header = header, Body = document };
@@ -61,7 +72,14 @@ namespace Server.Modules
 
         public Response SendMessage(Request request)
         {
-            throw new NotImplementedException();
+            ResponseHeader header = new ResponseHeader();
+            ChatDocument body = (ChatDocument)request.Body;
+            header.Targets = new List<User> { body.Target };
+
+            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
+            db.SaveMessage(request.Header.User.Name, body.Message, body.RoomId);
+
+            return new Response() { Header = header, Body = body };
         }
 
         private void SaveGame(RoomDocument document)
