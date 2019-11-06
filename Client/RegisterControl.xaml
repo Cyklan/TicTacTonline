@@ -4,9 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             mc:Ignorable="d" MinHeight="400">
+    <Grid Background="White" Margin="0,0,0,0">
+        <Label Content="Register" HorizontalAlignment="Center" Margin="148,41,153,0" VerticalAlignment="Top" Height="49" Width="99" FontSize="24" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <TextBox x:Name="tbRegisterUsername" HorizontalAlignment="Center" Margin="89,126,91,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="38" FontSize="24" TextAlignment="Center" Foreground="Black" SelectionBrush="#FFB2B4B6" CaretBrush="#FF8B8B8B"/>
+        <PasswordBox x:Name="tbRegisterPassword" HorizontalAlignment="Center" Margin="89,180,91,0" VerticalAlignment="Top" Height="38" Width="220" HorizontalContentAlignment="Center" CaretBrush="#FF8B8B8B" SelectionBrush="#FFB2B4B6" FontSize="24"/>
+        <Button x:Name="btRegisterRegister" Content="Register" HorizontalAlignment="Center" Margin="122,255,124,0" VerticalAlignment="Top" Height="41" Width="154" BorderBrush="#FFCDCDCD" Background="White" FontSize="18" Click="btRegisterRegister_Click" Foreground="#DD080808"/>
+        <Button x:Name="btRegisterLogin" Content="Login" HorizontalAlignment="Center" Margin="159,305,159,0" VerticalAlignment="Top" Height="30" Width="85" Background="White" BorderBrush="#FFE2E2E2" Foreground="#FF636363" FontSize="14" Click="btRegisterLogin_Click"/>
+        <Label x:Name="lbRegisterError" Content="" HorizontalAlignment="Center" Margin="50,95,50,0" Width="220" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top"/>
+
     </Grid>
 </UserControl>

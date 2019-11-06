@@ -37,11 +37,11 @@ namespace Client
         {
             if (Ssl)
             {
-                return new Uri(@$"wss://{Ip}:{Port}/");
+                return new Uri($@"wss://{Ip}:{Port}/");
             }
             else
             {
-                return new Uri(@$"ws://{Ip}:{Port}/");
+                return new Uri($@"ws://{Ip}:{Port}/");
             }
         }
 

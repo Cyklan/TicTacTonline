@@ -4,14 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client"
-             mc:Ignorable="d" d:DesignWidth="400" Height="422">
-    <Grid Background="White" Margin="0,0,0,48">
-        <Button x:Name="bt_login_login" Content="Login" HorizontalAlignment="Center" Margin="0,234,0,0" VerticalAlignment="Top" Height="41" Width="153" BorderBrush="#FFCDCDCD" Background="White" FontSize="18" Click="bt_login_login_Click"/>
-        <Button x:Name="bt_login_register" Content="Register" HorizontalAlignment="Center" Margin="0,280,0,0" VerticalAlignment="Top" Height="40" Width="153" Background="White" BorderBrush="#FFE2E2E2" Foreground="#FF636363" FontSize="14" Click="bt_login_register_Click"/>
-        <TextBox x:Name="tb_login_username" HorizontalAlignment="Center" Margin="0,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="38" FontSize="24" TextAlignment="Center" Foreground="Black" SelectionBrush="#FFB2B4B6"/>
-        <TextBox x:Name="tb_login_password" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="39" FontSize="24" TextAlignment="Center" Foreground="Black" Margin="0,172,0,0" SelectionBrush="#FFB2B4B6"/>
-        <Label Content="Login" HorizontalAlignment="Center" Margin="0,53,0,0" VerticalAlignment="Top" Height="49" Width="68" FontSize="24"/>
-
+             mc:Ignorable="d" MinHeight="400">
+    <Grid Background="White" Margin="0,0,0,0">
+        <Label Content="Login" HorizontalAlignment="Center" Margin="165,50,167,0" VerticalAlignment="Top" Height="49" Width="68" FontSize="24"/>
+        <TextBox x:Name="tbLoginUsername" HorizontalAlignment="Center" Margin="89,126,91,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="38" FontSize="24" TextAlignment="Center" Foreground="Black" SelectionBrush="#FFB2B4B6" CaretBrush="#FF8B8B8B"/>
+        <PasswordBox x:Name="tbLoginPassword" HorizontalAlignment="Center" Margin="89,180,91,0" VerticalAlignment="Top" Height="38" Width="220" HorizontalContentAlignment="Center" CaretBrush="#FF8B8B8B" SelectionBrush="#FFB2B4B6" FontSize="24"/>
+        <Button x:Name="btLoginLogin" Content="Login" HorizontalAlignment="Center" Margin="124,255,125,0" VerticalAlignment="Top" Height="41" Width="154" BorderBrush="#FFCDCDCD" Background="White" FontSize="18" Click="btLoginLogin_Click" Foreground="#DD080808"/>
+        <Button x:Name="btLoginRegister" Content="Register" HorizontalAlignment="Center" Margin="159,305,159,0" VerticalAlignment="Top" Height="30" Width="85" Background="White" BorderBrush="#FFE2E2E2" Foreground="#FF636363" FontSize="14" Click="btLoginRegister_Click"/>
+        <Label x:Name="lbLoginError" Content="" HorizontalAlignment="Center" Margin="50,95,50,0" Width="220" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top"/>
 
     </Grid>
 </UserControl>

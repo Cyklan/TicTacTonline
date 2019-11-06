@@ -7,7 +7,7 @@ namespace Client
 {
     public interface IControl
     {
-        public void HandleSpontaneousResponse(Response response);
+        void HandleSpontaneousResponse(Response response);
 
     }
 }

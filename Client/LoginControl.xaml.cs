@@ -18,10 +18,13 @@ namespace Client
     /// <summary>
     /// Interaction logic for LoginControl.xaml
     /// </summary>
-    public partial class LoginControl : UserControl , IControl
+    public partial class LoginControl : UserControl, IControl
     {
         private User user;
         private WebsocketClient client;
+        public event EventHandler LoginSuccess;
+        public event EventHandler ChangeToRegister;
+
 
         public LoginControl(User user, WebsocketClient client)
         {
@@ -35,27 +38,37 @@ namespace Client
             return;
         }
 
-        private void bt_login_login_Click(object sender, RoutedEventArgs e)
+        private void btLoginLogin_Click(object sender, RoutedEventArgs e)
         {
-            user = new User(tb_login_username.Text, "0:0", tb_login_password.Text);
-            RequestHeader header = new RequestHeader() { User = user };
-            header.Identifier = new Identifier() { Function = "login", Module = "loginModule" };
+            //user = new User(tb_login_username.Text, "0:0", tb_login_password.Password);
+            //RequestHeader header = new RequestHeader() { User = user };
+            //header.Identifier = new Identifier() { Function = "login", Module = "loginModule" };
 
-            Response response = client.Exchange(new Request() { Header = header, Body = new Document() });
+            //Response response = client.Exchange(new Request() { Header = header, Body = new Document() });
 
-            if(response.Header.Code != ResponseCode.Ok)
+            //if (response.Header.Code != ResponseCode.Ok)
+            //{
+            //    MessageBox.Show(response.Header.Message);
+            //}
+
+            if (false)
             {
-                MessageBox.Show(response.Header.Message);
+                this.LoginSuccess(this, e);
+            } else
+            {
+                lbLoginError.Content = "Wrong Username or Password!";
+                lbLoginError.Foreground = new SolidColorBrush(Colors.Red);
             }
-
-            user = response.Header.Targets.First();
+            
+            //user = response.Header.Targets.First();
 
             //TODO nächstes Control
         }
 
-        private void bt_login_register_Click(object sender, RoutedEventArgs e)
+        private void btLoginRegister_Click(object sender, RoutedEventArgs e)
         {
-
+            //ChangeToRegister?.Invoke(this, e);
+            this.ChangeToRegister(this, e);
         }
     }
 }

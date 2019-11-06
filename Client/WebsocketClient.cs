@@ -60,7 +60,7 @@ namespace Client
         {
             try
             {
-                using TcpClient client = new TcpClient(WebsocketConfiguration.Ip, WebsocketConfiguration.Port);
+                using (TcpClient client = new TcpClient(WebsocketConfiguration.Ip, WebsocketConfiguration.Port)) { };
                 return true;
             }
             catch

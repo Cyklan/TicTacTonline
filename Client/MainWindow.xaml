@@ -5,9 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="TicTacTonline" Height="488.241" Width="844.466" MinWidth="800" MinHeight="450"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid x:Name="grid_main">
-
-        <Button x:Name="bt_test" Content="Test" HorizontalAlignment="Left" Margin="718,397,0,0" VerticalAlignment="Top" Height="27" Width="72" Click="bt_test_Click"/>
+        
     </Grid>
 </Window>

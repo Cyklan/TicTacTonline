@@ -25,9 +25,17 @@ namespace Client
         private WebsocketClient client;
         private IControl currentControl;
 
+
+
         public MainWindow()
         {
             InitializeComponent();
+            LoginControl loginControl = new LoginControl(user, client);
+            loginControl.LoginSuccess += new EventHandler(Main_LoginSuccess);
+            loginControl.ChangeToRegister += new EventHandler(Main_ChangeToRegister);
+            currentControl = loginControl;
+            grid_main.Children.Add(loginControl);
+
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -39,13 +47,7 @@ namespace Client
             client.OnSpontaneousReceive += clientReceive;
 
             if (!client.Initialize()) MessageBox.Show("Server unreachable");
-        }
 
-        private void bt_test_Click(object sender, RoutedEventArgs e)
-        {
-            LoginControl l = new LoginControl(user, client);
-            currentControl = l;
-            grid_main.Children.Add(l);
         }
 
         private void clientConnected(object sender, EventArgs e)
@@ -64,6 +66,31 @@ namespace Client
             currentControl.HandleSpontaneousResponse((Response)sender);
         }
 
+        void Main_ChangeToRegister(object sender, EventArgs e)
+        {
+            grid_main.Children.Clear();
+            RegisterControl registerControl = new RegisterControl(user, client);
+            registerControl.ChangeToLogin += new EventHandler(Main_ChangeToLogin);
+            grid_main.Children.Add(registerControl);
+        }
 
+        void Main_LoginSuccess(object sender, EventArgs e)
+        {
+            grid_main.Children.Clear();
+        }
+
+        void Main_ChangeToLogin(object sender, EventArgs e)
+        {
+            grid_main.Children.Clear();
+            LoginControl loginControl = new LoginControl(user, client);
+            loginControl.LoginSuccess += new EventHandler(Main_LoginSuccess);
+            loginControl.ChangeToRegister += new EventHandler(Main_ChangeToRegister);
+            grid_main.Children.Add(loginControl);
+        }
+
+        public static void changeControl(UserControl u)
+        {
+            
+        }
     }
 }
