@@ -6,20 +6,25 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using WatsonWebsocket;
+using Client.General;
 
-namespace Client
+namespace Client.Communication
 {
     public class WebsocketClient
     {
         private WatsonWsClient client;
-        private WebsocketConfiguration WebsocketConfiguration = new WebsocketConfiguration();
-        private Converter converter = new Converter();
+        private readonly WebsocketConfiguration WebsocketConfiguration = new WebsocketConfiguration();
+        private readonly Converter converter = new Converter();
         private Response responseToWaitFor;
 
-
-        public event EventHandler OnConnect;
-        public event EventHandler OnDisconnect;
         public event EventHandler OnSpontaneousReceive;
+        public bool IsConnected
+        {
+            get
+            {
+                return client.Connected;
+            }
+        }
 
         public bool Initialize()
         {
@@ -30,8 +35,7 @@ namespace Client
 
             if (client != null) client.Dispose();
             client = new WatsonWsClient(WebsocketConfiguration.GetWebsocketUri());
-            client.ServerConnected += onConnect;
-            client.ServerDisconnected += onDisconnect;
+
             client.MessageReceived += onReceive;
             client.Start();
 
@@ -46,7 +50,17 @@ namespace Client
 
             client.SendAsync(converter.ConvertStringToBytes(converter.ConvertObjectToJson(request)));
 
-            while (responseToWaitFor.Header.Targets is null) { Thread.Sleep(100); }
+            while (responseToWaitFor.Header.Targets is null)
+            {
+                if (DateTime.Now > startWaitTime.AddSeconds(15))
+                {
+                    responseToWaitFor = null;
+                    throw new Exception("Request timed out");
+                }
+                Thread.Sleep(100);
+            }
+
+            if (responseToWaitFor.Header.Code == ResponseCode.UnplannedError) { throw new Exception(responseToWaitFor.Header.Message); }
 
             return responseToWaitFor;
         }
@@ -71,21 +85,11 @@ namespace Client
 
 #pragma warning disable CS1998
 
-        private async Task onConnect()
-        {
-            OnConnect?.Invoke(this, new EventArgs());
-        }
-
-        private async Task onDisconnect()
-        {
-            OnDisconnect?.Invoke(this, new EventArgs());
-        }
-
         private async Task onReceive(byte[] data)
         {
             Response response = converter.ConvertJsonToObject<Response>(converter.ConvertBytesToString(data));
 
-            if (responseToWaitFor.Header.MessageNumber == response.Header.MessageNumber)
+            if (!(responseToWaitFor is null) && responseToWaitFor.Header.MessageNumber == response.Header.MessageNumber)
             {
                 responseToWaitFor = response;
                 return;

@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace Client
+namespace Client.General
 {
     public class Pathmanager
     {

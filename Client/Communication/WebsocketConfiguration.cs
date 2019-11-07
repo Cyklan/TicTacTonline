@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Client.General;
 
-namespace Client
+namespace Client.Communication
 {
     public class WebsocketConfiguration
     {

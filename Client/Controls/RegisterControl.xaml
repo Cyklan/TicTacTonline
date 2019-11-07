@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="Client.RegisterControl"
+﻿<controls:BaseControl
+    xmlns:controls="clr-namespace:Client.Controls"
+             x:Class="Client.Controls.RegisterControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Client"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" MinHeight="400">
     <Grid Background="White" Margin="0,0,0,0">
         <Label Content="Register" HorizontalAlignment="Center" Margin="148,41,153,0" VerticalAlignment="Top" Height="49" Width="99" FontSize="24" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -14,4 +15,4 @@
         <Label x:Name="lbRegisterError" Content="" HorizontalAlignment="Center" Margin="50,95,50,0" Width="220" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top"/>
 
     </Grid>
-</UserControl>
+</controls:BaseControl>

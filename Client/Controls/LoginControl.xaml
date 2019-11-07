@@ -1,4 +1,6 @@
-﻿<UserControl x:Class="Client.LoginControl"
+﻿<controls:BaseControl
+    xmlns:controls="clr-namespace:Client.Controls"
+             x:Class="Client.Controls.LoginControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -14,4 +16,4 @@
         <Label x:Name="lbLoginError" Content="" HorizontalAlignment="Center" Margin="50,95,50,0" Width="220" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top"/>
 
     </Grid>
-</UserControl>
+</controls:BaseControl>

@@ -1,18 +1,10 @@
-﻿using Models;
+﻿using Client.Communication;
+using Client.Controls;
+using Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Client
 {
@@ -21,44 +13,56 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        public enum Controls
+        {
+            Login,
+            Register,
+            Connection
+        }
+
         private User user;
         private WebsocketClient client;
-        private IControl currentControl;
-
-
+        private BaseControl currentControl;
+        private Dictionary<Controls, Type> controls;
 
         public MainWindow()
         {
             InitializeComponent();
-            LoginControl loginControl = new LoginControl(user, client);
-            loginControl.LoginSuccess += new EventHandler(Main_LoginSuccess);
-            loginControl.ChangeToRegister += new EventHandler(Main_ChangeToRegister);
-            currentControl = loginControl;
-            grid_main.Children.Add(loginControl);
 
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
             user = new User();
             client = new WebsocketClient();
-            client.OnConnect += clientConnected;
-            client.OnDisconnect += clientDisconnected;
+
             client.OnSpontaneousReceive += clientReceive;
 
-            if (!client.Initialize()) MessageBox.Show("Server unreachable");
+            if (!client.Initialize()) throw new Exception("Server unreachable");
 
+            RegisterControls();
+
+            ChangeControl(Controls.Connection);
         }
 
-        private void clientConnected(object sender, EventArgs e)
+        private void RegisterControls()
         {
-            MessageBox.Show("verbunden");
+            controls = new Dictionary<Controls, Type>
+            {
+                { Controls.Login , typeof(LoginControl) },
+                { Controls.Register , typeof(RegisterControl) },
+                { Controls.Connection, typeof(ConnectionControl) }
+            };
         }
 
-        private void clientDisconnected(object sender, EventArgs e)
+        public void ChangeControl(Controls control)
         {
-            MessageBox.Show("Verbindung verloren");
+            // Nutzer mit neuen Datenholen, falls sich was geändert hat -> Objektreferenz über Konstruktor geht nicht
+            if (!(currentControl is null)) user = currentControl.currentUser; 
+            // Neue Instanz des Controls erzeugen
+            currentControl = (BaseControl)Activator.CreateInstance(controls[control], user, client);
+            // Control anzeigen
+            grid_main.Children.Clear();
+            grid_main.Children.Add(currentControl);
         }
+
+        #region "Events"
 
         private void clientReceive(object sender, EventArgs e)
         {
@@ -66,31 +70,21 @@ namespace Client
             currentControl.HandleSpontaneousResponse((Response)sender);
         }
 
-        void Main_ChangeToRegister(object sender, EventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            grid_main.Children.Clear();
-            RegisterControl registerControl = new RegisterControl(user, client);
-            registerControl.ChangeToLogin += new EventHandler(Main_ChangeToLogin);
-            grid_main.Children.Add(registerControl);
+            // abmelden, wenn die Form geschlossen wird, antowrt ist dabei egal, weil die Form dann zu ist.
+            RequestHeader header = new RequestHeader() { User = user };
+            header.Identifier = new Identifier() { Function = "logout", Module = "loginModule" };
+
+            try
+            {
+                client.Exchange(new Request() { Header = header, Body = new Document() });
+            }
+            catch { /* https://i.imgur.com/c4jt321.png */}
+
         }
 
-        void Main_LoginSuccess(object sender, EventArgs e)
-        {
-            grid_main.Children.Clear();
-        }
+        #endregion
 
-        void Main_ChangeToLogin(object sender, EventArgs e)
-        {
-            grid_main.Children.Clear();
-            LoginControl loginControl = new LoginControl(user, client);
-            loginControl.LoginSuccess += new EventHandler(Main_LoginSuccess);
-            loginControl.ChangeToRegister += new EventHandler(Main_ChangeToRegister);
-            grid_main.Children.Add(loginControl);
-        }
-
-        public static void changeControl(UserControl u)
-        {
-            
-        }
     }
 }

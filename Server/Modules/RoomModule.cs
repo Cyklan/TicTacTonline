@@ -71,8 +71,10 @@ namespace Server.Modules
             ResponseHeader header = new ResponseHeader();
             RoomDocument body = (RoomDocument)request.Body;
 
-            header.Targets = new List<User>();
-            header.Targets.Add(request.Header.User);
+            header.Targets = new List<User>
+            {
+                request.Header.User
+            };
 
             using DatabaseQueries db = new DatabaseQueries(request.Header.User);
 
@@ -111,9 +113,11 @@ namespace Server.Modules
         {
             ResponseHeader header = new ResponseHeader();
             RoomDocument body = (RoomDocument)request.Body;
-            
-            header.Targets = new List<User>();
-            header.Targets.Add(request.Header.User);
+
+            header.Targets = new List<User>
+            {
+                request.Header.User
+            };
 
             using DatabaseQueries db = new DatabaseQueries(request.Header.User);
             if (!db.RemoveUserFromRoom(request.Header.User))
