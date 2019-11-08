@@ -53,7 +53,8 @@ namespace Client.Controls
                     break;
 
                 case ResponseCode.Ok:
-                    //TODO: LobbyControl->  App.MainWindow.ChangeControl(MainWindow.Controls.Register);
+
+                    GetMain.ChangeControl(MainWindow.Controls.Main);
                     break;
 
                 default:

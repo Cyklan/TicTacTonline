@@ -1,0 +1,17 @@
+﻿<controls:BaseControl
+    xmlns:controls="clr-namespace:Client.Controls"
+             x:Class="Client.Controls.JoinGameControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Client"
+             mc:Ignorable="d" Height="40" Background="White" Foreground="#FFE2E2E2" Margin="1">
+    <Grid>
+        <Button x:Name="btJoinGame" Content="Join" HorizontalAlignment="Right" Margin="400,5,5,5" VerticalAlignment="Top" Width="127" Height="30" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" Click="btJoinGame_Click"/>
+        <Label Content="Lobby Name" HorizontalAlignment="Left" Margin="10,5,0,5" VerticalAlignment="Top" Height="30" FontSize="16"/>
+        <Label Content="Spieler 1" HorizontalAlignment="Left" Margin="115,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
+        <Label Content="Lobby Name" HorizontalAlignment="Left" Margin="220,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
+
+    </Grid>
+</controls:BaseControl>

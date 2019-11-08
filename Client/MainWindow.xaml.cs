@@ -17,7 +17,9 @@ namespace Client
         {
             Login,
             Register,
-            Connection
+            Connection,
+            Leaderboard,
+            Main
         }
 
         private User user;
@@ -47,7 +49,9 @@ namespace Client
             {
                 { Controls.Login , typeof(LoginControl) },
                 { Controls.Register , typeof(RegisterControl) },
-                { Controls.Connection, typeof(ConnectionControl) }
+                { Controls.Connection, typeof(ConnectionControl) },
+                { Controls.Leaderboard, typeof(LeaderboardControl) },
+                { Controls.Main, typeof(MainControl) }
             };
         }
 
