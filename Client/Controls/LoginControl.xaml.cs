@@ -22,7 +22,7 @@ namespace Client.Controls
     public partial class LoginControl : BaseControl
     {
 
-        public LoginControl(User user, WebsocketClient client) : base(user, client)
+        public LoginControl()
         {
             InitializeComponent();
             lbLoginError.Foreground = new SolidColorBrush(Colors.Red);
@@ -37,14 +37,14 @@ namespace Client.Controls
         {
             lbLoginError.Content = "";
 
-            currentUser = new User(tbLoginUsername.Text, "0:0", tbLoginPassword.Password);
+            User = new User(tbLoginUsername.Text, "0:0", tbLoginPassword.Password);
 
-            RequestHeader header = new RequestHeader() { User = currentUser };
+            RequestHeader header = new RequestHeader() { User = User };
             header.Identifier = new Identifier() { Function = "login", Module = "loginModule" };
 
             Response response = Exchange(new Request() { Header = header, Body = new Document() });
 
-            currentUser = response.Header.Targets.First();
+            User = response.Header.Targets.First();
 
             switch (response.Header.Code)
             {

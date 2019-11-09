@@ -16,8 +16,10 @@ namespace Client
     {
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show(e.Exception.Message);
             e.Handled = true;
+
+            if (e.Exception is General.SilentException) { return; }
+            MessageBox.Show(e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

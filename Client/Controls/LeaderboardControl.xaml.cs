@@ -21,14 +21,14 @@ namespace Client.Controls
     /// </summary>
     public partial class LeaderboardControl : BaseControl
     {
-        public LeaderboardControl(User user, WebsocketClient client) : base(user, client)
+        public LeaderboardControl()
         {
             InitializeComponent();
         }
 
         private void btLeaderboardBack_Click(object sender, RoutedEventArgs e)
         {
-            GetMain.ChangeControl(MainWindow.Controls.Main);
+            ChangeControl(MainWindow.Controls.Main);
         }
 
         public override void HandleSpontaneousResponse(Response response)

@@ -21,7 +21,7 @@ namespace Client.Controls
     /// </summary>
     public partial class JoinGameControl : BaseControl
     {
-        public JoinGameControl(User user, WebsocketClient client) : base(user, client)
+        public JoinGameControl()
         {
             InitializeComponent();
         }

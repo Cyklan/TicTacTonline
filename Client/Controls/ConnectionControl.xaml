@@ -6,10 +6,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client"
-             mc:Ignorable="d" MinHeight="400">
+             mc:Ignorable="d" MinHeight="400" MinWidth="400">
     <Grid Background="White" Margin="0,0,0,0" Loaded="Grid_Loaded">
-        <Label Content="Connecting" Margin="125,175,135,176" Height="49" Width="140" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-
-
+        <Label x:Name="lbConnectionError" Content="" HorizontalAlignment="Center" Margin="90,142,90,0" Width="220" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top"/>
+        <Button x:Name="btConnectionConnect" Content="Connect" Margin="0,184,0,170" BorderBrush="#FFCDCDCD" Background="White" FontSize="30" Foreground="#DD080808" Height="Auto" Click="btConnectionConnect_Click"/>
     </Grid>
 </controls:BaseControl>

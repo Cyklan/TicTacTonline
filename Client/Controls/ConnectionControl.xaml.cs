@@ -3,6 +3,7 @@ using Models;
 using System;
 using System.Timers;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Client.Controls
@@ -13,9 +14,11 @@ namespace Client.Controls
     public partial class ConnectionControl : BaseControl
     {
 
-        public ConnectionControl(User user, WebsocketClient client) : base(user, client)
+        public ConnectionControl()
         {
             InitializeComponent();
+            lbConnectionError.Foreground = new SolidColorBrush(Colors.Red);
+            lbConnectionError.Content = "";
         }
 
         public override void HandleSpontaneousResponse(Response response)
@@ -25,8 +28,7 @@ namespace Client.Controls
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            while (!client.IsConnected) { System.Threading.Thread.Sleep(250); DoEvents(); }
-            GetMain.ChangeControl(MainWindow.Controls.Login);
+            btConnectionConnect_Click(this, null);
         }
 
         /// <summary>
@@ -42,7 +44,46 @@ namespace Client.Controls
             {
                 // Wenn die Form geschlossen wird, wird manchmal eine NullReference Exception geworfen
             }
-         
+
+        }
+
+        private void btConnectionConnect_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime startWaitTime = DateTime.Now;
+
+            btConnectionConnect.IsEnabled = false;
+            btConnectionConnect.Content = "Connecting";
+            lbConnectionError.Content = "";
+            DoEvents();
+
+            try
+            {
+                GetMain.Connect();
+            }
+            catch (Exception ex)
+            {
+                btConnectionConnect.IsEnabled = true;
+                btConnectionConnect.Content = "Connect";
+                lbConnectionError.Content = ex.Message;
+                return;
+            }
+
+            while (!Client.IsConnected)
+            {
+                System.Threading.Thread.Sleep(250);
+                DoEvents();
+
+                if (DateTime.Now > startWaitTime.AddSeconds(15))
+                {
+                    btConnectionConnect.IsEnabled = true;
+                    btConnectionConnect.Content = "Connect";
+                    lbConnectionError.Content = "Connection timed out";
+                    Client.Close();
+                    return;
+                }
+            }
+
+            GetMain.ChangeControl(MainWindow.Controls.Login);
         }
     }
 }

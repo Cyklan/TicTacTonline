@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WatsonWebsocket;
 using Client.General;
+using System.Collections.Generic;
 
 namespace Client.Communication
 {
@@ -16,6 +17,7 @@ namespace Client.Communication
         private readonly WebsocketConfiguration WebsocketConfiguration = new WebsocketConfiguration();
         private readonly Converter converter = new Converter();
         private Response responseToWaitFor;
+        private readonly List<string> responsesToIgnore = new List<string>();
 
         public event EventHandler OnSpontaneousReceive;
         public bool IsConnected
@@ -36,17 +38,24 @@ namespace Client.Communication
             if (client != null) client.Dispose();
             client = new WatsonWsClient(WebsocketConfiguration.GetWebsocketUri());
 
-            client.MessageReceived += onReceive;
+            client.MessageReceived += OnReceive;
             client.Start();
 
             return true;
         }
 
+        public void Close()
+        {
+            client.Dispose();
+        }
+
         public Response Exchange(Request request)
         {
             DateTime startWaitTime = DateTime.Now;
-            responseToWaitFor = new Response();
-            responseToWaitFor.Header = new ResponseHeader() { MessageNumber = request.Header.MessageNumber };
+            responseToWaitFor = new Response
+            {
+                Header = new ResponseHeader() { MessageNumber = request.Header.MessageNumber }
+            };
 
             client.SendAsync(converter.ConvertStringToBytes(converter.ConvertObjectToJson(request)));
 
@@ -54,6 +63,7 @@ namespace Client.Communication
             {
                 if (DateTime.Now > startWaitTime.AddSeconds(15))
                 {
+                    responsesToIgnore.Add(responseToWaitFor.Header.MessageNumber);
                     responseToWaitFor = null;
                     throw new Exception("Request timed out");
                 }
@@ -85,7 +95,7 @@ namespace Client.Communication
 
 #pragma warning disable CS1998
 
-        private async Task onReceive(byte[] data)
+        private async Task OnReceive(byte[] data)
         {
             Response response = converter.ConvertJsonToObject<Response>(converter.ConvertBytesToString(data));
 
@@ -94,6 +104,8 @@ namespace Client.Communication
                 responseToWaitFor = response;
                 return;
             }
+
+            if (responsesToIgnore.Contains(response.Header.MessageNumber)) { return; }
 
             OnSpontaneousReceive?.Invoke(response, new EventArgs());
         }

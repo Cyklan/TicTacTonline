@@ -21,7 +21,7 @@ namespace Client.Controls
     /// </summary>
     public partial class LeaderboardPlayerControl : BaseControl
     {
-        public LeaderboardPlayerControl(User user, WebsocketClient client) : base(user, client)
+        public LeaderboardPlayerControl()
         {
             InitializeComponent();
         }

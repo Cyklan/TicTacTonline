@@ -24,7 +24,7 @@ namespace Client.Controls
     public partial class RegisterControl : BaseControl
     {
 
-        public RegisterControl(User user, WebsocketClient client) : base(user, client)
+        public RegisterControl()
         {
             InitializeComponent();
 
@@ -40,9 +40,9 @@ namespace Client.Controls
         {
             lbRegisterError.Content = "";
 
-            currentUser = new User(tbRegisterUsername.Text, "0:0", tbRegisterPassword.Password);
+            User = new User(tbRegisterUsername.Text, "0:0", tbRegisterPassword.Password);
 
-            RequestHeader header = new RequestHeader() { User = currentUser };
+            RequestHeader header = new RequestHeader() { User = User };
             header.Identifier = new Identifier() { Function = "register", Module = "loginModule" };
        
             Response response = Exchange(new Request() { Header = header, Body = new Document() });

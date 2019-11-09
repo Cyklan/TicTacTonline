@@ -21,7 +21,7 @@ namespace Client.Controls
     /// </summary>
     public partial class MainControl : BaseControl
     {
-        public MainControl(User user, WebsocketClient client) : base(user, client)
+        public MainControl()
         {
             InitializeComponent();
         }
@@ -43,7 +43,7 @@ namespace Client.Controls
 
         private void btMainLeaderboard_Click(object sender, RoutedEventArgs e)
         {
-            GetMain.ChangeControl(MainWindow.Controls.Leaderboard);
+            ChangeControl(MainWindow.Controls.Leaderboard);
         }
 
         private void btMainGameHistory_Click(object sender, RoutedEventArgs e)
@@ -53,7 +53,7 @@ namespace Client.Controls
 
         private void btMainOptions_Click(object sender, RoutedEventArgs e)
         {
-            mainGameList.Children.Add(new JoinGameControl(currentUser, client));
+            mainGameList.Children.Add(new JoinGameControl());
         }
     }
 }

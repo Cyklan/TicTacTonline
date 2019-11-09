@@ -16,14 +16,6 @@ namespace Client.Controls
     [TypeDescriptionProvider(typeof(AbstractControlDescriptionProvider<BaseControl, UserControl>))]
     public abstract class BaseControl : UserControl
     {
-        public User currentUser { get; set; }
-        protected WebsocketClient client { get; set; }
-
-        public BaseControl(User user, WebsocketClient client)
-        {
-            currentUser = user;
-            this.client = client;
-        }
 
         protected MainWindow GetMain
         {
@@ -33,24 +25,56 @@ namespace Client.Controls
             }
         }
 
+        protected User User
+        {
+            get
+            {
+                return GetMain.User;
+            }
+            set
+            {
+                GetMain.User = value;
+            }
+        }
+
+        protected WebsocketClient Client
+        {
+            get
+            {
+                return GetMain.Client;
+            }
+        }
+
+        protected void ChangeControl(MainWindow.Controls control)
+        {
+            GetMain.ChangeControl(control);
+        }
+
         protected Response Exchange(Request request)
         {
-            CheckConnection();
-            return client.Exchange(request);
+            CheckConnectionAndSwitchToConnectionScreen();
+            return Client.Exchange(request);
         }
 
         protected void Send(Request request)
         {
-            CheckConnection();
-            client.Send(request);
+            CheckConnectionAndSwitchToConnectionScreen();
+            Client.Send(request);
         }
 
-        private void CheckConnection()
+        protected void Abort()
         {
-            if (!client.IsConnected)
+            throw new SilentException();
+        }
+
+        private void CheckConnectionAndSwitchToConnectionScreen()
+        {
+            if (!Client.IsConnected)
             {
-                throw new Exception("Connection lost");
+                GetMain.ChangeControl(MainWindow.Controls.Connection);
+                Abort();
             }
+
         }
 
         public abstract void HandleSpontaneousResponse(Response response);
