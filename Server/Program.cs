@@ -18,6 +18,7 @@ namespace Server
         private static WatsonWsServer server;
         private static List<User> clients;
         private static readonly Log log = new Log();
+        private static bool stopReceive = false;
 
         static void Main(string[] args)
         {
@@ -38,7 +39,7 @@ namespace Server
                 InitializeServer();
                 server.Start();
 
-                while (Console.ReadLine() != ".stop") { log.Add("Invalid Input", MessageType.Debug); log.Add("Type .stop to stop the server"); }
+                while (ShowAndHandleMenu(Console.ReadLine())) { }
 
             }
             catch (Exception ex)
@@ -56,6 +57,32 @@ namespace Server
                 Environment.Exit(exitCode);
 
             }
+        }
+
+        private static bool ShowAndHandleMenu(string input)
+        {
+            switch (input)
+            {
+                case ".stop":
+                    return false;
+
+                case ".clients":
+                    clients.ForEach(x => log.Add(x.ToString(), MessageType.Debug));
+                    break;
+
+                case ".pause":
+                    stopReceive = true;
+                    break;
+
+                case ".continue":
+                    stopReceive = false;
+                    break;
+                default:
+                    log.Add($"Commands: {Environment.NewLine} .stop {Environment.NewLine} .clients {Environment.NewLine} .pause {Environment.NewLine} .continue", MessageType.Debug);
+                    break;
+            }
+
+            return true;
         }
 
         private static void InitializeServer()
@@ -136,6 +163,8 @@ namespace Server
 
         private static async Task MessageReceived(string ipPort, byte[] data)
         {
+            if (stopReceive) return;
+
             try
             {
                 if (!(data != null && data.Length > 0)) throw new ArgumentNullException("Data is empty.");

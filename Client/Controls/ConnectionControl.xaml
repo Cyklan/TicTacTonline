@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:Client"
              mc:Ignorable="d" MinHeight="400" MinWidth="400">
     <Grid Background="White" Margin="0,0,0,0" Loaded="Grid_Loaded">
-        <Label x:Name="lbConnectionError" Content="" HorizontalAlignment="Center" Margin="90,142,90,0" Width="220" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top"/>
-        <Button x:Name="btConnectionConnect" Content="Connect" Margin="0,184,0,170" BorderBrush="#FFCDCDCD" Background="White" FontSize="30" Foreground="#DD080808" Height="Auto" Click="btConnectionConnect_Click"/>
+        <Label x:Name="lbConnectionError" Content="" HorizontalAlignment="Center" Margin="90,142,90,0" Width="220" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+        <Button x:Name="btConnectionConnect" Content="Connect" Margin="0,191,0,163" BorderBrush="#FFCDCDCD" Background="White" FontSize="30" Foreground="#DD080808" Click="btConnectionConnect_Click" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </controls:BaseControl>
