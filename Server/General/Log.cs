@@ -40,7 +40,7 @@ namespace Server.General
 
         public void Add(string message, MessageType messageType)
         {
-            logQueue.Enqueue(new Message(DateTime.Now, messageType, new User { Name = "Global"} , message));
+            logQueue.Enqueue(new Message(DateTime.Now, messageType, new User { Name = "Global" }, message));
         }
 
         public void Add(string message)
@@ -79,7 +79,8 @@ namespace Server.General
                     if (message.MessageType == MessageType.Question)
                     {
                         Console.Write(message);
-                    } else
+                    }
+                    else
                     {
                         Console.WriteLine(message);
                     }

@@ -52,14 +52,7 @@ namespace Server.Modules
                     header.Code = ResponseCode.PlannedError;
                     header.Message = "User could not be added to game";
 
-                    if (DeleteRoom(db, body))
-                    {
-                        header.Message += Environment.NewLine + "Room deleted";
-                    }
-                    else
-                    {
-                        header.Message += Environment.NewLine + "Room could not be deleted";
-                    }
+                    db.ChangeRoomStatus(body.Id, RoomStatus.Closed);
                 }
             }
 
@@ -106,6 +99,12 @@ namespace Server.Modules
                 header.Targets.Add(body.Game.Player1);
             }
 
+            if (!(body.Game.Player1 is null || body.Game.Player2 is null))
+            {
+                db.ChangeRoomStatus(body.Id, RoomStatus.Full);
+                header.Message += Environment.NewLine + "Room full";
+            }
+
             return new Response() { Header = header, Body = body };
         }
 
@@ -130,18 +129,16 @@ namespace Server.Modules
             header.Code = ResponseCode.LeftRoom;
             header.Message = $"Player {request.Header.User.Name} left the room.";
 
-            if(body.Game.Player1 is null || body.Game.Player2 is null)
+            if (body.Game.Player1 is null || body.Game.Player2 is null)
             {
-                if (DeleteRoom(db, body))
-                {
-                    header.Message += Environment.NewLine + "Room deleted";
-                }
-                else
-                {
-                    header.Message += Environment.NewLine + "Room could not be deleted";
-                }
-
+                db.ChangeRoomStatus(body.Id, RoomStatus.Closed);
+                header.Message += Environment.NewLine + "Room deleted";
                 return new Response() { Header = header, Body = body };
+            }
+            else
+            {
+                db.ChangeRoomStatus(body.Id, RoomStatus.Open);
+                header.Message += Environment.NewLine + "Room open";
             }
 
             if (body.Game.Player1.Name == request.Header.User.Name)
@@ -160,11 +157,6 @@ namespace Server.Modules
             }
 
             return new Response() { Header = header, Body = body };
-        }
-
-        private bool DeleteRoom(DatabaseQueries db, RoomDocument room)
-        {
-            return db.ChangeRoomStatus(room.Id, RoomStatus.Closed);
         }
 
     }

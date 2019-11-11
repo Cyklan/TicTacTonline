@@ -56,10 +56,11 @@ namespace Server.Database
 
         #region Rooms
 
-        public int CreateNewGame(string name, string password) {
+        public int CreateNewGame(string name, string password)
+        {
             database.ExecuteNonQuery($"INSERT INTO rooms (name, statusid, password) VALUES('{name}', {RoomStatus.Open}, '{password}');");
             List<Dictionary<string, object>> rooms = database.ExecuteQuery($"SELECT * FROM rooms WHERE name='{name}' AND password='{password}';");
-           
+
             if (rooms.Any()) return (int)rooms.Last()["id"];
             return -1;
         }
@@ -72,7 +73,7 @@ namespace Server.Database
 
             database.ExecuteQuery($"SELECT * FROM rooms r JOIN users u ON r.id=u.roomid WHERE statusid != {RoomStatus.Closed};").ForEach(room =>
             {
-                if(!rooms.Any(x => x.Id == (int)room["id"]))
+                if (!rooms.Any(x => x.Id == (int)room["id"]))
                 {
                     rooms.Add(new RoomDocument()
                     {
@@ -80,12 +81,15 @@ namespace Server.Database
                         Password = room["password"].ToString(),
                         Id = (int)room["id"],
                         RoomStatus = (RoomStatus)room["statusid"],
-                        Game = new Game() {
-                            Player1 = new User() {
+                        Game = new Game()
+                        {
+                            Player1 = new User()
+                            {
                                 Name = room["u.name"].ToString(),
                                 IpAddress = room["u.ip"].ToString(),
                                 Port = (int)room["u.port"]
-                            } }
+                            }
+                        }
                     });
 
                 }
@@ -98,20 +102,32 @@ namespace Server.Database
                         Port = (int)room["u.port"]
                     };
                 }
-                
+
             });
 
             return rooms;
         }
 
         public bool SaveMessage(string name, string message, int roomId) => database.ExecuteNonQuery($"INSERT INTO messages (user, content, roomid) VALUES ('{name}', '{message}', {roomId});") == 1;
- 
+
         public bool RemoveUserFromRoom(User user) => database.ExecuteNonQuery($"UPDATE users SET roomid = NULL WHERE name = '{user.Name}';") == 1;
 
         public bool ChangeRoomStatus(int roomId, RoomStatus status) => database.ExecuteNonQuery($"UPDATE rooms SET status = {status} WHERE id = {roomId};") == 1;
 
         #endregion
 
+        #region "Game"
 
+        public void InsertMatch(RoomDocument room, User winner)
+        {
+            string sql = "";
+            sql += $"INSERT INTO matches (won_by, roomid) VALUES ('{winner.Name}', {room.Id});" + Environment.NewLine;
+            sql += $"INSERT INTO users_played_matches (users_name, matches_id) VALUES ('{room.Game.Player1.Name}', (SELECT id FROM matches WHERE won_by='{winner.Name}' ORDER BY timestamp DESC LIMIT 1));" + Environment.NewLine;
+            sql += $"INSERT INTO users_played_matches (users_name, matches_id) VALUES ('{room.Game.Player2.Name}', (SELECT id FROM matches WHERE won_by='{winner.Name}' ORDER BY timestamp DESC LIMIT 1));";
+
+            database.ExecuteNonQuery(sql);
+        }
+
+        #endregion
     }
 }

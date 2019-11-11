@@ -42,18 +42,12 @@ namespace Models
 
         private string HashPassword(string password)
         {
-            // using wird von .net Standard nicht unterstüzt
-            SHA256 sha = SHA256.Create();
-
-            try
+    
+            using(SHA256 sha = SHA256.Create())
             {
                 return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(password)));
             }
-            finally
-            {
-                sha.Dispose();
-            }
-      
+
         }
 
         public override string ToString()

@@ -10,7 +10,7 @@ namespace Server.Modules
     {
         public GameModule() : base("GameModule") { }
 
-        public Response StartGame(Request request)
+        private Response StartGame(Request request)
         {
             ResponseHeader header = new ResponseHeader();
             RoomDocument document = (RoomDocument)request.Body;
@@ -25,6 +25,7 @@ namespace Server.Modules
             }
 
             StartNewGame(document.Game);
+            db.ChangeRoomStatus(document.Id, RoomStatus.Ongoing);
 
             header.Code = ResponseCode.Ok;
             header.Message = $"Game started. It is {document.Game.CurrentPlayer.Name}'s turn";
@@ -32,7 +33,7 @@ namespace Server.Modules
             return new Response() { Header = header, Body = document };
         }
 
-        public Response HandleTurn(Request request)
+        private Response HandleTurn(Request request)
         {
             ResponseHeader header = new ResponseHeader();
             RoomDocument document = (RoomDocument)request.Body;
@@ -64,13 +65,14 @@ namespace Server.Modules
                     header.Message = $"Turn {document.Game.RoundsPlayed} processed - {winner.Name} won.";
                 }
 
-                SaveGame(document);
+                using DatabaseQueries db = new DatabaseQueries(request.Header.User);
+                SaveGame(document, winner, db);
             }
 
             return new Response() { Header = header, Body = document };
         }
 
-        public Response SendMessage(Request request)
+        private Response SendMessage(Request request)
         {
             ResponseHeader header = new ResponseHeader();
             ChatDocument body = (ChatDocument)request.Body;
@@ -82,9 +84,14 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
-        private void SaveGame(RoomDocument document)
+        private void SaveGame(RoomDocument document, User winner, DatabaseQueries db)
         {
-            throw new NotImplementedException();
+            db.ChangeRoomStatus(document.Id, RoomStatus.Closed);
+
+            db.RemoveUserFromRoom(document.Game.Player1);
+            db.RemoveUserFromRoom(document.Game.Player2);
+
+            db.InsertMatch(document, winner);
         }
 
         private void StartNewGame(Game game)
