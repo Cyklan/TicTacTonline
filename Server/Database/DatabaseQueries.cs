@@ -49,7 +49,7 @@ namespace Server.Database
 
         public bool LogoutUser(User user) => database.ExecuteNonQuery($@"UPDATE users SET loggedin=0, ip=NULL, port=NULL, roomid=NULL WHERE name='{user.Name}';") == 1;
 
-        public int RegisterUser(User user) => database.ExecuteNonQuery($"INSERT INTO users(name, hash) VALUES ('{user.Name}', '{user.PasswordHash}');");
+        public bool RegisterUser(User user) => database.ExecuteNonQuery($"INSERT INTO users(name, hash) VALUES ('{user.Name}', '{user.PasswordHash}');") == 1;
 
         public bool IsUserLoggedIn(User user) => database.ExecuteQuery($"SELECT * FROM users WHERE name='{user.Name}' AND loggedin=1;").Count == 1;
         #endregion

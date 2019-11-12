@@ -19,6 +19,7 @@ namespace Server
         private static List<User> clients;
         private static readonly Log log = new Log();
         private static bool stopReceive = false;
+        private static readonly Converter converter = new Converter();
 
         static void Main(string[] args)
         {
@@ -169,7 +170,6 @@ namespace Server
             {
                 if (!(data != null && data.Length > 0)) throw new ArgumentNullException("Data is empty.");
 
-                Converter converter = new Converter();
                 Request request = converter.ConvertJsonToObject<Request>(converter.ConvertBytesToString(data));
                 SyncClientData(ipPort, request.Header.User);
 
