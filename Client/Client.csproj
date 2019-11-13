@@ -93,6 +93,9 @@
     <Compile Include="Controls\ConnectionControl.xaml.cs">
       <DependentUpon>ConnectionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GameLobbyControl.xaml.cs">
+      <DependentUpon>GameLobbyControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\JoinGameControl.xaml.cs">
       <DependentUpon>JoinGameControl.xaml</DependentUpon>
     </Compile>
@@ -113,6 +116,10 @@
     <Compile Include="Communication\WebsocketClient.cs" />
     <Compile Include="Communication\WebsocketConfiguration.cs" />
     <Page Include="Controls\ConnectionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GameLobbyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

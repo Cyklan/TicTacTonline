@@ -19,7 +19,8 @@ namespace Client
             Register,
             Connection,
             Leaderboard,
-            Main
+            Main,
+            GameLobby
         }
 
         public User User { get; set; }
@@ -60,7 +61,8 @@ namespace Client
                 { Controls.Register , typeof(RegisterControl) },
                 { Controls.Connection, typeof(ConnectionControl) },
                 { Controls.Leaderboard, typeof(LeaderboardControl) },
-                { Controls.Main, typeof(MainControl) }
+                { Controls.Main, typeof(MainControl) },
+                { Controls.GameLobby, typeof(GameLobbyControl) }
             };
         }
 

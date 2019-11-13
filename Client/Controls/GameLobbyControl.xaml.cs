@@ -17,11 +17,11 @@ using Client.Communication;
 namespace Client.Controls
 {
     /// <summary>
-    /// Interaction logic for MainControl.xaml
+    /// Interaction logic for GameLobbyControl.xaml
     /// </summary>
-    public partial class MainControl : BaseControl
+    public partial class GameLobbyControl : BaseControl
     {
-        public MainControl()
+        public GameLobbyControl()
         {
             InitializeComponent();
         }
@@ -31,29 +31,24 @@ namespace Client.Controls
             throw new NotImplementedException();
         }
 
-        private void btMainNewGame_Click(object sender, RoutedEventArgs e)
-        {
-            ChangeControl(MainWindow.Controls.GameLobby);
-        }
-
-        private void btMainRefresh_Click(object sender, RoutedEventArgs e)
+        private void tbGameLobbyChat_KeyDown(object sender, KeyEventArgs e)
         {
 
         }
 
-        private void btMainLeaderboard_Click(object sender, RoutedEventArgs e)
-        {
-            ChangeControl(MainWindow.Controls.Leaderboard);
-        }
-
-        private void btMainGameHistory_Click(object sender, RoutedEventArgs e)
+        private void btGameLobbyOpen_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void btMainOptions_Click(object sender, RoutedEventArgs e)
+        private void btGameLobbyLeave_Click(object sender, RoutedEventArgs e)
         {
-            mainGameList.Children.Add(new JoinGameControl());
+
+        }
+
+        private void btGameLobbyKick_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
