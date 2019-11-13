@@ -20,7 +20,8 @@ namespace Client
             Connection,
             Leaderboard,
             Main,
-            GameLobby
+            GameLobby,
+            Game
         }
 
         public User User { get; set; }
@@ -62,7 +63,8 @@ namespace Client
                 { Controls.Connection, typeof(ConnectionControl) },
                 { Controls.Leaderboard, typeof(LeaderboardControl) },
                 { Controls.Main, typeof(MainControl) },
-                { Controls.GameLobby, typeof(GameLobbyControl) }
+                { Controls.GameLobby, typeof(GameLobbyControl) },
+                { Controls.Game, typeof(GameControl) }
             };
         }
 

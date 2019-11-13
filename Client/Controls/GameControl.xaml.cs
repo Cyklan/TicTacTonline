@@ -17,11 +17,11 @@ using Client.Communication;
 namespace Client.Controls
 {
     /// <summary>
-    /// Interaction logic for GameLobbyControl.xaml
+    /// Interaction logic for GameControl.xaml
     /// </summary>
-    public partial class GameLobbyControl : BaseControl
+    public partial class GameControl : BaseControl
     {
-        public GameLobbyControl()
+        public GameControl()
         {
             InitializeComponent();
         }
@@ -31,36 +31,15 @@ namespace Client.Controls
             throw new NotImplementedException();
         }
 
-        private void tbGameLobbyChatMessage_KeyDown(object sender, KeyEventArgs e)
+        private void tbGameChatMessage_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
-                tbGameLobbyChat.AppendText("User: " + tbGameLobbyChatMessage.Text + "\n");
-                tbGameLobbyChat.ScrollToEnd();
-                tbGameLobbyChatMessage.Text = "";
+                tbGameChat.AppendText("User: " + tbGameChatMessage.Text + "\n");
+                tbGameChat.ScrollToEnd();
+                tbGameChatMessage.Text = "";
             }
         }
-
-        private void btGameLobbyOpen_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btGameLobbyLeave_Click(object sender, RoutedEventArgs e)
-        {
-            ChangeControl(MainWindow.Controls.Main);
-        }
-
-        private void btGameLobbyKick_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btGameLobbyStart_Click(object sender, RoutedEventArgs e)
-        {
-            ChangeControl(MainWindow.Controls.Game);
-        }
-
         private bool _autoScroll = true;
         private void ScrollViewer_OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
