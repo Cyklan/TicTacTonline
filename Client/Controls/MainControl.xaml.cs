@@ -28,7 +28,7 @@ namespace Client.Controls
 
         public override void HandleSpontaneousResponse(Response response)
         {
-            throw new NotImplementedException();
+            return;
         }
 
         private void btMainNewGame_Click(object sender, RoutedEventArgs e)
@@ -38,7 +38,32 @@ namespace Client.Controls
 
         private void btMainRefresh_Click(object sender, RoutedEventArgs e)
         {
+            mainGameList.Children.Clear();
 
+            Response response = Exchange(new Request()
+            {
+                Header = new RequestHeader()
+                {
+                    Identifier = new Identifier()
+                    {
+                        Module = "RoomModule",
+                        Function = "GetRooms"
+                    },
+                    User = User
+                },
+                Body = new Document()
+            });
+
+            if (response.Header.Code != ResponseCode.Ok)
+            {
+                lbMainError.Content = response.Header.Message;
+                Abort();
+            }
+
+            foreach (RoomDocument roomdocument in ((RoomsDocument)response.Body).Rooms)
+            {
+                mainGameList.Children.Add(new JoinGameControl(roomdocument));
+            }
         }
 
         private void btMainLeaderboard_Click(object sender, RoutedEventArgs e)
@@ -53,7 +78,12 @@ namespace Client.Controls
 
         private void btMainOptions_Click(object sender, RoutedEventArgs e)
         {
-            mainGameList.Children.Add(new JoinGameControl());
+
+        }
+
+        private void grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            btMainRefresh_Click(this, null);
         }
     }
 }

@@ -9,7 +9,9 @@
         GameTie,
         GameOver,
         JoinedRoom,
-        LeftRoom
+        LeftRoom,
+        Message,
+        GameStart
     }
 
     public class Response

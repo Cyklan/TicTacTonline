@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace Client.Controls
 {
@@ -45,6 +46,18 @@ namespace Client.Controls
             }
         }
 
+        protected RoomDocument Room
+        {
+            get
+            {
+                return GetMain.CurrentGame;
+            }
+            set
+            {
+                GetMain.CurrentGame = value;
+            }
+        }
+
         protected void ChangeControl(MainWindow.Controls control)
         {
             GetMain.ChangeControl(control);
@@ -65,6 +78,22 @@ namespace Client.Controls
         protected void Abort()
         {
             throw new SilentException();
+        }
+
+        /// <summary>
+        /// Application.DoEvents gibts nicht in WPF, daher so -> Fenster kann noch bewegt, geschlossen, ... werden, während auf Verbindung gewartet wird.
+        /// </summary>
+        protected void DoEvents()
+        {
+            try
+            {
+                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
+            }
+            catch
+            {
+                // Wenn die Form geschlossen wird, wird manchmal eine NullReference Exception geworfen
+            }
+
         }
 
         private void CheckConnectionAndSwitchToConnectionScreen()

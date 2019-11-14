@@ -31,22 +31,6 @@ namespace Client.Controls
             btConnectionConnect_Click(this, null);
         }
 
-        /// <summary>
-        /// Application.DoEvents gibts nicht in WPF, daher so -> Fenster kann noch bewegt, geschlossen, ... werden, während auf Verbindung gewartet wird.
-        /// </summary>
-        private void DoEvents()
-        {
-            try
-            {
-                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
-            }
-            catch
-            {
-                // Wenn die Form geschlossen wird, wird manchmal eine NullReference Exception geworfen
-            }
-
-        }
-
         private void btConnectionConnect_Click(object sender, RoutedEventArgs e)
         {
             DateTime startWaitTime = DateTime.Now;

@@ -27,7 +27,7 @@ namespace Server.Modules
             StartNewGame(document.Game);
             db.ChangeRoomStatus(document.Id, RoomStatus.Ongoing);
 
-            header.Code = ResponseCode.Ok;
+            header.Code = ResponseCode.GameStart;
             header.Message = $"Game started. It is {document.Game.CurrentPlayer.Name}'s turn";
 
             return new Response() { Header = header, Body = document };
@@ -77,6 +77,7 @@ namespace Server.Modules
             ResponseHeader header = new ResponseHeader();
             ChatDocument body = (ChatDocument)request.Body;
             header.Targets = new List<User> { body.Target };
+            header.Code = ResponseCode.Message;
 
             using DatabaseQueries db = new DatabaseQueries(request.Header.User);
             db.SaveMessage(request.Header.User.Name, body.Message, body.RoomId);

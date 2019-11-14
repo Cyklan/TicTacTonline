@@ -10,11 +10,11 @@ namespace Server.Modules
 
     public class RoomModule : Module
     {
-        public RoomModule() : base("roomModule") { }
+        public RoomModule() : base("RoomModule") { }
 
         private Response GetRooms(Request request)
         {
-            ResponseHeader header = new ResponseHeader() { Targets = { request.Header.User } };
+            ResponseHeader header = new ResponseHeader() { Targets = new List<User> { request.Header.User } };
             RoomsDocument body = new RoomsDocument();
 
             using DatabaseQueries db = new DatabaseQueries(request.Header.User);
@@ -28,7 +28,7 @@ namespace Server.Modules
 
         private Response CreateRoom(Request request)
         {
-            ResponseHeader header = new ResponseHeader() { Targets = { request.Header.User } };
+            ResponseHeader header = new ResponseHeader() { Targets = new List<User> { request.Header.User } };
             RoomDocument body = (RoomDocument)request.Body;
             body.Game = new Game() { Player1 = request.Header.User };
 
@@ -63,6 +63,7 @@ namespace Server.Modules
         {
             ResponseHeader header = new ResponseHeader();
             RoomDocument body = (RoomDocument)request.Body;
+            List<RoomDocument> rooms;
 
             header.Targets = new List<User>
             {
@@ -70,11 +71,28 @@ namespace Server.Modules
             };
 
             using DatabaseQueries db = new DatabaseQueries(request.Header.User);
+            rooms = db.GetRooms().Where(x => x.Id == body.Id).ToList();
 
-            if (db.GetRooms().Where(x => x.Id == body.Id).Count() > 2)
+            if (rooms.Count() == 0)
+            {
+                header.Code = ResponseCode.PlannedError;
+                header.Message = $"The room does not exist";
+
+                return new Response() { Header = header, Body = body };
+            }
+
+            if (rooms.Count() > 2)
             {
                 header.Code = ResponseCode.PlannedError;
                 header.Message = $"The room is full";
+
+                return new Response() { Header = header, Body = body };
+            }
+
+            if (rooms.First(x => x.Id == body.Id).RoomStatus != RoomStatus.Open)
+            {
+                header.Code = ResponseCode.PlannedError;
+                header.Message = $"The room is not open";
 
                 return new Response() { Header = header, Body = body };
             }
@@ -111,7 +129,8 @@ namespace Server.Modules
         private Response LeaveRoom(Request request)
         {
             ResponseHeader header = new ResponseHeader();
-            RoomDocument body = (RoomDocument)request.Body;
+            RemovePlayerFromRoomDocument body = (RemovePlayerFromRoomDocument)request.Body;
+            bool getTargetFromRoom = false;
 
             header.Targets = new List<User>
             {
@@ -119,41 +138,50 @@ namespace Server.Modules
             };
 
             using DatabaseQueries db = new DatabaseQueries(request.Header.User);
-            if (!db.RemoveUserFromRoom(request.Header.User))
+            if (!db.RemoveUserFromRoom(body.PlayerToRemove))
             {
                 header.Code = ResponseCode.PlannedError;
-                header.Message = $"Player {request.Header.User.Name} could not be removed from the room";
+                header.Message = $"Player {body.PlayerToRemove} could not be removed from the room";
                 return new Response() { Header = header, Body = body };
             }
 
             header.Code = ResponseCode.LeftRoom;
-            header.Message = $"Player {request.Header.User.Name} left the room.";
+            header.Message = $"Player {body.PlayerToRemove} left the room.";
 
-            if (body.Game.Player1 is null || body.Game.Player2 is null)
+            if (body.Room.Game.Player1 is null || body.Room.Game.Player2 is null)
             {
-                db.ChangeRoomStatus(body.Id, RoomStatus.Closed);
+                db.ChangeRoomStatus(body.Room.Id, RoomStatus.Closed);
                 header.Message += Environment.NewLine + "Room deleted";
                 return new Response() { Header = header, Body = body };
             }
             else
             {
-                db.ChangeRoomStatus(body.Id, RoomStatus.Open);
+                db.ChangeRoomStatus(body.Room.Id, RoomStatus.Open);
                 header.Message += Environment.NewLine + "Room open";
             }
 
-            if (body.Game.Player1.Name == request.Header.User.Name)
+            if(request.Header.User.Name.ToLower() != body.PlayerToRemove.Name.ToLower())
             {
-                body.Game.Player1 = null;
-                header.Targets.Add(body.Game.Player2);
-            }
-            else if (body.Game.Player2.Name == request.Header.User.Name)
-            {
-                body.Game.Player2 = null;
-                header.Targets.Add(body.Game.Player1);
+                header.Targets.Add(body.PlayerToRemove);
             }
             else
             {
-                throw new Exception($"The user {request.Header.User} has not joined the room");
+                getTargetFromRoom = true;
+            }
+
+            if (body.Room.Game.Player1.Name.ToLower() == body.PlayerToRemove.Name.ToLower())
+            {
+                body.Room.Game.Player1 = null;
+                if (getTargetFromRoom) header.Targets.Add(body.Room.Game.Player2);
+            }
+            else if (body.Room.Game.Player2.Name.ToLower() == body.PlayerToRemove.Name.ToLower())
+            {
+                body.Room.Game.Player2 = null;
+                if (getTargetFromRoom) header.Targets.Add(body.Room.Game.Player1);
+            }
+            else
+            {
+                throw new Exception($"The user {body.PlayerToRemove} has not joined the room");
             }
 
             return new Response() { Header = header, Body = body };

@@ -97,7 +97,10 @@ namespace Client.Communication
 
         private async Task OnReceive(byte[] data)
         {
+
             Response response = converter.ConvertJsonToObject<Response>(converter.ConvertBytesToString(data));
+
+            response.Body = GetBody(data);
 
             if (!(responseToWaitFor is null) && responseToWaitFor.Header.MessageNumber == response.Header.MessageNumber)
             {
@@ -108,6 +111,46 @@ namespace Client.Communication
             if (responsesToIgnore.Contains(response.Header.MessageNumber)) { return; }
 
             OnSpontaneousReceive?.Invoke(response, new EventArgs());
+        }
+
+        private Document GetBody(byte[] data)
+        {
+            string json = converter.ConvertBytesToString(data);
+
+            string bodyJson = json.Split(new string[] { "\"Body\": " }, StringSplitOptions.None)[1];
+            bodyJson = bodyJson.Trim();
+            bodyJson = bodyJson.Remove(bodyJson.Length - 1);
+            string[] bodySplit = bodyJson.Split(',');
+
+            string type = bodySplit[bodySplit.Length - 1];
+
+            if (type.Contains("RemovePlayerFromRoomDocument"))
+            {
+                return converter.ConvertJsonToObject<RemovePlayerFromRoomDocument>(bodyJson);
+            }
+            else if (type.Contains("RoomDocument"))
+            {
+                return converter.ConvertJsonToObject<RoomDocument>(bodyJson);
+            }
+            else if (type.Contains("RoomsDocument"))
+            {
+                return converter.ConvertJsonToObject<RoomsDocument>(bodyJson);
+            }
+            else if (type.Contains("ChatDocument"))
+            {
+                return converter.ConvertJsonToObject<ChatDocument>(bodyJson);
+            }
+            else if (type.Contains("MatchHistoryDocument"))
+            {
+                return null;
+            }
+            else if (type.Contains("LeaderboardDocument"))
+            {
+                return null;
+            }
+
+            return new Document();
+
         }
 
 #pragma warning restore CS1998

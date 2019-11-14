@@ -9,8 +9,14 @@ namespace Server.Communication
 {
     public class RequestHandler
     {
-        public static List<Module> Modules = new List<Module>();
+        public List<Module> Modules { get; set; }
         private readonly Log log = new Log();
+        private Converter converter = new Converter();
+
+        public RequestHandler()
+        {
+            Modules = new List<Module>();
+        }
 
         public Response HandleRequest(Request request)
         {

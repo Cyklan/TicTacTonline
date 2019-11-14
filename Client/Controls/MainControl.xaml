@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:Client.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
+    <Grid x:Name="grid" Background="White" Loaded="grid_Loaded">
         <Button x:Name="btMainNewGame" Content="New Game" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="177" Height="39" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" FontSize="22" Click="btMainNewGame_Click"/>
         <Button x:Name="btMainLeaderboard" Content="Leaderboard" HorizontalAlignment="Left" Margin="5,240,0,0" VerticalAlignment="Top" Width="190" Height="34" Background="White" Foreground="#DD464646" BorderBrush="#FFCDCDCD" Click="btMainLeaderboard_Click"/>
         <Button x:Name="btMainGameHistory" Content="Game History" HorizontalAlignment="Left" Margin="5,279,0,0" VerticalAlignment="Top" Width="190" Height="34" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" Click="btMainGameHistory_Click"/>
@@ -22,6 +22,7 @@
         <Button x:Name="btMainOptions" Content="Options" HorizontalAlignment="Left" Margin="5,318,0,0" VerticalAlignment="Top" Width="190" Height="34" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" Click="btMainOptions_Click"/>
         <Label Content="Filter" HorizontalAlignment="Left" Margin="6,113,0,0" VerticalAlignment="Top" Width="111" FontWeight="Bold" FontSize="18"/>
         <Button x:Name="btMainRefresh" Content="Refresh" HorizontalAlignment="Left" Margin="45,54,0,0" VerticalAlignment="Top" Width="107" Height="26" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" FontSize="14" Click="btMainRefresh_Click"/>
+        <Label x:Name="lbMainError" Content="" HorizontalAlignment="Center" Margin="10,414,613,10" Width="177" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
 
     </Grid>
 </controls:BaseControl>

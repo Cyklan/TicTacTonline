@@ -26,6 +26,7 @@ namespace Client
 
         public User User { get; set; }
         public WebsocketClient Client { get; set; }
+        public RoomDocument CurrentGame { get; set; }
 
         private BaseControl currentControl;
         private Dictionary<Controls, Type> controls;

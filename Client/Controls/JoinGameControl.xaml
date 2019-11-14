@@ -9,9 +9,10 @@
              mc:Ignorable="d" Height="40" Background="White" Foreground="#FFE2E2E2" Margin="1">
     <Grid>
         <Button x:Name="btJoinGame" Content="Join" HorizontalAlignment="Right" Margin="400,5,5,5" VerticalAlignment="Top" Width="127" Height="30" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" Click="btJoinGame_Click"/>
-        <Label Content="Lobby Name" HorizontalAlignment="Left" Margin="10,5,0,5" VerticalAlignment="Top" Height="30" FontSize="16"/>
-        <Label Content="Spieler 1" HorizontalAlignment="Left" Margin="115,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
-        <Label Content="Lobby Name" HorizontalAlignment="Left" Margin="220,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
+        <Label x:Name="lbRoomName" Content="Lobby Name" HorizontalAlignment="Left" Margin="10,5,0,5" VerticalAlignment="Top" Height="30" FontSize="16"/>
+        <Label x:Name="lbUser1" Content="Spieler 1" HorizontalAlignment="Left" Margin="115,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
+        <Label x:Name="lbUser2" Content="Spieler 2" HorizontalAlignment="Left" Margin="220,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
+        <Label x:Name="lbStatus" Content="Open" HorizontalAlignment="Left" Margin="313,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
 
     </Grid>
 </controls:BaseControl>

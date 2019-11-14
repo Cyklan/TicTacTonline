@@ -21,19 +21,51 @@ namespace Client.Controls
     /// </summary>
     public partial class JoinGameControl : BaseControl
     {
-        public JoinGameControl()
+        RoomDocument Room { get; set; }
+
+        public JoinGameControl(RoomDocument room)
         {
             InitializeComponent();
+
+            Room = room;
+
+            lbRoomName.Content = room.Name;
+
+            lbUser1.Content = room.Game.Player1 != null ? room.Game.Player1.Name : "";
+            lbUser2.Content = room.Game.Player2 != null ? room.Game.Player2.Name : "";
+            lbStatus.Content = room.RoomStatus;
         }
 
         private void btJoinGame_Click(object sender, RoutedEventArgs e)
         {
+            if(Room.RoomStatus != RoomStatus.Open) { return; }
 
+            Response response = Exchange(new Request()
+            {
+                Header = new RequestHeader()
+                {
+                    Identifier = new Identifier()
+                    {
+                        Module = "RoomModule",
+                        Function = "JoinRoom"
+                    },
+                    User = User
+                },
+                Body = Room
+            });
+
+            if (response.Header.Code != ResponseCode.JoinedRoom)
+            {
+                throw new Exception(response.Header.Message);
+            }
+
+            base.Room = (RoomDocument)response.Body;
+            ChangeControl(MainWindow.Controls.GameLobby);
         }
 
         public override void HandleSpontaneousResponse(Response response)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

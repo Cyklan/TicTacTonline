@@ -20,6 +20,7 @@ namespace Server
         private static readonly Log log = new Log();
         private static bool stopReceive = false;
         private static readonly Converter converter = new Converter();
+        private static RequestHandler requestHandler = new RequestHandler();
 
         static void Main(string[] args)
         {
@@ -120,10 +121,11 @@ namespace Server
         {
             log.Add("Initializing Modules");
 
-            RequestHandler.Modules.Add(new LoginModule());
-            RequestHandler.Modules.Add(new GameModule());
+            requestHandler.Modules.Add(new LoginModule());
+            requestHandler.Modules.Add(new GameModule());
+            requestHandler.Modules.Add(new RoomModule());
 
-            foreach (Module m in RequestHandler.Modules) { log.Add("Initialized " + m.Name); }
+            foreach (Module m in requestHandler.Modules) { log.Add("Initialized " + m.Name); }
         }
 
         // supresses warning because of missing await
@@ -171,11 +173,12 @@ namespace Server
                 if (!(data != null && data.Length > 0)) throw new ArgumentNullException("Data is empty.");
 
                 Request request = converter.ConvertJsonToObject<Request>(converter.ConvertBytesToString(data));
+                request.Body = GetBody(data);
                 SyncClientData(ipPort, request.Header.User);
 
                 log.Add($"Received {converter.ConvertObjectToJson(request)} from {request.Header.User}", request.Header.User, MessageType.Normal);
 
-                Response response = new RequestHandler().HandleRequest(request);
+                Response response = requestHandler.HandleRequest(request);
                 log.Add($"Sending {converter.ConvertObjectToJson(response)} to {string.Join(",", response.Header.Targets.Select(x => x.ToString()))}", request.Header.User, MessageType.Normal);
 
                 foreach (User user in response.Header.Targets)
@@ -204,6 +207,45 @@ namespace Server
             connectedClient.PasswordHash = requestUser.PasswordHash;
 
             requestUser.IpPort = ipPortRequest;
+        }
+
+        private static Document GetBody(byte[] data)
+        {
+            string json = converter.ConvertBytesToString(data);
+
+            string bodyJson = json.Split(new string[] { "\"Body\": " }, StringSplitOptions.None)[1];
+            bodyJson = bodyJson.Trim();
+            bodyJson = bodyJson.Remove(bodyJson.Length - 1);
+            string[] bodySplit = bodyJson.Split(',');
+
+            string type = bodySplit[bodySplit.Length - 1];
+
+            if (type.Contains("RemovePlayerFromRoomDocument"))
+            {
+                return converter.ConvertJsonToObject<RemovePlayerFromRoomDocument>(bodyJson);
+            }
+            else if (type.Contains("RoomDocument"))
+            {
+                return converter.ConvertJsonToObject<RoomDocument>(bodyJson);
+            }
+            else if (type.Contains("RoomsDocument"))
+            {
+                return converter.ConvertJsonToObject<RoomsDocument>(bodyJson);
+            }
+            else if (type.Contains("ChatDocument"))
+            {
+                return converter.ConvertJsonToObject<ChatDocument>(bodyJson);
+            }
+            else if (type.Contains("MatchHistoryDocument"))
+            {
+                return null;
+            }
+            else if (type.Contains("LeaderboardDocument"))
+            {
+                return null;
+            }
+
+            return new Document();
         }
 
     }

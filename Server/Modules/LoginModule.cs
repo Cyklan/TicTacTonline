@@ -59,6 +59,8 @@ namespace Server.Modules
 
             if (db.LogoutUser(request.Header.User))
             {
+                db.RemoveUserFromRoom(request.Header.User);
+    
                 header.Code = ResponseCode.Ok;
                 header.Message = "User logged out successfully";
             }
