@@ -52,6 +52,24 @@ namespace Client.Controls
             {
                 ScrollViewer.ScrollToVerticalOffset(ScrollViewer.ExtentHeight);
             }
+
+            
+        }
+
+        private void btGame_1_1_Click(object sender, RoutedEventArgs e)
+        {
+            var uriSource = new Uri("../Resources/icon_cross_dark.png", UriKind.Relative);
+            imgBt_1_1.Source = new BitmapImage(uriSource);
+        }
+
+        private void btGame_1_1_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void btGame_1_1_MouseLeave(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }

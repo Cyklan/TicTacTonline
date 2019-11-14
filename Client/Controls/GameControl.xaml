@@ -21,14 +21,32 @@
             </TextBox.Background>
         </TextBox>
         <Button Content="Leave" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="71" BorderBrush="#FFCDCDCD" Background="White" FontSize="14" Foreground="#DD080808" Height="28"/>
-        <Button HorizontalAlignment="Left" Margin="117,147,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="202,147,0,0" VerticalAlignment="Top" Width="80" Height="80" Background="White" BorderBrush="{x:Null}" BorderThickness="0"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="287,147,0,0" VerticalAlignment="Top" Width="80" Height="80" Background="White" BorderBrush="{x:Null}" BorderThickness="0"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="117,232,0,0" VerticalAlignment="Top" Width="80" Height="80" Background="White" BorderBrush="{x:Null}" BorderThickness="0"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="202,232,0,0" VerticalAlignment="Top" Width="80" Height="80" Background="White" BorderBrush="{x:Null}" BorderThickness="0"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="287,232,0,0" VerticalAlignment="Top" Width="80" Height="80" Background="White" BorderBrush="{x:Null}" BorderThickness="0"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="117,317,0,0" VerticalAlignment="Top" Width="80" Height="80" Background="White" BorderBrush="{x:Null}" BorderThickness="0"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="202,317,0,0" VerticalAlignment="Top" Width="80" Height="80" Background="White" BorderBrush="{x:Null}" BorderThickness="0"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="287,317,0,0" VerticalAlignment="Top" Width="80" Height="80" Background="White" BorderBrush="{x:Null}" BorderThickness="0"/>
+        <Button x:Name="btGame_1_1" HorizontalAlignment="Left" Margin="179,160,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Click="btGame_1_1_Click">
+            <Image x:Name="imgBt_1_1" Height="60" Width="60" Source="../Resources/icon_circle_bright.png" MouseEnter="imgBt_MouseEnter" MouseLeave="imgBt_MouseLeave"/>
+        </Button>
+        <Button x:Name="btGame_1_2" HorizontalAlignment="Left" Margin="264,160,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0">
+            <Image x:Name="imgBt_1_2" Height="60" Width="60" Source="../Resources/icon_circle_bright.png"/>
+        </Button>
+        <Button x:Name="btGame_1_3" HorizontalAlignment="Left" Margin="349,160,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0">
+            <Image x:Name="imgBt_1_3" Height="60" Width="60" Source="../Resources/icon_cross_dark.png"/>
+        </Button>
+        <Button x:Name="btGame_2_1" HorizontalAlignment="Left" Margin="179,245,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0">
+            <Image x:Name="imgBt_2_1" Height="60" Width="60" Source="../Resources/icon_cross_bright.png"/>
+        </Button>
+        <Button x:Name="btGame_2_2" HorizontalAlignment="Left" Margin="264,245,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0">
+            <Image x:Name="imgBt_2_2" Height="60" Width="60" Source="../Resources/icon_circle_dark.png"/>
+        </Button>
+        <Button x:Name="btGame_2_3" HorizontalAlignment="Left" Margin="349,245,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0">
+            <Image x:Name="imgBt_2_3" Height="60" Width="60"/>
+        </Button>
+        <Button x:Name="btGame_3_1" HorizontalAlignment="Left" Margin="179,330,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0">
+            <Image x:Name="imgBt_3_1" Height="60" Width="60"/>
+        </Button>
+        <Button x:Name="btGame_3_2" HorizontalAlignment="Left" Margin="264,330,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0">
+            <Image x:Name="imgBt_3_2" Height="60" Width="60"/>
+        </Button>
+        <Button x:Name="btGame_3_3" HorizontalAlignment="Left" Margin="349,330,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0">
+            <Image x:Name="imgBt_3_3" Height="60" Width="60"/>
+        </Button>
     </Grid>
 </controls:BaseControl>
