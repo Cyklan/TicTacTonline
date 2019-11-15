@@ -21,13 +21,13 @@ namespace Client.Controls
     /// </summary>
     public partial class JoinGameControl : BaseControl
     {
-        RoomDocument Room { get; set; }
+        RoomDocument ControlRoom { get; set; }
 
         public JoinGameControl(RoomDocument room)
         {
             InitializeComponent();
 
-            Room = room;
+            ControlRoom = room;
 
             lbRoomName.Content = room.Name;
 
@@ -38,7 +38,7 @@ namespace Client.Controls
 
         private void btJoinGame_Click(object sender, RoutedEventArgs e)
         {
-            if(Room.RoomStatus != RoomStatus.Open) { return; }
+            if(ControlRoom.RoomStatus != RoomStatus.Open) { return; }
 
             Response response = Exchange(new Request()
             {
@@ -51,7 +51,7 @@ namespace Client.Controls
                     },
                     User = User
                 },
-                Body = Room
+                Body = ControlRoom
             });
 
             if (response.Header.Code != ResponseCode.JoinedRoom)

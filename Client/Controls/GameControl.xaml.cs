@@ -71,5 +71,16 @@ namespace Client.Controls
         {
 
         }
+
+        private void imgBt_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void imgBt_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
+
     }
 }

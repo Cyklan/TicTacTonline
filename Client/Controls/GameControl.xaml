@@ -6,8 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client"
-             mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d">
     <Grid>
         <Rectangle Fill="White" Margin="602,0,0,0" Stroke="#FFCFCFCF"/>
         <Rectangle Fill="White" HorizontalAlignment="Left" Height="50" Stroke="#FFCFCFCF" VerticalAlignment="Top" Width="602"/>
