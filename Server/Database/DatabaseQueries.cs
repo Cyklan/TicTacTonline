@@ -67,6 +67,18 @@ namespace Server.Database
 
         public bool AddUserToRoom(User user, int roomId) => database.ExecuteNonQuery($"UPDATE users SET roomid = '{roomId}' WHERE (name='{user.Name}');") == 1;
 
+        public List<int> GetRoomsWithoutPlayers()
+        {
+            List<int> rooms = new List<int>();
+
+            database.ExecuteQuery($"SELECT id FROM rooms r LEFT JOIN users u ON r.id = u.roomid WHERE statusid !={(int)RoomStatus.Closed} AND u.roomid IS NULL;").ForEach(room =>
+            {
+                rooms.Add((int)room["id"]);
+            });
+
+            return rooms;
+        }
+
         public List<RoomDocument> GetRooms()
         {
             List<RoomDocument> rooms = new List<RoomDocument>();
@@ -87,7 +99,7 @@ namespace Server.Database
                             {
                                 Name = room["username"].ToString(),
                                 IpAddress = room["ip"].ToString(),
-                                Port = (int)room["port"]
+                                Port = room["port"] is DBNull ? 0 : (int)room["port"]
                             }
                         }
                     });
@@ -99,7 +111,7 @@ namespace Server.Database
                     {
                         Name = room["username"].ToString(),
                         IpAddress = room["ip"].ToString(),
-                        Port = (int)room["port"]
+                        Port = room["port"] is DBNull ? 0 : (int)room["port"]
                     };
                 }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Models;
 using Server.Communication;
@@ -16,11 +17,15 @@ namespace Server
     {
         private static readonly ServerConfiguration serverConfig = new ServerConfiguration();
         private static WatsonWsServer server;
-        private static List<User> clients;
+        /// <summary>
+        /// Der verbundene User und ob eine Anfrage bearbeitet wird
+        /// </summary>
+        private static Dictionary<User, bool> clients;
         private static readonly Log log = new Log();
         private static bool stopReceive = false;
         private static readonly Converter converter = new Converter();
         private static RequestHandler requestHandler = new RequestHandler();
+        private static Cleaner cleaner = new Cleaner();
 
         static void Main(string[] args)
         {
@@ -34,11 +39,12 @@ namespace Server
                 log.Add("Starting server");
 
                 serverConfig.Load();
+                clients = new Dictionary<User, bool>();
 
-                clients = new List<User>();
                 InitializeModules();
-
                 InitializeServer();
+
+                cleaner.Start();
                 server.Start();
 
                 while (ShowAndHandleMenu(Console.ReadLine())) { }
@@ -52,9 +58,27 @@ namespace Server
             finally
             {
                 log.Add("Closing server");
+                log.Add("Receiving stopped");
+                stopReceive = true;
 
-                if (!(server is null)) { clients.ForEach(x => server.DisconnectClient(x.IpPort)); server.Dispose(); }
+                if (!(server is null))
+                {
+                    log.Add("Waiting for requests to be processed");
+                    while (clients.Any(x => x.Value)) { Thread.Sleep(10); }
+
+                    log.Add("Disconnecting users");
+                    foreach (KeyValuePair<User, bool> user in clients)
+                    {
+                        server.DisconnectClient(user.Key.IpPort);
+                    }
+
+                    server.Dispose();
+                }
+
+                cleaner.Stop();
+
                 log.Stop();
+
                 GC.Collect();
                 Environment.Exit(exitCode);
 
@@ -69,7 +93,10 @@ namespace Server
                     return false;
 
                 case ".clients":
-                    clients.ForEach(x => log.Add(x.ToString(), MessageType.Debug));
+                    foreach (KeyValuePair<User, bool> user in clients)
+                    {
+                        log.Add(user.ToString(), MessageType.Debug);
+                    }
                     break;
 
                 case ".pause":
@@ -79,8 +106,18 @@ namespace Server
                 case ".continue":
                     stopReceive = false;
                     break;
+
+                case ".clean":
+                    cleaner.Clean();
+                    break;
+
                 default:
-                    log.Add($"Commands: {Environment.NewLine} .stop {Environment.NewLine} .clients {Environment.NewLine} .pause {Environment.NewLine} .continue", MessageType.Debug);
+                    log.Add($"Commands: {Environment.NewLine}" +
+                        $" .stop {Environment.NewLine} " +
+                        $".clients {Environment.NewLine} " +
+                        $".pause {Environment.NewLine} " +
+                        $".continue {Environment.NewLine} " +
+                        $".clean", MessageType.Debug);
                     break;
             }
 
@@ -96,6 +133,17 @@ namespace Server
             server.MessageReceived += MessageReceived;
 
             log.Add($"Server running at {serverConfig.Ip}:{serverConfig.Port}");
+        }
+
+        private static void InitializeModules()
+        {
+            log.Add("Initializing Modules");
+
+            requestHandler.Modules.Add(new LoginModule());
+            requestHandler.Modules.Add(new GameModule());
+            requestHandler.Modules.Add(new RoomModule());
+
+            foreach (Module m in requestHandler.Modules) { log.Add("Initialized " + m.Name); }
         }
 
         private static void CheckConfig()
@@ -117,15 +165,9 @@ namespace Server
 
         }
 
-        private static void InitializeModules()
+        public static bool IsUserConnected(string ipPort)
         {
-            log.Add("Initializing Modules");
-
-            requestHandler.Modules.Add(new LoginModule());
-            requestHandler.Modules.Add(new GameModule());
-            requestHandler.Modules.Add(new RoomModule());
-
-            foreach (Module m in requestHandler.Modules) { log.Add("Initialized " + m.Name); }
+            return clients.Any(x => x.Key.IpPort == ipPort);
         }
 
         // supresses warning because of missing await
@@ -135,7 +177,7 @@ namespace Server
         {
             try
             {
-                clients.Add(new User(ipPort));
+                clients.Add(new User(ipPort), false);
                 log.Add($"Client {ipPort} connected");
             }
             catch (Exception ex)
@@ -152,7 +194,7 @@ namespace Server
 
             try
             {
-                clients.Remove(clients.First(x => x.IpPort == ipPort));
+                clients.Remove(clients.First(x => x.Key.IpPort == ipPort).Key);
                 log.Add($"Client {ipPort} disconnected");
             }
             catch (Exception ex)
@@ -177,6 +219,7 @@ namespace Server
                 SyncClientData(ipPort, request.Header.User);
 
                 log.Add($"Received {converter.ConvertObjectToJson(request)} from {request.Header.User}", request.Header.User, MessageType.Normal);
+                if (stopReceive) { throw new Exception("Handling of requests stopped"); }
 
                 Response response = requestHandler.HandleRequest(request);
                 log.Add($"Sending {converter.ConvertObjectToJson(response)} to {string.Join(",", response.Header.Targets.Select(x => x.ToString()))}", request.Header.User, MessageType.Normal);
@@ -184,13 +227,15 @@ namespace Server
                 foreach (User user in response.Header.Targets)
                 {
                     User temp = user;
-                    if (string.IsNullOrEmpty(user.IpAddress) || user.Port == 0) { temp = clients.FirstOrDefault(x => x.Name == user.Name); }
+                    if (string.IsNullOrEmpty(user.IpAddress) || user.Port == 0) { temp = clients.FirstOrDefault(x => x.Key.Name.ToLower() == user.Name.ToLower()).Key; }
 
                     if (temp == null || !await server.SendAsync(temp.IpPort, converter.ConvertStringToBytes(converter.ConvertObjectToJson(response))))
                     {
                         log.Add($"Message {response.Header.MessageNumber} could not be send to {temp}.");
                     }
                 }
+
+                clients[clients.FirstOrDefault(x => x.Key.IpPort == ipPort).Key] = false;
             }
             catch (Exception ex)
             {
@@ -201,12 +246,14 @@ namespace Server
 
         private static void SyncClientData(string ipPortRequest, User requestUser)
         {
-            User connectedClient = clients.FirstOrDefault(x => x.IpPort == ipPortRequest);
+            User connectedClient = clients.FirstOrDefault(x => x.Key.IpPort == ipPortRequest).Key;
 
             connectedClient.Name = requestUser.Name;
             connectedClient.PasswordHash = requestUser.PasswordHash;
 
             requestUser.IpPort = ipPortRequest;
+
+            clients[connectedClient] = true;
         }
 
         private static Document GetBody(byte[] data)

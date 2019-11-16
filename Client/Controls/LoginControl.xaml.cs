@@ -50,6 +50,7 @@ namespace Client.Controls
             {
                 case ResponseCode.PlannedError:
                     lbLoginError.Content = response.Header.Message;
+                    User = null;
                     break;
 
                 case ResponseCode.Ok:

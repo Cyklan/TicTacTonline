@@ -15,6 +15,16 @@ namespace Server.Modules
 
             using DatabaseQueries db = new DatabaseQueries(request.Header.User);
 
+            try
+            {
+                Authenticate(request.Header.User);
+                header.Code = ResponseCode.PlannedError;
+                header.Message = "Already logged in";
+                return new Response { Header = header, Body = new Document() };
+            }
+            catch { }
+          
+
             if (db.LoginUser(request.Header.User))
             {
                 header.Code = ResponseCode.Ok;

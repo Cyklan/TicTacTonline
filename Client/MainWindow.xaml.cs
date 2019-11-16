@@ -102,7 +102,9 @@ namespace Client
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // abmelden, wenn die Form geschlossen wird, antowrt ist dabei egal, weil die Form dann zu ist.
+            if(User is null) { return; }
+
+            // abmelden, wenn die Form geschlossen wird, antwort ist dabei egal, weil die Form dann zu ist.
             RequestHeader header = new RequestHeader() { User = User };
             header.Identifier = new Identifier() { Function = "logout", Module = "loginModule" };
 
