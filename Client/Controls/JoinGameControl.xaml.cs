@@ -38,28 +38,16 @@ namespace Client.Controls
 
         private void btJoinGame_Click(object sender, RoutedEventArgs e)
         {
-            if(ControlRoom.RoomStatus != RoomStatus.Open) { return; }
+            if (ControlRoom.RoomStatus != RoomStatus.Open) { return; }
 
-            Response response = Exchange(new Request()
-            {
-                Header = new RequestHeader()
-                {
-                    Identifier = new Identifier()
-                    {
-                        Module = "RoomModule",
-                        Function = "JoinRoom"
-                    },
-                    User = User
-                },
-                Body = ControlRoom
-            });
+            Response response = Exchange(ControlRoom, "RoomModule", "JoinRoom");
 
             if (response.Header.Code != ResponseCode.JoinedRoom)
             {
                 throw new Exception(response.Header.Message);
             }
 
-            base.Room = (RoomDocument)response.Body;
+            Room = (RoomDocument)response.Body;
             ChangeControl(MainWindow.Controls.GameLobby);
         }
 

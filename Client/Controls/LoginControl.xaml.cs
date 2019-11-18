@@ -39,10 +39,7 @@ namespace Client.Controls
 
             User = new User(tbLoginUsername.Text, "0:0", tbLoginPassword.Password);
 
-            RequestHeader header = new RequestHeader() { User = User };
-            header.Identifier = new Identifier() { Function = "login", Module = "loginModule" };
-
-            Response response = Exchange(new Request() { Header = header, Body = new Document() });
+            Response response = Exchange(new Document(), "LoginModule", "Login");
 
             User = response.Header.Targets.First();
 

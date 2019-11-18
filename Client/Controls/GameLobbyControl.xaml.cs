@@ -78,25 +78,13 @@ namespace Client.Controls
                 tbGameLobbyChat.AppendText($"{User.Name}: " + tbGameLobbyChatMessage.Text + "\n");
                 tbGameLobbyChat.ScrollToEnd();
 
-                Send(new Request()
+                Send(new ChatDocument()
                 {
-                    Header = new RequestHeader()
-                    {
-                        Identifier = new Identifier()
-                        {
-                            Function = "SendMessage",
-                            Module = "GameModule"
-                        },
-                        User = User
-                    },
-                    Body = new ChatDocument()
-                    {
-                        Message = tbGameLobbyChatMessage.Text,
-                        RoomId = Room.Id,
-                        Target = GetOpponent(),
-                        Timestamp = DateTime.Now
-                    }
-                });
+                    Message = tbGameLobbyChatMessage.Text,
+                    RoomId = Room.Id,
+                    Target = GetOpponent(),
+                    Timestamp = DateTime.Now
+                }, "GameModule", "SendMessage");
 
                 tbGameLobbyChatMessage.Text = "";
 
@@ -106,24 +94,11 @@ namespace Client.Controls
         private void btGameLobbyOpen_Click(object sender, RoutedEventArgs e)
         {
             lbGameLobbyError.Content = "";
-
-            Response response = Exchange(new Request()
+            Response response = Exchange(new RoomDocument()
             {
-                Header = new RequestHeader()
-                {
-                    Identifier = new Identifier()
-                    {
-                        Module = "RoomModule",
-                        Function = "CreateRoom"
-                    },
-                    User = User
-                },
-                Body = new RoomDocument()
-                {
-                    Name = tbgameLobbyName.Text,
-                    Password = ""
-                }
-            });
+                Name = tbgameLobbyName.Text,
+                Password = ""
+            }, "RoomModule", "CreateRoom");
 
             if (response.Header.Code != ResponseCode.Ok)
             {
@@ -189,6 +164,7 @@ namespace Client.Controls
                 btGameLobbyOpen.Visibility = Visibility.Hidden;
             }
 
+            tbgameLobbyName.Text = $"{User.Name}'s game"; 
             UpdateButtons();
         }
 
@@ -220,23 +196,11 @@ namespace Client.Controls
         {
             lbGameLobbyError.Content = "";
 
-            Response response = Exchange(new Request()
+            Response response = Exchange(new RemovePlayerFromRoomDocument()
             {
-                Header = new RequestHeader()
-                {
-                    Identifier = new Identifier
-                    {
-                        Function = "LeaveRoom",
-                        Module = "RoomModule"
-                    },
-                    User = User
-                },
-                Body = new RemovePlayerFromRoomDocument()
-                {
-                    PlayerToRemove = user,
-                    Room = Room
-                }
-            });
+                PlayerToRemove = user,
+                Room = Room
+            }, "RoomModule", "LeaveRoom");
 
             if (response.Header.Code != ResponseCode.LeftRoom)
             {
