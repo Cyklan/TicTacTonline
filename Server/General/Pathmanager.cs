@@ -50,6 +50,14 @@ namespace Server.General
             }
         }
 
+        public string CleanerConfigurationPath
+        {
+            get
+            {
+                return Path.Combine(ConfigurationDirectory, "CleanerConfiguration.json");
+            }
+        }
+
         public string LogFilePath
         {
             get

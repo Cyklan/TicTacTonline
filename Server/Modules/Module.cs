@@ -2,6 +2,7 @@
 using System.Reflection;
 using Models;
 using Server.General;
+using Server.Communication;
 
 namespace Server.Modules
 {
@@ -24,7 +25,10 @@ namespace Server.Modules
 
             foreach (MethodInfo m in GetType().GetRuntimeMethods())
             {
-                if (m.Name.ToLower() == request.Header.Identifier.Function.ToLower())
+                object[] attributes = m.GetCustomAttributes(typeof(FunctionAttribute), true);
+                if (attributes.Length <= 0) continue;
+
+                if (((FunctionAttribute)attributes[0]).Name.ToLower() == request.Header.Identifier.Function.ToLower())
                 {
                     return (Response)m.Invoke(this, new object[] { request });
                 }

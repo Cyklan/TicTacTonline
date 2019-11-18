@@ -150,6 +150,7 @@ namespace Server
         {
             log.Add("Checking Configurations");
             DatabaseConfiguration dbConf = new DatabaseConfiguration();
+            CleanerConfiguration cleanerConf = new CleanerConfiguration();
 
             if (!serverConfig.IsAvailable())
             {
@@ -161,6 +162,12 @@ namespace Server
             {
                 log.Add("Database configuration not present. Applying default settings.");
                 dbConf.Setup();
+            }
+
+            if (!cleanerConf.IsAvailable())
+            {
+                log.Add("Cleaner configuration not present. Applying default settings.");
+                cleanerConf.Setup();
             }
 
         }

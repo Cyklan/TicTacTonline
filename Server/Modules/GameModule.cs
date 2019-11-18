@@ -1,4 +1,5 @@
 ﻿using Models;
+using Server.Communication;
 using Server.Database;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Server.Modules
     {
         public GameModule() : base("GameModule") { }
 
+        [Function("StartGame")]
         private Response StartGame(Request request)
         {
             ResponseHeader header = new ResponseHeader();
@@ -33,6 +35,7 @@ namespace Server.Modules
             return new Response() { Header = header, Body = document };
         }
 
+        [Function("HandleTurn")]
         private Response HandleTurn(Request request)
         {
             ResponseHeader header = new ResponseHeader();
@@ -72,6 +75,7 @@ namespace Server.Modules
             return new Response() { Header = header, Body = document };
         }
 
+        [Function("SendMessage")]
         private Response SendMessage(Request request)
         {
             ResponseHeader header = new ResponseHeader();
@@ -85,6 +89,7 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
+        [Function("SaveGame")]
         private void SaveGame(RoomDocument document, User winner, DatabaseQueries db)
         {
             db.ChangeRoomStatus(document.Id, RoomStatus.Closed);

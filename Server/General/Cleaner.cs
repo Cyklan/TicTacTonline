@@ -13,9 +13,12 @@ namespace Server.General
         private bool run;
         private Log log = new Log();
         private User cleanerUser;
+        private Configurations.CleanerConfiguration CleanerConfiguration = new Configurations.CleanerConfiguration();
 
         public void Start()
         {
+            CleanerConfiguration.Load();
+
             cleanerUser = new User()
             {
                 Name = "Cleaner",
@@ -43,7 +46,7 @@ namespace Server.General
 
             while (run)
             {
-                if (DateTime.Now > startTime.AddMinutes(1))
+                if (DateTime.Now > startTime.AddMinutes(CleanerConfiguration.IntervalInMinutes))
                 {
                     Log("Cleaning started");
                     startTime = DateTime.Now;

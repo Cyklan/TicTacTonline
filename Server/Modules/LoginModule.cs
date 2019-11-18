@@ -2,6 +2,7 @@
 using System.Linq;
 using Models;
 using Server.Database;
+using Server.Communication;
 
 namespace Server.Modules
 {
@@ -9,6 +10,7 @@ namespace Server.Modules
     {
         public LoginModule() : base("LoginModule", false) { }
 
+        [Function("Login")]
         private Response Login(Request request)
         {
             ResponseHeader header = new ResponseHeader { Targets = new List<User> { request.Header.User } };
@@ -39,6 +41,7 @@ namespace Server.Modules
             return new Response { Header = header, Body = new Document() };
         }
 
+        [Function("Register")]
         private Response Register(Request request)
         {
             ResponseHeader header = new ResponseHeader { Targets = new List<User> { request.Header.User } };
@@ -60,6 +63,7 @@ namespace Server.Modules
             return new Response { Header = header, Body = new Document() };
         }
 
+        [Function("Logout")]
         private Response Logout(Request request)
         {
             ResponseHeader header = new ResponseHeader { Targets = new List<User> { request.Header.User } };

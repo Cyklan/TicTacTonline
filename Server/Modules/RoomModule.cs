@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Server.Database;
 using System.Linq;
+using Server.Communication;
 
 namespace Server.Modules
 {
@@ -12,6 +13,7 @@ namespace Server.Modules
     {
         public RoomModule() : base("RoomModule") { }
 
+        [Function("GetRooms")]
         private Response GetRooms(Request request)
         {
             ResponseHeader header = new ResponseHeader() { Targets = new List<User> { request.Header.User } };
@@ -26,6 +28,7 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
+        [Function("CreateRoom")]
         private Response CreateRoom(Request request)
         {
             ResponseHeader header = new ResponseHeader() { Targets = new List<User> { request.Header.User } };
@@ -59,6 +62,7 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
+        [Function("JoinRoom")]
         private Response JoinRoom(Request request)
         {
             ResponseHeader header = new ResponseHeader();
@@ -126,6 +130,7 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
+        [Function("LeaveRoom")]
         private Response LeaveRoom(Request request)
         {
             ResponseHeader header = new ResponseHeader();

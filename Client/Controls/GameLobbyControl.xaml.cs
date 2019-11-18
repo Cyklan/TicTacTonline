@@ -142,8 +142,12 @@ namespace Client.Controls
 
         private void btGameLobbyLeave_Click(object sender, RoutedEventArgs e)
         {
-            RemovePlayer(User);
-            Room = null;
+            if (Room != null)
+            {
+                RemovePlayer(User);
+                Room = null;
+            }
+
             ChangeControl(MainWindow.Controls.Main);
         }
 
@@ -205,7 +209,7 @@ namespace Client.Controls
                 btGameLobbyStart.IsEnabled = false;
             }
 
-            if (Room.Game.Player1 is null || Room.Game.Player2 is null)
+            if (Room != null && (Room.Game.Player1 is null || Room.Game.Player2 is null))
             {
                 btGameLobbyStart.IsEnabled = false;
             }
