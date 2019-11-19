@@ -6,18 +6,13 @@ using System.Linq;
 namespace Server.Database
 {
 
-    public class DatabaseQueries : IDisposable
+    public class DatabaseQueries
     {
-        private DatabaseWrapper database;
+        private readonly DatabaseWrapper database;
 
         public DatabaseQueries(User user)
         {
             database = new DatabaseWrapper(user);
-        }
-
-        public void Dispose()
-        {
-            database = null;
         }
 
         #region Login

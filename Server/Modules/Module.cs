@@ -11,6 +11,7 @@ namespace Server.Modules
         public string Name { get; set; }
         private readonly bool authenticate;
         protected Log Log { get; set; }
+        protected Database.DatabaseQueries db;
 
         public Module(string name, bool authenticate = true)
         {
@@ -21,8 +22,6 @@ namespace Server.Modules
 
         public Response ProcessRequest(Request request)
         {
-            if (authenticate) Authenticate(request.Header.User);
-
             foreach (MethodInfo m in GetType().GetRuntimeMethods())
             {
                 object[] attributes = m.GetCustomAttributes(typeof(FunctionAttribute), true);
@@ -30,6 +29,8 @@ namespace Server.Modules
 
                 if (((FunctionAttribute)attributes[0]).Name.ToLower() == request.Header.Identifier.Function.ToLower())
                 {
+                    db = new Database.DatabaseQueries(request.Header.User);
+                    if (authenticate) Authenticate(request.Header.User);
                     return (Response)m.Invoke(this, new object[] { request });
                 }
             }
@@ -39,7 +40,6 @@ namespace Server.Modules
 
         protected void Authenticate(User user)
         {
-            using Database.DatabaseQueries db = new Database.DatabaseQueries(user);
             if (!db.IsUserLoggedIn(user))
             {
                 throw new Exception($"User {user} is not logged in.");

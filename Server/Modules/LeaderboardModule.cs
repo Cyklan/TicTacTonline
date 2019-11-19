@@ -12,7 +12,7 @@ namespace Server.Modules
         public LeaderboardModule() : base("MatchHistoryModule") { }
 
         [Function("Get")]
-        private Response GetLeaderboard(Request request)
+        public Response GetLeaderboard(Request request)
         {
             throw new Exception();
         }

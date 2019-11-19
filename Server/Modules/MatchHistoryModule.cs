@@ -11,7 +11,7 @@ namespace Server.Modules
         public MatchHistoryModule() : base("MatchHistoryModule") { }
 
         [Function("Get")]
-        private Response GetMatchHistory(Request request)
+        public Response GetMatchHistory(Request request)
         {
             throw new NotImplementedException();
         }

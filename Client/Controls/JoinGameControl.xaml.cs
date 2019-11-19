@@ -34,11 +34,13 @@ namespace Client.Controls
             lbUser1.Content = room.Game.Player1 != null ? room.Game.Player1.Name : "";
             lbUser2.Content = room.Game.Player2 != null ? room.Game.Player2.Name : "";
             lbStatus.Content = room.RoomStatus;
+            if (string.IsNullOrEmpty(ControlRoom.Password)) pbRoomPassword.Visibility = Visibility.Hidden; 
         }
 
         private void btJoinGame_Click(object sender, RoutedEventArgs e)
         {
-            if (ControlRoom.RoomStatus != RoomStatus.Open) { return; }
+            if (ControlRoom.RoomStatus != RoomStatus.Open) return;
+            if (ControlRoom.Password != pbRoomPassword.Password) return;
 
             Response response = Exchange(ControlRoom, "RoomModule", "JoinRoom");
 

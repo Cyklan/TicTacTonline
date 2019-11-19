@@ -97,7 +97,7 @@ namespace Client.Controls
             Response response = Exchange(new RoomDocument()
             {
                 Name = tbgameLobbyName.Text,
-                Password = ""
+                Password = tbgameLobbyPassword.Text
             }, "RoomModule", "CreateRoom");
 
             if (response.Header.Code != ResponseCode.Ok)
@@ -111,6 +111,7 @@ namespace Client.Controls
             tbgameLobbyName.IsReadOnly = true;
             btGameLobbyOpen.Visibility = Visibility.Hidden;
             lbGameLobbyPlayerHost.Content = User.Name;
+            tbgameLobbyPassword.IsReadOnly = true;
 
             UpdateButtons();
         }
@@ -164,7 +165,6 @@ namespace Client.Controls
                 btGameLobbyOpen.Visibility = Visibility.Hidden;
             }
 
-            tbgameLobbyName.Text = $"{User.Name}'s game"; 
             UpdateButtons();
         }
 
@@ -243,6 +243,7 @@ namespace Client.Controls
             if (lbGameLobbyPlayerHost.Content.ToString() != User.Name.ToString())
             {
                 lbGameLobbyPlayerHost.Content = lbgameLobbyPlayer2.Content;
+                tbgameLobbyPassword.Text = Room.Password;
                 lbgameLobbyPlayer2.Content = "";
             }
             else

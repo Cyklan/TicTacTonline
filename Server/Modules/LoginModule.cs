@@ -11,11 +11,9 @@ namespace Server.Modules
         public LoginModule() : base("LoginModule", false) { }
 
         [Function("Login")]
-        private Response Login(Request request)
+        public Response Login(Request request)
         {
             ResponseHeader header = new ResponseHeader { Targets = new List<User> { request.Header.User } };
-
-            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
 
             try
             {
@@ -25,7 +23,6 @@ namespace Server.Modules
                 return new Response { Header = header, Body = new Document() };
             }
             catch { }
-          
 
             if (db.LoginUser(request.Header.User))
             {
@@ -42,11 +39,9 @@ namespace Server.Modules
         }
 
         [Function("Register")]
-        private Response Register(Request request)
+        public Response Register(Request request)
         {
             ResponseHeader header = new ResponseHeader { Targets = new List<User> { request.Header.User } };
-
-            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
 
             if (db.GetUsers().Any(x => x.Name.ToLower() == request.Header.User.Name.ToLower()))
             {
@@ -64,17 +59,16 @@ namespace Server.Modules
         }
 
         [Function("Logout")]
-        private Response Logout(Request request)
+        public Response Logout(Request request)
         {
             ResponseHeader header = new ResponseHeader { Targets = new List<User> { request.Header.User } };
 
             Authenticate(request.Header.User);
-            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
 
             if (db.LogoutUser(request.Header.User))
             {
                 db.RemoveUserFromRoom(request.Header.User);
-    
+
                 header.Code = ResponseCode.Ok;
                 header.Message = "User logged out successfully";
             }
