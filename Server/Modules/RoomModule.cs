@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Server.Database;
 using System.Linq;
+using Server.Communication;
 
 namespace Server.Modules
 {
@@ -12,13 +13,14 @@ namespace Server.Modules
     {
         public RoomModule() : base("RoomModule") { }
 
-        private Response GetRooms(Request request)
+        [Function("GetRooms")]
+        public Response GetRooms(Request request)
         {
             ResponseHeader header = new ResponseHeader() { Targets = new List<User> { request.Header.User } };
-            RoomsDocument body = new RoomsDocument();
-
-            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
-            body.Rooms = db.GetRooms();
+            RoomsDocument body = new RoomsDocument
+            {
+                Rooms = db.GetRooms()
+            };
 
             header.Code = ResponseCode.Ok;
             header.Message = $"Found '{body.Rooms.Count}' rooms";
@@ -26,13 +28,13 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
-        private Response CreateRoom(Request request)
+        [Function("CreateRoom")]
+        public Response CreateRoom(Request request)
         {
             ResponseHeader header = new ResponseHeader() { Targets = new List<User> { request.Header.User } };
             RoomDocument body = (RoomDocument)request.Body;
             body.Game = new Game() { Player1 = request.Header.User };
 
-            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
             body.Id = db.CreateNewGame(body.Name, body.Password);
 
             if (body.Id < 0)
@@ -59,7 +61,8 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
-        private Response JoinRoom(Request request)
+        [Function("JoinRoom")]
+        public Response JoinRoom(Request request)
         {
             ResponseHeader header = new ResponseHeader();
             RoomDocument body = (RoomDocument)request.Body;
@@ -70,7 +73,6 @@ namespace Server.Modules
                 request.Header.User
             };
 
-            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
             rooms = db.GetRooms().Where(x => x.Id == body.Id).ToList();
 
             if (rooms.Count() == 0)
@@ -126,7 +128,8 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
-        private Response LeaveRoom(Request request)
+        [Function("LeaveRoom")]
+        public Response LeaveRoom(Request request)
         {
             ResponseHeader header = new ResponseHeader();
             RemovePlayerFromRoomDocument body = (RemovePlayerFromRoomDocument)request.Body;
@@ -137,7 +140,6 @@ namespace Server.Modules
                 request.Header.User
             };
 
-            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
             if (!db.RemoveUserFromRoom(body.PlayerToRemove))
             {
                 header.Code = ResponseCode.PlannedError;

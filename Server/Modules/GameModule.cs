@@ -1,4 +1,5 @@
 ﻿using Models;
+using Server.Communication;
 using Server.Database;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,13 @@ namespace Server.Modules
     {
         public GameModule() : base("GameModule") { }
 
-        private Response StartGame(Request request)
+        [Function("StartGame")]
+        public Response StartGame(Request request)
         {
             ResponseHeader header = new ResponseHeader();
             RoomDocument document = (RoomDocument)request.Body;
             header.Targets = new List<User> { document.Game.Player1, document.Game.Player2 };
 
-            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
             if (!db.ChangeRoomStatus(document.Id, RoomStatus.Ongoing))
             {
                 header.Code = ResponseCode.PlannedError;
@@ -33,7 +34,8 @@ namespace Server.Modules
             return new Response() { Header = header, Body = document };
         }
 
-        private Response HandleTurn(Request request)
+        [Function("HandleTurn")]
+        public Response HandleTurn(Request request)
         {
             ResponseHeader header = new ResponseHeader();
             RoomDocument document = (RoomDocument)request.Body;
@@ -65,27 +67,26 @@ namespace Server.Modules
                     header.Message = $"Turn {document.Game.RoundsPlayed} processed - {winner.Name} won.";
                 }
 
-                using DatabaseQueries db = new DatabaseQueries(request.Header.User);
-                SaveGame(document, winner, db);
+                SaveGame(document, winner);
             }
 
             return new Response() { Header = header, Body = document };
         }
 
-        private Response SendMessage(Request request)
+        [Function("SendMessage")]
+        public Response SendMessage(Request request)
         {
             ResponseHeader header = new ResponseHeader();
             ChatDocument body = (ChatDocument)request.Body;
             header.Targets = new List<User> { body.Target };
             header.Code = ResponseCode.Message;
 
-            using DatabaseQueries db = new DatabaseQueries(request.Header.User);
             db.SaveMessage(request.Header.User.Name, body.Message, body.RoomId);
 
             return new Response() { Header = header, Body = body };
         }
 
-        private void SaveGame(RoomDocument document, User winner, DatabaseQueries db)
+        private void SaveGame(RoomDocument document, User winner)
         {
             db.ChangeRoomStatus(document.Id, RoomStatus.Closed);
 

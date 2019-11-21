@@ -1,4 +1,5 @@
 ﻿using Models;
+using Server.Communication;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +11,8 @@ namespace Server.Modules
 
         public LeaderboardModule() : base("MatchHistoryModule") { }
 
-        private Response GetLeaderboard(Request request)
+        [Function("Get")]
+        public Response GetLeaderboard(Request request)
         {
             throw new Exception();
         }

@@ -12,7 +12,7 @@
         <Rectangle Fill="White" Margin="0,99,0,0" Stroke="#FFCFCFCF" HorizontalAlignment="Left" Width="602"/>
         <Label x:Name="lbGameLobbyPlayerHost" Content="Spieler 1" HorizontalAlignment="Left" Margin="242,182,0,0" VerticalAlignment="Top" FontSize="24"/>
         <Label x:Name="lbgameLobbyPlayer2" Content="Spieler 2" HorizontalAlignment="Left" Margin="242,274,0,0" VerticalAlignment="Top" FontSize="24"/>
-        <Button x:Name="btGameLobbyOpen" Content="Open" HorizontalAlignment="Left" Margin="221,42,0,0" VerticalAlignment="Top" Width="75" BorderBrush="#FFCDCDCD" Background="White" FontSize="14" Foreground="#DD080808" Click="btGameLobbyOpen_Click"/>
+        <Button x:Name="btGameLobbyOpen" Content="Open" HorizontalAlignment="Left" Margin="301,42,0,0" VerticalAlignment="Top" Width="75" BorderBrush="#FFCDCDCD" Background="White" FontSize="14" Foreground="#DD080808" Click="btGameLobbyOpen_Click"/>
         <ScrollViewer x:Name="ScrollViewer" Margin="602,1,1,26" ScrollChanged="ScrollViewer_OnScrollChanged" Background="White">
             <TextBox x:Name="tbGameLobbyChat" TextWrapping="Wrap" BorderThickness="0" Margin="6,2,2,0" IsReadOnly="True"/>
         </ScrollViewer>
@@ -21,12 +21,15 @@
                 <SolidColorBrush Color="White" Opacity="0.3"/>
             </TextBox.Background>
         </TextBox>
-        <TextBox x:Name="tbgameLobbyName" HorizontalAlignment="Left" Height="31" Margin="30,43,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="168"/>
+        <TextBox x:Name="tbgameLobbyName" Text="New Game"  HorizontalAlignment="Left" Height="31" Margin="27,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112" MaxLength="20"/>
         <Button x:Name="btGameLobbyKick2" Content="Kick" HorizontalAlignment="Left" Margin="176,284,0,0" VerticalAlignment="Top" Width="61" Height="31" BorderBrush="#FFCDCDCD" Background="White" FontSize="12" Foreground="#DD080808" Click="btGameLobbyKick_Click"/>
-        <Button x:Name="btGameLobbyStart" Content="Start" HorizontalAlignment="Left" Margin="413,42,0,0" VerticalAlignment="Top" Width="126" Height="32" BorderBrush="#FFCDCDCD" Background="White" FontSize="18" Foreground="#DD080808" Click="btGameLobbyStart_Click"/>
-        <Button x:Name="btGameLobbyLeave" Content="Leave" HorizontalAlignment="Left" Margin="317,42,0,0" VerticalAlignment="Top" Width="75" BorderBrush="#FFCDCDCD" Background="White" FontSize="14" Foreground="#DD080808" Click="btGameLobbyLeave_Click"/>
-        <Label x:Name="lbGameLobbyError" Content="" HorizontalAlignment="Center" Margin="17,10,392,280" Width="220" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+        <Button x:Name="btGameLobbyStart" Content="Start" HorizontalAlignment="Left" Margin="381,42,0,0" VerticalAlignment="Top" Width="126" Height="32" BorderBrush="#FFCDCDCD" Background="White" FontSize="18" Foreground="#DD080808" Click="btGameLobbyStart_Click"/>
+        <Button x:Name="btGameLobbyLeave" Content="Leave" HorizontalAlignment="Left" Margin="512,42,0,0" VerticalAlignment="Top" Width="75" BorderBrush="#FFCDCDCD" Background="White" FontSize="14" Foreground="#DD080808" Click="btGameLobbyLeave_Click"/>
+        <Label x:Name="lbGameLobbyError" Content="" HorizontalAlignment="Center" Margin="27,76,373,222" Width="229" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Height="18"/>
         <Button x:Name="btGameLobbyKick" Content="Kick" HorizontalAlignment="Left" Margin="176,192,0,0" VerticalAlignment="Top" Width="61" Height="31" BorderBrush="#FFCDCDCD" Background="White" FontSize="12" Foreground="#DD080808" Click="btGameLobbyKick_Click"/>
+        <TextBox x:Name="tbgameLobbyPassword" HorizontalAlignment="Left" Height="31" Margin="144,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112" MaxLength="20"/>
+        <Label x:Name="lbGameLobbyName" Content="Game Name" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" FontSize="18" Height="41"/>
+        <Label x:Name="lbGameLobbyPassword" Content="Password" HorizontalAlignment="Left" Margin="139,10,0,0" VerticalAlignment="Top" FontSize="18" Height="41"/>
 
     </Grid>
 </controls:BaseControl>

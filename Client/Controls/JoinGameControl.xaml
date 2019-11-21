@@ -7,12 +7,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client"
              mc:Ignorable="d" Height="40" Background="White" Foreground="#FFE2E2E2" Margin="1">
-    <Grid>
-        <Button x:Name="btJoinGame" Content="Join" HorizontalAlignment="Right" Margin="400,5,5,5" VerticalAlignment="Top" Width="127" Height="30" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" Click="btJoinGame_Click"/>
+    <Grid Width="589">
+        <Button x:Name="btJoinGame" Content="Join" HorizontalAlignment="Left" Margin="513,5,0,0" VerticalAlignment="Top" Width="64" Height="30" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" Click="btJoinGame_Click"/>
         <Label x:Name="lbRoomName" Content="Lobby Name" HorizontalAlignment="Left" Margin="10,5,0,5" VerticalAlignment="Top" Height="30" FontSize="16"/>
         <Label x:Name="lbUser1" Content="Spieler 1" HorizontalAlignment="Left" Margin="115,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
         <Label x:Name="lbUser2" Content="Spieler 2" HorizontalAlignment="Left" Margin="220,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
         <Label x:Name="lbStatus" Content="Open" HorizontalAlignment="Left" Margin="313,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
+        <PasswordBox x:Name="pbRoomPassword" HorizontalAlignment="Left" Margin="385,10,0,0" VerticalAlignment="Top" Width="123"/>
 
     </Grid>
 </controls:BaseControl>

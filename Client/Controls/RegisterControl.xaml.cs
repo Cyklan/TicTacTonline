@@ -49,10 +49,7 @@ namespace Client.Controls
 
             User = new User(tbRegisterUsername.Text, "0:0", tbRegisterPassword.Password);
 
-            RequestHeader header = new RequestHeader() { User = User };
-            header.Identifier = new Identifier() { Function = "register", Module = "loginModule" };
-
-            Response response = Exchange(new Request() { Header = header, Body = new Document() });
+            Response response = Exchange(new Document(), "LoginModule", "Register");
 
             switch (response.Header.Code)
             {

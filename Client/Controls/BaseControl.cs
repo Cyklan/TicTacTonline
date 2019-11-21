@@ -63,10 +63,44 @@ namespace Client.Controls
             GetMain.ChangeControl(control);
         }
 
+        protected Response Exchange(Document body, string module, string function)
+        {
+            return Exchange(new Request()
+            {
+                Header = new RequestHeader()
+                {
+                    User = User,
+                    Identifier = new Identifier()
+                    {
+                        Module = module,
+                        Function = function
+                    }
+                },
+                Body = body
+            });
+        }
+
         protected Response Exchange(Request request)
         {
             CheckConnectionAndSwitchToConnectionScreen();
             return Client.Exchange(request);
+        }
+
+        protected void Send(Document body, string module, string function )
+        {
+            Send(new Request()
+            {
+                Header = new RequestHeader()
+                {
+                    User = User,
+                    Identifier = new Identifier()
+                    {
+                        Module = module,
+                        Function = function
+                    }
+                },
+                Body = body
+            });
         }
 
         protected void Send(Request request)

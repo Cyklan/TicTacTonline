@@ -11,11 +11,15 @@ namespace Server.General
     {
         private Thread cleanThread;
         private bool run;
-        private Log log = new Log();
+        private readonly Log log = new Log();
         private User cleanerUser;
+        private readonly Configurations.CleanerConfiguration CleanerConfiguration = new Configurations.CleanerConfiguration();
+        private DatabaseQueries db;
 
         public void Start()
         {
+            CleanerConfiguration.Load();
+
             cleanerUser = new User()
             {
                 Name = "Cleaner",
@@ -26,6 +30,7 @@ namespace Server.General
             Log("Starting cleaner");
             cleanThread = new Thread(HandleCleanThread);
             run = true;
+            db = new DatabaseQueries(cleanerUser);
             cleanThread.Start();
         }
 
@@ -43,7 +48,7 @@ namespace Server.General
 
             while (run)
             {
-                if (DateTime.Now > startTime.AddMinutes(1))
+                if (DateTime.Now > startTime.AddMinutes(CleanerConfiguration.IntervalInMinutes))
                 {
                     Log("Cleaning started");
                     startTime = DateTime.Now;
@@ -61,7 +66,6 @@ namespace Server.General
         private void CleanUsers()
         {
             Log("Cleaning users started");
-            using DatabaseQueries db = new DatabaseQueries(cleanerUser);
             foreach (User user in db.GetUsers())
             {
                 if (!db.IsUserLoggedIn(user)) { continue; }
@@ -75,7 +79,6 @@ namespace Server.General
         private void CleanRooms()
         {
             Log("Cleaning rooms started");
-            using DatabaseQueries db = new DatabaseQueries(cleanerUser);
             foreach (RoomDocument room in db.GetRooms())
             {
                 switch (room.RoomStatus)

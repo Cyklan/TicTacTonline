@@ -75,19 +75,7 @@ namespace Client.Controls
         {
             mainGameList.Children.Clear();
 
-            Response response = Exchange(new Request()
-            {
-                Header = new RequestHeader()
-                {
-                    Identifier = new Identifier()
-                    {
-                        Module = "RoomModule",
-                        Function = "GetRooms"
-                    },
-                    User = User
-                },
-                Body = new Document()
-            });
+            Response response = Exchange(new Document(), "RoomModule", "GetRooms");
 
             if (response.Header.Code != ResponseCode.Ok)
             {
