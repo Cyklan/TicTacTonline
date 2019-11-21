@@ -38,6 +38,41 @@ namespace Client.Controls
 
         private void btMainRefresh_Click(object sender, RoutedEventArgs e)
         {
+            Refresh();
+        }
+
+        private void btMainLeaderboard_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeControl(MainWindow.Controls.Leaderboard);
+        }
+
+        private void btMainGameHistory_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btMainOptions_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeControl(MainWindow.Controls.Options);
+        }
+
+        private void grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            btMainRefresh_Click(this, null);
+        }
+
+        private void cbMainShowFullGames_Checked(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+        }
+
+        private void cbMainShowRunningGames_Checked(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+        }
+
+        private void Refresh()
+        {
             mainGameList.Children.Clear();
 
             Response response = Exchange(new Request()
@@ -62,28 +97,11 @@ namespace Client.Controls
 
             foreach (RoomDocument roomdocument in ((RoomsDocument)response.Body).Rooms)
             {
+                if (!(bool)cbMainShowFullGames.IsChecked && roomdocument.RoomStatus == RoomStatus.Full) continue;
+                if (!(bool)cbMainShowRunningGames.IsChecked && roomdocument.RoomStatus == RoomStatus.Ongoing) continue;
+
                 mainGameList.Children.Add(new JoinGameControl(roomdocument));
             }
-        }
-
-        private void btMainLeaderboard_Click(object sender, RoutedEventArgs e)
-        {
-            ChangeControl(MainWindow.Controls.Leaderboard);
-        }
-
-        private void btMainGameHistory_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btMainOptions_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void grid_Loaded(object sender, RoutedEventArgs e)
-        {
-            btMainRefresh_Click(this, null);
         }
     }
 }

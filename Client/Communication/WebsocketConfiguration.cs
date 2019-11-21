@@ -46,5 +46,10 @@ namespace Client.Communication
             }
         }
 
+        public void Save()
+        {
+            File.WriteAllText(pathmanager.WebsocketConfigurationPath , converter.ConvertObjectToJson(this));
+        }
+
     }
 }

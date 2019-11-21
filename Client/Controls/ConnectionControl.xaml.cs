@@ -69,5 +69,10 @@ namespace Client.Controls
 
             GetMain.ChangeControl(MainWindow.Controls.Login);
         }
+
+        private void btConnectionOptions_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeControl(MainWindow.Controls.Options);
+        }
     }
 }

@@ -205,7 +205,7 @@ namespace Client.Controls
                 btGameLobbyStart.IsEnabled = false;
             }
 
-            if (Room.Game.Player1 is null || Room.Game.Player2 is null)
+            if (Room != null && (Room.Game.Player1 is null || Room.Game.Player2 is null))
             {
                 btGameLobbyStart.IsEnabled = false;
             }
