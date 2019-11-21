@@ -10,8 +10,8 @@
         <Button x:Name="btMainNewGame" Content="New Game" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="177" Height="39" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" FontSize="22" Click="btMainNewGame_Click"/>
         <Button x:Name="btMainLeaderboard" Content="Leaderboard" HorizontalAlignment="Left" Margin="5,240,0,0" VerticalAlignment="Top" Width="190" Height="34" Background="White" Foreground="#DD464646" BorderBrush="#FFCDCDCD" Click="btMainLeaderboard_Click"/>
         <Button x:Name="btMainGameHistory" Content="Game History" HorizontalAlignment="Left" Margin="5,279,0,0" VerticalAlignment="Top" Width="190" Height="34" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" Click="btMainGameHistory_Click"/>
-        <CheckBox Content="show full games" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top"/>
-        <CheckBox Content="show running games" HorizontalAlignment="Left" Margin="10,170,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="cbMainShowFullGames" Content="Show full games" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Click="cbMainShowFullGames_Checked"/>
+        <CheckBox x:Name="cbMainShowRunningGames" Content="Show running games" HorizontalAlignment="Left" Margin="10,170,0,0" VerticalAlignment="Top" Click="cbMainShowRunningGames_Checked"/>
         <Rectangle Fill="White" HorizontalAlignment="Left" Height="85" Stroke="#FFCFCFCF" VerticalAlignment="Top" Width="200" Panel.ZIndex="-1"/>
         <Rectangle Fill="White" HorizontalAlignment="Left" Height="150" Stroke="#FFCFCFCF" VerticalAlignment="Top" Width="200" Panel.ZIndex="-1" Margin="0,85,0,0"/>
         <Rectangle Fill="White" HorizontalAlignment="Left" Stroke="#FFCFCFCF" Width="200" Panel.ZIndex="-1" Margin="0,235,0,0"/>

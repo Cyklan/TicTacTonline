@@ -63,7 +63,20 @@ namespace Client.Controls
 
         private void btLoginRegister_Click(object sender, RoutedEventArgs e)
         {
-            GetMain.ChangeControl(MainWindow.Controls.Register);
+          ChangeControl(MainWindow.Controls.Register);
+        }
+
+        private void btLoginOptions_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeControl(MainWindow.Controls.Options);
+        }
+
+        private void tbLoginPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                btLoginLogin_Click(this, null);
+            }
         }
     }
 }

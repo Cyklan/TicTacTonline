@@ -1,0 +1,21 @@
+﻿<controls:BaseControl
+    xmlns:controls="clr-namespace:Client.Controls"
+             x:Class="Client.Controls.OptionsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Client"
+             mc:Ignorable="d" MinHeight="400" MinWidth="400">
+    <Grid Background="White" Margin="0,0,0,0" Loaded="Grid_Loaded">
+        <Label Content="Options" Margin="129,10,128,334" FontSize="36" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Button x:Name="btOptionsOk" Content="Ok" Margin="268,318,10,36" BorderBrush="#FFCDCDCD" Background="White" FontSize="30" Foreground="#DD080808" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Width="122" Click="btOptionsOk_Click"/>
+        <Button x:Name="btOptionsCancel" Content="Cancel" Margin="10,318,268,36" BorderBrush="#FFCDCDCD" Background="White" FontSize="30" Foreground="#DD080808" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btOptionsCancel_Click"/>
+        <Label Content="Ip" Margin="10,95,349,249" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label Content="Port" Margin="10,142,315,202" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label Content="SSL" Margin="10,184,325,160" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBox x:Name="tbOptionsIp" Height="42" Margin="140,97,11,263" TextWrapping="Wrap" Text="TextBox" Width="249" FontSize="30" FontFamily="Segoe UI Light" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBox x:Name="tbOptionsPort" Height="42" Margin="140,144,11,216" TextWrapping="Wrap" Text="TextBox" Width="249" FontSize="30" FontFamily="Segoe UI Light" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <CheckBox x:Name="cbOptionsSsl" Content="Disabled" Margin="140,191,0,165" Height="46" Width="260" FontSize="30" FontFamily="Segoe UI Light" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="cbOptionsSsl_Checked" Unchecked="cbOptionsSsl_Unchecked"/>
+    </Grid>
+</controls:BaseControl>

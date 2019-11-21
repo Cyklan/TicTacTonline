@@ -40,11 +40,15 @@ namespace Client.Controls
         {
             lbRegisterError.Content = "";
 
+
+            if (!new System.Text.RegularExpressions.Regex(@"^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$").IsMatch(tbRegisterPassword.Password))
+            {
+                lbRegisterError.Content = "Insecure Password";
+                return;
+            }
+
             User = new User(tbRegisterUsername.Text, "0:0", tbRegisterPassword.Password);
 
-            RequestHeader header = new RequestHeader() { User = User };
-            header.Identifier = new Identifier() { Function = "register", Module = "loginModule" };
-       
             Response response = Exchange(new Document(), "LoginModule", "Register");
 
             switch (response.Header.Code)
@@ -67,5 +71,12 @@ namespace Client.Controls
             GetMain.ChangeControl(MainWindow.Controls.Login);
         }
 
+        private void tbRegisterPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                btRegisterRegister_Click(this, null);
+            }
+        }
     }
 }

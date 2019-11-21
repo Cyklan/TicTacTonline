@@ -21,7 +21,8 @@ namespace Client
             Leaderboard,
             Main,
             GameLobby,
-            Game
+            Game,
+            Options
         }
 
         public User User { get; set; }
@@ -65,7 +66,8 @@ namespace Client
                 { Controls.Leaderboard, typeof(LeaderboardControl) },
                 { Controls.Main, typeof(MainControl) },
                 { Controls.GameLobby, typeof(GameLobbyControl) },
-                { Controls.Game, typeof(GameControl) }
+                { Controls.Game, typeof(GameControl) },
+                { Controls.Options, typeof(OptionsControl) }
             };
         }
 

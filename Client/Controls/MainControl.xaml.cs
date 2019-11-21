@@ -38,20 +38,7 @@ namespace Client.Controls
 
         private void btMainRefresh_Click(object sender, RoutedEventArgs e)
         {
-            mainGameList.Children.Clear();
-
-            Response response = Exchange(new Document(), "RoomModule", "GetRooms");
-
-            if (response.Header.Code != ResponseCode.Ok)
-            {
-                lbMainError.Content = response.Header.Message;
-                Abort();
-            }
-
-            foreach (RoomDocument roomdocument in ((RoomsDocument)response.Body).Rooms)
-            {
-                mainGameList.Children.Add(new JoinGameControl(roomdocument));
-            }
+            Refresh();
         }
 
         private void btMainLeaderboard_Click(object sender, RoutedEventArgs e)
@@ -66,12 +53,43 @@ namespace Client.Controls
 
         private void btMainOptions_Click(object sender, RoutedEventArgs e)
         {
-
+            ChangeControl(MainWindow.Controls.Options);
         }
 
         private void grid_Loaded(object sender, RoutedEventArgs e)
         {
             btMainRefresh_Click(this, null);
+        }
+
+        private void cbMainShowFullGames_Checked(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+        }
+
+        private void cbMainShowRunningGames_Checked(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+        }
+
+        private void Refresh()
+        {
+            mainGameList.Children.Clear();
+
+            Response response = Exchange(new Document(), "RoomModule", "GetRooms");
+
+            if (response.Header.Code != ResponseCode.Ok)
+            {
+                lbMainError.Content = response.Header.Message;
+                Abort();
+            }
+
+            foreach (RoomDocument roomdocument in ((RoomsDocument)response.Body).Rooms)
+            {
+                if (!(bool)cbMainShowFullGames.IsChecked && roomdocument.RoomStatus == RoomStatus.Full) continue;
+                if (!(bool)cbMainShowRunningGames.IsChecked && roomdocument.RoomStatus == RoomStatus.Ongoing) continue;
+
+                mainGameList.Children.Add(new JoinGameControl(roomdocument));
+            }
         }
     }
 }

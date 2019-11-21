@@ -8,9 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="White">
-        <Button x:Name="btLeaderboardBack" Content="cancel" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="160" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" Click="btLeaderboardBack_Click"/>
+        <Button x:Name="btLeaderboardBack" Content="Back" HorizontalAlignment="Left" Margin="10,408,0,0" VerticalAlignment="Top" Width="160" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" Click="btLeaderboardBack_Click"/>
         <Label Content="Leaderboard" HorizontalAlignment="Center" Margin="140,50,140,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Width="397" HorizontalContentAlignment="Center"/>
         <StackPanel HorizontalAlignment="Center" Height="262" Margin="140,97,140,91" VerticalAlignment="Center" Width="400"/>
-
     </Grid>
 </controls:BaseControl>
