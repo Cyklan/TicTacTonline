@@ -55,6 +55,7 @@ namespace Client.Controls
                 if (response.Header.Code == ResponseCode.GameOver)
                 {
                     MessageBox.Show(response.Header.Message);
+                    DisableAllButtons();
                     return;
                 }
 
@@ -226,20 +227,26 @@ namespace Client.Controls
             if (CheckButtonState(b) && Room.Game.CurrentPlayer.Name.ToLower() == User.Name.ToLower())
             {
                 string[] field = b.Name.Split('_');
+                int x = int.Parse(field[1]) - 1;
+                int y = int.Parse(field[2]) - 1;
 
                 if (Room.Game.Player1.Name.ToLower() == Room.Game.CurrentPlayer.Name.ToLower())
                 {
                     i = GetButtonImage(GetName(((Button)sender).Name));
                     Uri u = new Uri("../Resources/icon_cross_dark.png", UriKind.Relative);
                     i.Source = new BitmapImage(u);
-                    Room.Game.Fields[int.Parse(field[0]) - 1, int.Parse(field[1]) - 1] = FieldStatus.Player1;
+
+                    Room.Game.Fields[x, y] = FieldStatus.Player1;
+                    Room.Game.Turns.Add(new Turn() { X = x, Y = y });
                 }
                 else
                 {
                     i = GetButtonImage(GetName(((Button)sender).Name));
                     Uri u = new Uri("../Resources/icon_circle_dark.png", UriKind.Relative);
                     i.Source = new BitmapImage(u);
-                    Room.Game.Fields[int.Parse(field[0]) - 1, int.Parse(field[1]) - 1] = FieldStatus.Player2;
+
+                    Room.Game.Fields[x, y] = FieldStatus.Player1;
+                    Room.Game.Turns.Add(new Turn() { X = x, Y = y });
                 }
                 b.IsEnabled = false;
                 Room.Game.CurrentPlayer = GetOpponent();
@@ -256,28 +263,28 @@ namespace Client.Controls
 
         private void UpdateButtons()
         {
-            for (int i = 0; i < 3; i++)
+            int x = Room.Game.Turns.Last().X + 1;
+            int y = Room.Game.Turns.Last().Y + 1;
+            Button button = GetButton($"{x}_{y}");
+            
+            switch(Room.Game.Fields[x-1, y-1])
             {
-                for (int j = 0; j < 3; i++)
-                {
-                    switch (Room.Game.Fields[i, j])
-                    {
-                        case FieldStatus.Player1:
-                            GetButtonImage($"{i + 1}_{j + 1}").Source =
-                                new BitmapImage(new Uri("../Resources/icon_cross_dark.png", UriKind.Relative));
-
-                            GetButton($"{i + 1}_{j + 1}").IsEnabled = false;
-                            break;
-                        case FieldStatus.Player2:
-                            GetButtonImage($"{i + 1}_{j + 1}").Source =
-                             new BitmapImage(new Uri("../Resources/icon_circle_dark.png", UriKind.Relative));
-
-                            GetButton($"{i + 1}_{j + 1}").IsEnabled = false;
-                            break;
-                    }
-                }
+                case FieldStatus.Player1:
+                    GetButtonImage($"{x}_{y}").Source = new BitmapImage(new Uri("../Resources/icon_cross_dark.png", UriKind.Relative));
+                    break;
+                case FieldStatus.Player2:
+                    GetButtonImage($"{x}_{y}").Source = new BitmapImage(new Uri("../Resources/icon_circle_dark.png", UriKind.Relative));
+                    break;
             }
+            
+            button.IsEnabled = false;
+        }
 
+        private void DisableAllButtons()
+        {
+            for (int x = 1; x <= 3; x++)
+                for (int y = 1; y <= 3; y++)
+                    GetButton($"{x}_{y}").IsEnabled = false;
         }
     }
 }

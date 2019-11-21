@@ -42,7 +42,7 @@ namespace Server.Modules
 
             header.Targets = new List<User>
             {
-                document.Game.Player1 == document.Game.CurrentPlayer ? document.Game.Player2 : document.Game.Player1
+                document.Game.CurrentPlayer
             };
 
             User winner = PlayRound(document.Game);
@@ -100,7 +100,7 @@ namespace Server.Modules
         {
             game.Fields = new FieldStatus[3, 3];
             for (int x = 0; x < 3; x++)
-                for (int y = 0; x < 3; x++)
+                for (int y = 0; y < 3; y++)
                     game.Fields[x, y] = FieldStatus.Empty;
             game.RoundsPlayed = 0;
 
@@ -112,11 +112,13 @@ namespace Server.Modules
             {
                 game.CurrentPlayer = game.Player2;
             }
+
+            game.Turns = new List<Turn>();
         }
 
         private User PlayRound(Game game)
         {
-            FieldStatus status = game.CurrentPlayer == game.Player1 ? FieldStatus.Player1 : FieldStatus.Player2;
+            FieldStatus status = game.CurrentPlayer.Name.ToLower() == game.Player1.Name.ToLower() ? FieldStatus.Player2 : FieldStatus.Player1;
             game.RoundsPlayed++;
             UpdateField(game.Turns.Last().X, game.Turns.Last().Y, status, game);
             FieldStatus winner = CheckForWinner(game);
