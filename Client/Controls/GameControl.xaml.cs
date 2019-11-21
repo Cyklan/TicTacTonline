@@ -21,39 +21,86 @@ namespace Client.Controls
     /// </summary>
     public partial class GameControl : BaseControl
     {
+        private bool autoScroll = true;
+
         public GameControl()
         {
             InitializeComponent();
         }
 
+        private User GetOpponent()
+        {
+            return Room.Game.Player1.Name.ToLower() == User.Name.ToLower() ? Room.Game.Player2 : Room.Game.Player1;
+        }
+
         public override void HandleSpontaneousResponse(Response response)
         {
-            throw new NotImplementedException();
+            Dispatcher.Invoke(() =>
+            {
+
+                if (response.Header.Code == ResponseCode.Message)
+                {
+                    tbGameChat.AppendText($"{GetOpponent().Name}: { ((ChatDocument)response.Body).Message }\n");
+                    return;
+                }
+
+                Room = (RoomDocument)response.Body;
+                UpdateButtons();
+
+                if (response.Header.Code == ResponseCode.GameTurnProcessed)
+                {
+                    return;
+                }
+
+                if (response.Header.Code == ResponseCode.GameOver)
+                {
+                    MessageBox.Show(response.Header.Message);
+                    return;
+                }
+
+                if (response.Header.Code == ResponseCode.GameTie)
+                {
+                    MessageBox.Show(response.Header.Message);
+                    return;
+                }
+
+            });
         }
 
         private void tbGameChatMessage_KeyDown(object sender, KeyEventArgs e)
         {
+            if (Room.Game.Player1 is null || Room.Game.Player2 is null) { return; }
+
             if (e.Key == Key.Enter)
             {
-                tbGameChat.AppendText("User: " + tbGameChatMessage.Text + "\n");
+                tbGameChat.AppendText($"{User.Name}: " + tbGameChatMessage.Text + "\n");
                 tbGameChat.ScrollToEnd();
+
+                Send(new ChatDocument()
+                {
+                    Message = tbGameChat.Text,
+                    RoomId = Room.Id,
+                    Target = GetOpponent(),
+                    Timestamp = DateTime.Now
+                }, "GameModule", "SendMessage");
+
                 tbGameChatMessage.Text = "";
+
             }
         }
-        private bool _autoScroll = true;
+
         private void ScrollViewer_OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (e.ExtentHeightChange == 0)
             {
-                _autoScroll = ScrollViewer.VerticalOffset == ScrollViewer.ScrollableHeight;
+                autoScroll = ScrollViewer.VerticalOffset == ScrollViewer.ScrollableHeight;
             }
 
-            if (_autoScroll && e.ExtentHeightChange != 0)
+            if (autoScroll && e.ExtentHeightChange != 0)
             {
                 ScrollViewer.ScrollToVerticalOffset(ScrollViewer.ExtentHeight);
             }
 
-            
         }
 
         private void btGame_1_1_Click(object sender, RoutedEventArgs e)
@@ -62,60 +109,46 @@ namespace Client.Controls
             imgBt_1_1.Source = new BitmapImage(uriSource);
         }
 
-        private void btGame_1_1_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void btGame_1_1_MouseLeave(object sender, MouseEventArgs e)
-        {
-
-        }
-
         private void imgBt_MouseEnter(object sender, MouseEventArgs e)
         {
             Image i;
-            Button b = getButton(getName(((Button)sender).Name));
-            if (!checkButtonState(b))
+            Button b = GetButton(GetName(((Button)sender).Name));
+            if (!CheckButtonState(b)) return;
+
+            if (Room.Game.CurrentPlayer.Name.ToLower() == User.Name.ToLower())
             {
-                return;
-            }
-            else if (true /*Room.Game.CurrentPlayer.Name.ToLower() == User.Name.ToLower()*/)
-            {
-                if ( true /*Room.Game.Player1 == Room.Game.CurrentPlayer*/)
+                if (Room.Game.Player1.Name.ToLower() == Room.Game.CurrentPlayer.Name.ToLower())
                 {
-                    i = getButtonImage(getName(((Button)sender).Name));
+                    i = GetButtonImage(GetName(((Button)sender).Name));
                     Uri u = new Uri("../Resources/icon_cross_bright.png", UriKind.Relative);
                     i.Source = new BitmapImage(u);
                 }
                 else
                 {
-                    i = getButtonImage(getName(((Button)sender).Name));
+                    i = GetButtonImage(GetName(((Button)sender).Name));
                     Uri u = new Uri("../Resources/icon_circle_bright.png", UriKind.Relative);
                     i.Source = new BitmapImage(u);
                 }
             }
-
-
 
         }
 
         private void imgBt_MouseLeave(object sender, MouseEventArgs e)
         {
             Image i;
-            Button b = getButton(getName(((Button)sender).Name));
-            if (!checkButtonState(b))
+            Button b = GetButton(GetName(((Button)sender).Name));
+            if (!CheckButtonState(b))
             {
                 return;
             }
-            i = getButtonImage(getName(((Button)sender).Name));
+            i = GetButtonImage(GetName(((Button)sender).Name));
             Uri u = new Uri("../Resources/icon_empty.png", UriKind.Relative);
             i.Source = new BitmapImage(u);
         }
 
-        private bool checkButtonState(Button b)
+        private bool CheckButtonState(Button b)
         {
-            if(b.IsEnabled == true)
+            if (b.IsEnabled == true)
             {
                 return true;
             }
@@ -125,14 +158,14 @@ namespace Client.Controls
             }
         }
 
-        private string getName(string name)
+        private string GetName(string name)
         {
             string[] tmp = name.Split('_');
 
-            return $"{tmp[1]}_{tmp[2]}"; 
+            return $"{tmp[1]}_{tmp[2]}";
         }
 
-        private Button getButton(string name)
+        private Button GetButton(string name)
         {
             switch (name)
             {
@@ -159,7 +192,7 @@ namespace Client.Controls
             }
         }
 
-        private Image getButtonImage(string name)
+        private Image GetButtonImage(string name)
         {
             switch (name)
             {
@@ -189,26 +222,60 @@ namespace Client.Controls
         private void btGameField_Click(object sender, RoutedEventArgs e)
         {
             Image i;
-            Button b = getButton(getName(((Button)sender).Name));
-            if (checkButtonState(b) && true /*Room.Game.CurrentPlayer.Name.ToLower() == User.Name.ToLower()*/)
+            Button b = GetButton(GetName(((Button)sender).Name));
+            if (CheckButtonState(b) && Room.Game.CurrentPlayer.Name.ToLower() == User.Name.ToLower())
             {
-                if (true /*Room.Game.Player1 == Room.Game.CurrentPlayer*/)
+                string[] field = b.Name.Split('_');
+
+                if (Room.Game.Player1.Name.ToLower() == Room.Game.CurrentPlayer.Name.ToLower())
                 {
-                    i = getButtonImage(getName(((Button)sender).Name));
+                    i = GetButtonImage(GetName(((Button)sender).Name));
                     Uri u = new Uri("../Resources/icon_cross_dark.png", UriKind.Relative);
                     i.Source = new BitmapImage(u);
+                    Room.Game.Fields[int.Parse(field[0]) - 1, int.Parse(field[1]) - 1] = FieldStatus.Player1;
                 }
                 else
                 {
-                    i = getButtonImage(getName(((Button)sender).Name));
+                    i = GetButtonImage(GetName(((Button)sender).Name));
                     Uri u = new Uri("../Resources/icon_circle_dark.png", UriKind.Relative);
                     i.Source = new BitmapImage(u);
+                    Room.Game.Fields[int.Parse(field[0]) - 1, int.Parse(field[1]) - 1] = FieldStatus.Player2;
                 }
                 b.IsEnabled = false;
+                Room.Game.CurrentPlayer = GetOpponent();
+
+                Send(Room, "GameModule", "HandleTurn");
             }
-            else
+
+        }
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UpdateButtons()
+        {
+            for (int i = 0; i < 3; i++)
             {
-                return;
+                for (int j = 0; j < 3; i++)
+                {
+                    switch (Room.Game.Fields[i, j])
+                    {
+                        case FieldStatus.Player1:
+                            GetButtonImage($"{i + 1}_{j + 1}").Source =
+                                new BitmapImage(new Uri("../Resources/icon_cross_dark.png", UriKind.Relative));
+
+                            GetButton($"{i + 1}_{j + 1}").IsEnabled = false;
+                            break;
+                        case FieldStatus.Player2:
+                            GetButtonImage($"{i + 1}_{j + 1}").Source =
+                             new BitmapImage(new Uri("../Resources/icon_circle_dark.png", UriKind.Relative));
+
+                            GetButton($"{i + 1}_{j + 1}").IsEnabled = false;
+                            break;
+                    }
+                }
             }
 
         }

@@ -62,7 +62,8 @@ namespace Client.Controls
 
                  if (response.Header.Code == ResponseCode.GameStart)
                  {
-                     //TODO
+                     Room = (RoomDocument)response.Body;
+                     ChangeControl(MainWindow.Controls.Game);
                      return;
                  }
              });
@@ -135,7 +136,8 @@ namespace Client.Controls
 
         private void btGameLobbyStart_Click(object sender, RoutedEventArgs e)
         {
-            ChangeControl(MainWindow.Controls.Game);
+            Send(Room, "GameModule", "StartGame");
+            btGameLobbyStart.IsEnabled = false;
         }
 
         private void ScrollViewer_OnScrollChanged(object sender, ScrollChangedEventArgs e)
