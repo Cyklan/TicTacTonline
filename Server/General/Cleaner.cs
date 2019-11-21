@@ -7,6 +7,11 @@ using Models;
 
 namespace Server.General
 {
+    /// <summary>
+    /// Der Cleaner räumt in regelmäßigen Intervallen die Datenbank auf.
+    /// Dabei werden Nutzer, die nicht mehr verbunden, aber noch eingeloggt sind, ausgeloggt
+    /// und Räume, die keine Nutzer mehr enthalten, aber noch nicht geschlossen sind, geschlossen
+    /// </summary>
     public class Cleaner
     {
         private Thread cleanThread;
@@ -16,6 +21,9 @@ namespace Server.General
         private readonly Configurations.CleanerConfiguration CleanerConfiguration = new Configurations.CleanerConfiguration();
         private DatabaseQueries db;
 
+        /// <summary>
+        /// Startet den Cleaner Thread
+        /// </summary>
         public void Start()
         {
             CleanerConfiguration.Load();
@@ -34,6 +42,9 @@ namespace Server.General
             cleanThread.Start();
         }
 
+        /// <summary>
+        /// Stoppt den Cleaner Thread
+        /// </summary>
         public void Stop()
         {
             Log("Stopping cleaner");
@@ -42,6 +53,9 @@ namespace Server.General
             while (cleanThread.IsAlive) { Thread.Sleep(10); }
         }
 
+        /// <summary>
+        /// Führt den Cleaner Thread alle x Minuten aus
+        /// </summary>
         private void HandleCleanThread()
         {
             DateTime startTime = new DateTime();
@@ -57,12 +71,18 @@ namespace Server.General
             }
         }
 
+        /// <summary>
+        /// Räumt in der Datenbank auf
+        /// </summary>
         public void Clean()
         {
             CleanUsers();
             CleanRooms();
         }
 
+        /// <summary>
+        /// Loggt alle nicht verbundenen Nutzer in der Datenbank aus
+        /// </summary>
         private void CleanUsers()
         {
             Log("Cleaning users started");
@@ -76,6 +96,9 @@ namespace Server.General
             }
         }
 
+        /// <summary>
+        /// Schließt alle Räume, die noch nicht geschlossen wurden, aber geschlossen werden können
+        /// </summary>
         private void CleanRooms()
         {
             Log("Cleaning rooms started");
@@ -111,6 +134,10 @@ namespace Server.General
             }
         }
 
+        /// <summary>
+        /// Schreibt in der Konsole, was grade passiert ist
+        /// </summary>
+        /// <param name="text"></param>
         private void Log(string text)
         {
             log.Add(text, cleanerUser, MessageType.Debug);

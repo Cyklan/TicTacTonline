@@ -4,6 +4,11 @@ using System.Text;
 
 namespace Models
 {
+
+    /// <summary>
+    /// Räume können 4 verschiedene Status haben.
+    /// Der Status diktiert, was mit einem Raum gemacht werden kann.
+    /// </summary>
     public enum RoomStatus
     {
         Open,

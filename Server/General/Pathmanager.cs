@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace Server.General
 {
+    /// <summary>
+    /// Gibt die Pfade aller wichtigen Verzeichnisse und Dateien zurück
+    /// </summary>
     public class Pathmanager
     {
         public static string StartupDirectory

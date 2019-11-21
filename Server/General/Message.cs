@@ -3,6 +3,9 @@ using Models;
 
 namespace Server.General
 {
+    /// <summary>
+    /// Je nach Nachrichtentyp gibt es in der Konsole eine andere Farbe
+    /// </summary>
     public enum MessageType
     {
         Normal,

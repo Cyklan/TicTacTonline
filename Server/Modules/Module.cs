@@ -6,6 +6,9 @@ using Server.Communication;
 
 namespace Server.Modules
 {
+    /// <summary>
+    /// Kümmert sich darum, dass alle Anfragen an die Richtigen Submodule geleitet werden
+    /// </summary>
     public abstract class Module
     {
         public string Name { get; set; }
@@ -20,6 +23,12 @@ namespace Server.Modules
             Log = new Log();
         }
 
+        /// <summary>
+        /// Verarbeitet eine Request und sendet sie an das entsprechende Submodul,
+        /// in dem dann die passende Methode ausgeführt wird
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public Response ProcessRequest(Request request)
         {
             foreach (MethodInfo m in GetType().GetRuntimeMethods())
@@ -38,6 +47,10 @@ namespace Server.Modules
             throw new NotImplementedException($"Function {request.Header.Identifier.Function} is not part of module {request.Header.Identifier.Module}");
         }
 
+        /// <summary>
+        /// Überprüft, ob ein Nutzer eingeloggt ist und dem Server nachrichten schicken kann
+        /// </summary>
+        /// <param name="user"></param>
         protected void Authenticate(User user)
         {
             if (!db.IsUserLoggedIn(user))

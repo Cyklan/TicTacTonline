@@ -19,7 +19,7 @@
                 <SolidColorBrush Color="White" Opacity="0.3"/>
             </TextBox.Background>
         </TextBox>
-        <Button Content="Leave" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="71" BorderBrush="#FFCDCDCD" Background="White" FontSize="14" Foreground="#DD080808" Height="28"/>
+        <Button x:Name="btGameLeave" Content="Leave" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="71" BorderBrush="#FFCDCDCD" Background="White" FontSize="14" Foreground="#DD080808" Height="28" Click="btGameLeave_Click"/>
         <Button x:Name="btGame_1_1" HorizontalAlignment="Left" Margin="179,160,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Click="btGameField_Click" MouseEnter="imgBt_MouseEnter" MouseLeave="imgBt_MouseLeave">
             <Image x:Name="imgBt_1_1" Height="60" Width="60" Source="../Resources/icon_empty.png"/>
         </Button>

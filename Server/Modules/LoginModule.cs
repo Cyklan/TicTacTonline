@@ -6,10 +6,18 @@ using Server.Communication;
 
 namespace Server.Modules
 {
+    /// <summary>
+    /// Kümmert sich um Login, Logout und Registrieren
+    /// </summary>
     public class LoginModule : Module
     {
         public LoginModule() : base("LoginModule", false) { }
 
+        /// <summary>
+        /// Loggt Nutzer ein, wenn richtige Daten übergeben wurden
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Function("Login")]
         public Response Login(Request request)
         {
@@ -38,6 +46,11 @@ namespace Server.Modules
             return new Response { Header = header, Body = new Document() };
         }
 
+        /// <summary>
+        /// Registriert Nutzer wenn möglich
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Function("Register")]
         public Response Register(Request request)
         {
@@ -58,6 +71,11 @@ namespace Server.Modules
             return new Response { Header = header, Body = new Document() };
         }
 
+        /// <summary>
+        /// Loggt Nutzer, falls möglich, aus
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Function("Logout")]
         public Response Logout(Request request)
         {

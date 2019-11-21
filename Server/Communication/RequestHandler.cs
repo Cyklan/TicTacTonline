@@ -7,6 +7,9 @@ using Server.Modules;
 
 namespace Server.Communication
 {
+    /// <summary>
+    /// Beantwortet alle einkommenden Requests
+    /// </summary>
     public class RequestHandler
     {
         public List<Module> Modules { get; set; }
@@ -18,6 +21,13 @@ namespace Server.Communication
             Modules = new List<Module>();
         }
 
+        /// <summary>
+        /// Überprüft, ob das angesprochene Modul und die aufgerufene Methode verfügbar sind.
+        /// Sind sie verfügbar, wird die passende Methode ausgeführt.
+        /// Sind sie nicht verfügbar, wird ein Fehler an den Client gesendet, der die Request ursprünglich sendete
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public Response HandleRequest(Request request)
         {
             Response response = new Response();
@@ -45,6 +55,12 @@ namespace Server.Communication
             return response;
         }
 
+        /// <summary>
+        /// Erstellt Fehlernachrichten
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="targets"></param>
+        /// <returns></returns>
         private Response GetErrorResponse(string message, List<User> targets)
         {
             ResponseHeader header = new ResponseHeader { Code = ResponseCode.UnplannedError, Message = message, Targets = targets };

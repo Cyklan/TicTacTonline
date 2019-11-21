@@ -3,6 +3,10 @@ using Server.General;
 
 namespace Server.Configurations
 {
+    /// <summary>
+    /// Kümmert sich um die Konfiguration der Datenbank,
+    /// da diese aus einer Datei ausgelesen wird
+    /// </summary>
     public class DatabaseConfiguration : Configuration
     {
         public string Ip { get; set; }

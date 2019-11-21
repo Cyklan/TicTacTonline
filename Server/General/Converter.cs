@@ -3,6 +3,10 @@ using Newtonsoft.Json;
 
 namespace Server.General
 {
+    /// <summary>
+    /// Serialisiert und deserialisiert alle Daten für die Netzwerkübertragung 
+    /// sowie das Abspeichern von Konfigurationsdateien
+    /// </summary>
     public class Converter
     {
         public string ConvertBytesToString(byte[] bytes)

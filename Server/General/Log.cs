@@ -7,6 +7,10 @@ using Models;
 
 namespace Server.General
 {
+    /// <summary>
+    /// Gibt alle Geschehnisse in der Konsole aus.
+    /// Wird auf einem extra thread ausgeführt, um andere Arbeitsprozesse nicht zu pausieren
+    /// </summary>
     public class Log
     {
 
@@ -15,6 +19,9 @@ namespace Server.General
         private static bool run;
         private static readonly Pathmanager pathmanager = new Pathmanager();
 
+        /// <summary>
+        /// Startet den Log Thread
+        /// </summary>
         public void Start()
         {
             logQueue = new Queue<Message>();
@@ -24,6 +31,9 @@ namespace Server.General
             Add("Log started");
         }
 
+        /// <summary>
+        /// Stoppt den Log Thread
+        /// </summary>
         public void Stop()
         {
             Add("Stopping log");
@@ -33,21 +43,41 @@ namespace Server.General
             while (logThread.IsAlive) { Thread.Sleep(100); } // wait till thread finished
         }
 
+        /// <summary>
+        /// Fügt eine Nachricht ans Ende der Log Liste
+        /// Zusätzlich wird der Nutzer, von dem die Nachricht stammt, und die Art der Nachricht, angegeben
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="user"></param>
+        /// <param name="messageType"></param>
         public void Add(string message, User user, MessageType messageType)
         {
             logQueue.Enqueue(new Message(DateTime.Now, messageType, user, message));
         }
 
+        /// <summary>
+        /// Fügt eine Nachricht ans Ende der Log Liste
+        /// Zusätzlich wird die Art der Nachricht angegeben
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="messageType"></param>
         public void Add(string message, MessageType messageType)
         {
             logQueue.Enqueue(new Message(DateTime.Now, messageType, new User { Name = "Global" }, message));
         }
 
+        /// <summary>
+        /// Fügt eine Nachricht ans Ende der Log Liste
+        /// </summary>
+        /// <param name="message"></param>
         public void Add(string message)
         {
             logQueue.Enqueue(new Message(DateTime.Now, MessageType.Normal, new User { Name = "Global" }, message));
         }
 
+        /// <summary>
+        /// Gibt alle Elemente in der Log Liste nacheinander aus
+        /// </summary>
         private static void HandleLogQueue()
         {
             while (run)
@@ -84,6 +114,8 @@ namespace Server.General
                     {
                         Console.WriteLine(message);
                     }
+
+                    // Die Textfarbe der Konsole wird nicht zurückgesetzt, weil diese *immer* für jede Nachricht neu gesetzt wird.
                 }
 
                 Thread.Sleep(10);

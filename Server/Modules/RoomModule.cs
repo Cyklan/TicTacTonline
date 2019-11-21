@@ -8,11 +8,18 @@ using Server.Communication;
 
 namespace Server.Modules
 {
-
+    /// <summary>
+    /// Kümmert sich um alle Räume
+    /// </summary>
     public class RoomModule : Module
     {
         public RoomModule() : base("RoomModule") { }
 
+        /// <summary>
+        /// Gibt alle Räume zurück, die nicht bereits geschlossen wurden
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Function("GetRooms")]
         public Response GetRooms(Request request)
         {
@@ -28,6 +35,11 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
+        /// <summary>
+        /// Erstellt einen Raum, sodass andere Nutzer ihm beitreten können
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Function("CreateRoom")]
         public Response CreateRoom(Request request)
         {
@@ -61,6 +73,11 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
+        /// <summary>
+        /// Lässt einen Nutzer einem Raum beitreten
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Function("JoinRoom")]
         public Response JoinRoom(Request request)
         {
@@ -128,6 +145,11 @@ namespace Server.Modules
             return new Response() { Header = header, Body = body };
         }
 
+        /// <summary>
+        /// Lässt einen Nutzer einen Raum verlassen
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Function("LeaveRoom")]
         public Response LeaveRoom(Request request)
         {
