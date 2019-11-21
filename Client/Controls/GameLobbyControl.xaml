@@ -16,7 +16,7 @@
         <ScrollViewer x:Name="ScrollViewer" Margin="602,1,1,26" ScrollChanged="ScrollViewer_OnScrollChanged" Background="White">
             <TextBox x:Name="tbGameLobbyChat" TextWrapping="Wrap" BorderThickness="0" Margin="6,2,2,0" IsReadOnly="True"/>
         </ScrollViewer>
-        <TextBox x:Name="tbGameLobbyChatMessage" Margin="602,0,0,0" TextWrapping="Wrap" BorderBrush="#FFCFCFCF" BorderThickness="0,1,1,1" Height="26" VerticalAlignment="Bottom" KeyDown="tbGameLobbyChatMessage_KeyDown" >
+        <TextBox x:Name="tbGameLobbyChatMessage" Margin="602,0,0,0" TextWrapping="Wrap" BorderBrush="#FFCFCFCF" BorderThickness="0,1,1,1" Height="26" VerticalAlignment="Bottom" KeyDown="tbGameLobbyChatMessage_KeyDown" MaxLength="255" >
             <TextBox.Background>
                 <SolidColorBrush Color="White" Opacity="0.3"/>
             </TextBox.Background>

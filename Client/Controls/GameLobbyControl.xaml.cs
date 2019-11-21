@@ -72,9 +72,10 @@ namespace Client.Controls
 
         private void tbGameLobbyChatMessage_KeyDown(object sender, KeyEventArgs e)
         {
-            if (Room.Game.Player1 is null || Room.Game.Player2 is null) { return; }
+            //  && (Room.Game.Player1 is null || Room.Game.Player2 is null)
+            if (Room == null) { return; }
 
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && !String.IsNullOrEmpty(tbGameLobbyChatMessage.Text))
             {
                 tbGameLobbyChat.AppendText($"{User.Name}: " + tbGameLobbyChatMessage.Text + "\n");
                 tbGameLobbyChat.ScrollToEnd();
