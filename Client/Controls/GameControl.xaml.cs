@@ -79,7 +79,7 @@ namespace Client.Controls
 
                 Send(new ChatDocument()
                 {
-                    Message = tbGameChat.Text,
+                    Message = tbGameChatMessage.Text,
                     RoomId = Room.Id,
                     Target = GetOpponent(),
                     Timestamp = DateTime.Now
