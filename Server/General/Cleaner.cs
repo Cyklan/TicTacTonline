@@ -39,6 +39,7 @@ namespace Server.General
             cleanThread = new Thread(HandleCleanThread);
             run = true;
             db = new DatabaseQueries(cleanerUser);
+            CleanAll();
             cleanThread.Start();
         }
 
@@ -94,6 +95,13 @@ namespace Server.General
                 db.LogoutUser(user);
                 Log($"Cleaned user {user}");
             }
+        }
+
+        public void CleanAll()
+        {
+            Log("Cleaning all users");
+            db.LogoutAllUsers();
+            db.CloseAllRooms();
         }
 
         /// <summary>

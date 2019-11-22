@@ -43,7 +43,7 @@ namespace Server
 
                 InitializeModules();
                 InitializeServer();
-
+                
                 cleaner.Start();
                 server.Start();
 
@@ -110,6 +110,10 @@ namespace Server
                 case ".clean":
                     cleaner.Clean();
                     break;
+                
+                case ".cleanall":
+                    cleaner.CleanAll();
+                    break;
 
                 default:
                     log.Add($"Commands: {Environment.NewLine}" +
@@ -117,7 +121,8 @@ namespace Server
                         $".clients {Environment.NewLine} " +
                         $".pause {Environment.NewLine} " +
                         $".continue {Environment.NewLine} " +
-                        $".clean", MessageType.Debug);
+                        $".clean {Environment.NewLine}" + 
+                        $".cleanall", MessageType.Debug);
                     break;
             }
 

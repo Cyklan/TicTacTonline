@@ -37,16 +37,20 @@ namespace Server.Database
         {
             if (database.ExecuteQuery($@"SELECT * FROM users WHERE hash='{user.PasswordHash}' AND name='{user.Name}';").Count != 1) return false;
 
-            database.ExecuteNonQuery($@"UPDATE users SET loggedin=1, ip='{user.IpAddress}', port={user.Port} WHERE name='{user.Name}';");
+            database.ExecuteNonQuery($@"UPDATE users SET loggedin = TRUE, ip='{user.IpAddress}', port={user.Port} WHERE name='{user.Name}';");
 
             return true;
         }
 
-        public bool LogoutUser(User user) => database.ExecuteNonQuery($@"UPDATE users SET loggedin=0, ip=NULL, port=NULL, roomid=NULL WHERE name='{user.Name}';") == 1;
+        public bool LogoutUser(User user) => database.ExecuteNonQuery($@"UPDATE users SET loggedin = FALSE, ip=NULL, port=NULL, roomid=NULL WHERE name='{user.Name}';") == 1;
 
+        public void LogoutAllUsers() => database.ExecuteNonQuery("UPDATE users SET loggedin = FALSE WHERE loggedin = TRUE;");
+
+        public void CloseAllRooms() => database.ExecuteNonQuery($"UPDATE rooms SET statusid = {(int)RoomStatus.Closed} WHERE statusid != {(int)RoomStatus.Closed};");
+        
         public bool RegisterUser(User user) => database.ExecuteNonQuery($"INSERT INTO users(name, hash) VALUES ('{user.Name}', '{user.PasswordHash}');") == 1;
 
-        public bool IsUserLoggedIn(User user) => database.ExecuteQuery($"SELECT * FROM users WHERE name='{user.Name}' AND loggedin=1;").Count == 1;
+        public bool IsUserLoggedIn(User user) => database.ExecuteQuery($"SELECT * FROM users WHERE name='{user.Name}' AND loggedin = TRUE;").Count == 1;
         #endregion
 
         #region Rooms
