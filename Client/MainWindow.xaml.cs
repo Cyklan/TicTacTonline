@@ -27,7 +27,7 @@ namespace Client
 
         public User User { get; set; }
         public WebsocketClient Client { get; set; }
-        public RoomDocument CurrentGame { get; set; }
+        public RoomDocument CurrentRoom { get; set; }
 
         private BaseControl currentControl;
         private Dictionary<Controls, Type> controls;
@@ -102,20 +102,49 @@ namespace Client
             currentControl.HandleSpontaneousResponse((Response)sender);
         }
 
+        /// <summary>
+        /// abmelden und Raum verlassen, wenn die Form geschlossen wird, antwort ist dabei egal, weil die Form dann zu ist.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(User is null) { return; }
-
-            // abmelden, wenn die Form geschlossen wird, antwort ist dabei egal, weil die Form dann zu ist.
-            RequestHeader header = new RequestHeader() { User = User };
-            header.Identifier = new Identifier() { Function = "logout", Module = "loginModule" };
-
+            // warten bis diese Abfrage durch ist, bevor wir ausloggen
             try
             {
-                Client.Exchange(new Request() { Header = header, Body = new Document() });
+                if (CurrentRoom != null) Client.Exchange(new Request()
+                {
+                    Header = new RequestHeader()
+                    {
+                        User = User,
+                        Identifier = new Identifier()
+                        {
+                            Function = "LeaveRoom",
+                            Module = "RoomModule"
+                        }
+                    },
+                    Body = new RemovePlayerFromRoomDocument()
+                    {
+                        Room = CurrentRoom,
+                        PlayerToRemove = User
+                    }
+                });
             }
-            catch { /* https://i.imgur.com/c4jt321.png */}
+            catch { }
 
+            if (User != null) Client.Send(new Request()
+            {
+                Header = new RequestHeader()
+                {
+                    User = User,
+                    Identifier = new Identifier()
+                    {
+                        Function = "Logout",
+                        Module = "LoginModule"
+                    }
+                },
+                Body = CurrentRoom
+            });
         }
 
         #endregion

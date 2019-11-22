@@ -53,36 +53,58 @@ namespace Server.Modules
         {
             ResponseHeader header = new ResponseHeader();
             RoomDocument document = (RoomDocument)request.Body;
+            User winner;
 
+            // Antwort an Spielpartner schicken
             header.Targets = new List<User>
             {
                 document.Game.CurrentPlayer
             };
 
-            User winner = PlayRound(document.Game);
+            // Wenn ein  Spieler das Spiel verlassen hat, hat der verbleibende Spieler gewonnen
+            if (document.Game.Player1 is null || document.Game.Player2 is null)
+            {
+                if (document.Game.Player1 is null)
+                {
+                    document.Game.Player1 = document.Game.CurrentPlayer;
+                    winner = document.Game.Player2;
+                }
+                else
+                {
+                    document.Game.Player2 = document.Game.CurrentPlayer;
+                    winner = document.Game.Player2;
+                }
+              
+            }
+            else
+            {
+                winner = PlayRound(document.Game);
+            }
 
+            // Wenn kein gewinner ermittelt werden konnte geht das Spiel weiter
             if (winner == null)
             {
                 header.Code = ResponseCode.GameTurnProcessed;
                 header.Message = $"Turn {document.Game.RoundsPlayed} processed - no winner.";
+                return new Response() { Header = header, Body = document };
+            }
+
+            // Wenn ein Gewinner ermittelt werden konnte wird der verbleibende Spieler zur Antwort hinzugefügt und es wir ermittelt,
+            // ob es ein Untentschieden oder Sieg ist
+            header.Targets.Add(document.Game.Player1 == document.Game.CurrentPlayer ? document.Game.Player2 : document.Game.Player1);
+
+            if (string.IsNullOrEmpty(winner.Name))
+            {
+                header.Code = ResponseCode.GameTie;
+                header.Message = $"Turn {document.Game.RoundsPlayed} processed - tie.";
             }
             else
             {
-                header.Targets.Add(document.Game.Player1 == document.Game.CurrentPlayer ? document.Game.Player1 : document.Game.Player2);
-
-                if (string.IsNullOrEmpty(winner.Name))
-                {
-                    header.Code = ResponseCode.GameTie;
-                    header.Message = $"Turn {document.Game.RoundsPlayed} processed - tie.";
-                }
-                else
-                {
-                    header.Code = ResponseCode.GameOver;
-                    header.Message = $"Turn {document.Game.RoundsPlayed} processed - {winner.Name} won.";
-                }
-
-                SaveGame(document, winner);
+                header.Code = ResponseCode.GameOver;
+                header.Message = $"Turn {document.Game.RoundsPlayed} processed - {winner.Name} won.";
             }
+
+            SaveGame(document, winner);
 
             return new Response() { Header = header, Body = document };
         }

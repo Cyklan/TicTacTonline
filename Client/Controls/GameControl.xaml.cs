@@ -44,26 +44,23 @@ namespace Client.Controls
                     return;
                 }
 
+                if (response.Header.Code == ResponseCode.LeftRoom)
+                {
+                    User opponent = GetOpponent();
+                    Room = ((RemovePlayerFromRoomDocument)response.Body).Room;
+                    Room.Game.CurrentPlayer = opponent;
+                    MessageBox.Show(Exchange(Room, "GameModule", "HandleTurn").Header.Message);
+                    ChangeControl(MainWindow.Controls.Main);
+                    return;
+                }
+
                 Room = (RoomDocument)response.Body;
                 UpdateButtons();
 
-                if (response.Header.Code == ResponseCode.GameTurnProcessed)
-                {
-                    return;
-                }
+                if (response.Header.Code == ResponseCode.GameTurnProcessed) return;
 
-                if (response.Header.Code == ResponseCode.GameOver)
-                {
-                    MessageBox.Show(response.Header.Message);
-                    DisableAllButtons();
-                    return;
-                }
-
-                if (response.Header.Code == ResponseCode.GameTie)
-                {
-                    MessageBox.Show(response.Header.Message);
-                    return;
-                }
+                MessageBox.Show(response.Header.Message);
+                ChangeControl(MainWindow.Controls.Main);
 
             });
         }
@@ -256,18 +253,13 @@ namespace Client.Controls
 
         }
 
-        private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void UpdateButtons()
         {
             int x = Room.Game.Turns.Last().X + 1;
             int y = Room.Game.Turns.Last().Y + 1;
             Button button = GetButton($"{x}_{y}");
-            
-            switch(Room.Game.Fields[x-1, y-1])
+
+            switch (Room.Game.Fields[x - 1, y - 1])
             {
                 case FieldStatus.Player1:
                     GetButtonImage($"{x}_{y}").Source = new BitmapImage(new Uri("../Resources/icon_cross_dark.png", UriKind.Relative));
@@ -276,7 +268,7 @@ namespace Client.Controls
                     GetButtonImage($"{x}_{y}").Source = new BitmapImage(new Uri("../Resources/icon_circle_dark.png", UriKind.Relative));
                     break;
             }
-            
+
             button.IsEnabled = false;
         }
 
@@ -285,6 +277,19 @@ namespace Client.Controls
             for (int x = 1; x <= 3; x++)
                 for (int y = 1; y <= 3; y++)
                     GetButton($"{x}_{y}").IsEnabled = false;
+        }
+
+        private void btGameLeave_Click(object sender, RoutedEventArgs e)
+        {
+            Response response = Exchange(new RemovePlayerFromRoomDocument()
+            {
+                PlayerToRemove = User,
+                Room = Room
+            }, "RoomModule", "LeaveRoom");
+
+            if (response.Header.Code != ResponseCode.LeftRoom) Abort();
+
+            ChangeControl(MainWindow.Controls.Main);
         }
     }
 }

@@ -50,11 +50,11 @@ namespace Client.Controls
         {
             get
             {
-                return GetMain.CurrentGame;
+                return GetMain.CurrentRoom;
             }
             set
             {
-                GetMain.CurrentGame = value;
+                GetMain.CurrentRoom = value;
             }
         }
 

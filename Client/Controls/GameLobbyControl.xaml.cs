@@ -131,6 +131,7 @@ namespace Client.Controls
 
         private void btGameLobbyKick_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(lbgameLobbyPlayer2.Content.ToString())) return;
             RemovePlayer(GetOpponent());
             HandlePlayerLeft();
         }
@@ -198,6 +199,8 @@ namespace Client.Controls
         private void RemovePlayer(User user)
         {
             lbGameLobbyError.Content = "";
+
+            if (user is null) { return; }
 
             Response response = Exchange(new RemovePlayerFromRoomDocument()
             {

@@ -43,7 +43,7 @@ namespace Server
 
                 InitializeModules();
                 InitializeServer();
-                
+
                 cleaner.Start();
                 server.Start();
 
@@ -110,19 +110,19 @@ namespace Server
                 case ".clean":
                     cleaner.Clean();
                     break;
-                
+
                 case ".cleanall":
                     cleaner.CleanAll();
                     break;
 
                 default:
                     log.Add($"Commands: {Environment.NewLine}" +
-                        $" .stop {Environment.NewLine} " +
-                        $".clients {Environment.NewLine} " +
-                        $".pause {Environment.NewLine} " +
-                        $".continue {Environment.NewLine} " +
-                        $".clean {Environment.NewLine}" + 
-                        $".cleanall", MessageType.Debug);
+                        $" .stop {Environment.NewLine}" +
+                        $" .clients {Environment.NewLine}" +
+                        $" .pause {Environment.NewLine}" +
+                        $" .continue {Environment.NewLine}" +
+                        $" .clean {Environment.NewLine}" +
+                        $" .cleanall", MessageType.Debug);
                     break;
             }
 
@@ -225,26 +225,17 @@ namespace Server
             try
             {
                 if (!(data != null && data.Length > 0)) throw new ArgumentNullException("Data is empty.");
-
-                Request request = converter.ConvertJsonToObject<Request>(converter.ConvertBytesToString(data));
-                request.Body = GetBody(data);
-                SyncClientData(ipPort, request.Header.User);
-
-                log.Add($"Received {converter.ConvertObjectToJson(request)} from {request.Header.User}", request.Header.User, MessageType.Normal);
                 if (stopReceive) { throw new Exception("Handling of requests stopped"); }
 
-                Response response = requestHandler.HandleRequest(request);
-                log.Add($"Sending {converter.ConvertObjectToJson(response)} to {string.Join(",", response.Header.Targets.Select(x => x.ToString()))}", request.Header.User, MessageType.Normal);
+                byte[] response = requestHandler.HandleRequest(data, out List<User> targets, out User requestUser);
+                SyncClientData(ipPort, requestUser);
 
-                foreach (User user in response.Header.Targets)
+                foreach (User user in targets)
                 {
                     User temp = user;
-                    if (string.IsNullOrEmpty(user.IpAddress) || user.Port == 0) { temp = clients.FirstOrDefault(x => x.Key.Name.ToLower() == user.Name.ToLower()).Key; }
+                    if (string.IsNullOrEmpty(user.IpAddress) || user.Port == 0) temp = clients.FirstOrDefault(x => x.Key.Name.ToLower() == user.Name.ToLower()).Key;
 
-                    if (temp == null || !await server.SendAsync(temp.IpPort, converter.ConvertStringToBytes(converter.ConvertObjectToJson(response))))
-                    {
-                        log.Add($"Message {response.Header.MessageNumber} could not be send to {temp}.");
-                    }
+                    if (temp == null || !await server.SendAsync(temp.IpPort, response)) log.Add($"Message could not be send to {temp}.", MessageType.Warning);
                 }
 
                 clients[clients.FirstOrDefault(x => x.Key.IpPort == ipPort).Key] = false;
@@ -266,45 +257,6 @@ namespace Server
             requestUser.IpPort = ipPortRequest;
 
             clients[connectedClient] = true;
-        }
-
-        private static Document GetBody(byte[] data)
-        {
-            string json = converter.ConvertBytesToString(data);
-
-            string bodyJson = json.Split(new string[] { "\"Body\": " }, StringSplitOptions.None)[1];
-            bodyJson = bodyJson.Trim();
-            bodyJson = bodyJson.Remove(bodyJson.Length - 1);
-            string[] bodySplit = bodyJson.Split(',');
-
-            string type = bodySplit[bodySplit.Length - 1];
-
-            if (type.Contains("RemovePlayerFromRoomDocument"))
-            {
-                return converter.ConvertJsonToObject<RemovePlayerFromRoomDocument>(bodyJson);
-            }
-            else if (type.Contains("RoomDocument"))
-            {
-                return converter.ConvertJsonToObject<RoomDocument>(bodyJson);
-            }
-            else if (type.Contains("RoomsDocument"))
-            {
-                return converter.ConvertJsonToObject<RoomsDocument>(bodyJson);
-            }
-            else if (type.Contains("ChatDocument"))
-            {
-                return converter.ConvertJsonToObject<ChatDocument>(bodyJson);
-            }
-            else if (type.Contains("MatchHistoryDocument"))
-            {
-                return null;
-            }
-            else if (type.Contains("LeaderboardDocument"))
-            {
-                return null;
-            }
-
-            return new Document();
         }
 
     }

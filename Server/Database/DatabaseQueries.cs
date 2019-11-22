@@ -131,11 +131,11 @@ namespace Server.Database
 
         public void InsertMatch(RoomDocument room, User winner)
         {
-            string winnerName = String.IsNullOrEmpty(winner.Name) ? "null": $"'{winner.Name}'"; 
+            string winnerName = string.IsNullOrEmpty(winner.Name) ? $"{room.Game.Player1.Name}_{room.Game.Player2.Name}" : $"{winner.Name}"; 
             string sql = "";
-            sql += $"INSERT INTO matches (won_by, roomid) VALUES ({winnerName}, {room.Id});" + Environment.NewLine;
-            sql += $"INSERT INTO users_played_matches (users_name, matches_id) VALUES ('{room.Game.Player1.Name}', (SELECT id FROM matches WHERE won_by='{winner.Name}' ORDER BY timestamp DESC LIMIT 1));" + Environment.NewLine;
-            sql += $"INSERT INTO users_played_matches (users_name, matches_id) VALUES ('{room.Game.Player2.Name}', (SELECT id FROM matches WHERE won_by='{winner.Name}' ORDER BY timestamp DESC LIMIT 1));";
+            sql += $"INSERT INTO matches (won_by, roomid) VALUES ('{winnerName}', {room.Id});" + Environment.NewLine;
+            sql += $"INSERT INTO users_played_matches (users_name, matches_id) VALUES ('{room.Game.Player1.Name}', (SELECT id FROM matches WHERE won_by='{winnerName}' ORDER BY timestamp DESC LIMIT 1));" + Environment.NewLine;
+            sql += $"INSERT INTO users_played_matches (users_name, matches_id) VALUES ('{room.Game.Player2.Name}', (SELECT id FROM matches WHERE won_by='{winnerName}' ORDER BY timestamp DESC LIMIT 1));";
 
             database.ExecuteNonQuery(sql);
         }

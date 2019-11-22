@@ -7,7 +7,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client"
              mc:Ignorable="d">
-    <Grid Loaded="Grid_Loaded">
+    <Grid>
         <Rectangle Fill="White" Margin="602,0,0,0" Stroke="#FFCFCFCF"/>
         <Rectangle Fill="White" HorizontalAlignment="Left" Height="50" Stroke="#FFCFCFCF" VerticalAlignment="Top" Width="602"/>
         <Rectangle Fill="White" Margin="0,50,0,0" Stroke="#FFCFCFCF" HorizontalAlignment="Left" Width="602"/>

@@ -28,9 +28,13 @@ namespace Server.Communication
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Response HandleRequest(Request request)
+        public byte[] HandleRequest(byte[] requestData, out List<User> targets, out User requestUser)
         {
             Response response = new Response();
+            Request request = converter.ConvertJsonToObject<Request>(converter.ConvertBytesToString(requestData));
+            request.Body = GetBody(requestData);
+
+            log.Add($"Received {converter.ConvertObjectToJson(request)} from {request.Header.User}", request.Header.User, MessageType.Normal);
 
             Module module = Modules.FirstOrDefault(x => x.Name.ToLower() == request.Header.Identifier.Module.ToLower());
             if (module is null)
@@ -52,7 +56,12 @@ namespace Server.Communication
             }
 
             response.Header.MessageNumber = request.Header.MessageNumber;
-            return response;
+            targets = response.Header.Targets;
+            requestUser = request.Header.User;
+
+            log.Add($"Sending {converter.ConvertObjectToJson(response)} to {string.Join(",", response.Header.Targets.Select(x => x.ToString()))}", request.Header.User, MessageType.Normal);
+
+            return converter.ConvertStringToBytes(converter.ConvertObjectToJson(response));
         }
 
         /// <summary>
@@ -67,5 +76,48 @@ namespace Server.Communication
             return new Response { Header = header, Body = new Document() };
         }
 
+        /// <summary>
+        /// Findet die passende Klasse für den Body
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private Document GetBody(byte[] data)
+        {
+            string json = converter.ConvertBytesToString(data);
+
+            string bodyJson = json.Split(new string[] { "\"Body\": " }, StringSplitOptions.None)[1];
+            bodyJson = bodyJson.Trim();
+            bodyJson = bodyJson.Remove(bodyJson.Length - 1);
+            string[] bodySplit = bodyJson.Split(',');
+
+            string type = bodySplit[bodySplit.Length - 1];
+
+            if (type.Contains("RemovePlayerFromRoomDocument"))
+            {
+                return converter.ConvertJsonToObject<RemovePlayerFromRoomDocument>(bodyJson);
+            }
+            else if (type.Contains("RoomDocument"))
+            {
+                return converter.ConvertJsonToObject<RoomDocument>(bodyJson);
+            }
+            else if (type.Contains("RoomsDocument"))
+            {
+                return converter.ConvertJsonToObject<RoomsDocument>(bodyJson);
+            }
+            else if (type.Contains("ChatDocument"))
+            {
+                return converter.ConvertJsonToObject<ChatDocument>(bodyJson);
+            }
+            else if (type.Contains("MatchHistoryDocument"))
+            {
+                return null;
+            }
+            else if (type.Contains("LeaderboardDocument"))
+            {
+                return null;
+            }
+
+            return new Document();
+        }
     }
 }
