@@ -51,14 +51,9 @@ namespace Client.Controls
 
         }
 
-        private void btMainOptions_Click(object sender, RoutedEventArgs e)
-        {
-            ChangeControl(MainWindow.Controls.Options);
-        }
-
         private void grid_Loaded(object sender, RoutedEventArgs e)
         {
-            btMainRefresh_Click(this, null);
+            Refresh();
         }
 
         private void cbMainShowFullGames_Checked(object sender, RoutedEventArgs e)

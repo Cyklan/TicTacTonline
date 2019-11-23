@@ -19,10 +19,8 @@
         <ScrollViewer Margin="200,0,0,0" >
             <StackPanel x:Name="mainGameList"  CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True"/>
         </ScrollViewer>
-        <Button x:Name="btMainOptions" Content="Options" HorizontalAlignment="Left" Margin="5,318,0,0" VerticalAlignment="Top" Width="190" Height="34" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" Click="btMainOptions_Click"/>
         <Label Content="Filter" HorizontalAlignment="Left" Margin="6,113,0,0" VerticalAlignment="Top" Width="111" FontWeight="Bold" FontSize="18"/>
         <Button x:Name="btMainRefresh" Content="Refresh" HorizontalAlignment="Left" Margin="45,54,0,0" VerticalAlignment="Top" Width="107" Height="26" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" FontSize="14" Click="btMainRefresh_Click"/>
         <Label x:Name="lbMainError" Content="" HorizontalAlignment="Center" Margin="10,414,613,10" Width="177" Foreground="#DDFF0000" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-
     </Grid>
 </controls:BaseControl>

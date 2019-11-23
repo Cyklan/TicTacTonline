@@ -60,6 +60,7 @@ namespace Client.Controls
                 if (response.Header.Code == ResponseCode.GameTurnProcessed) return;
 
                 MessageBox.Show(response.Header.Message);
+                Room = null;
                 ChangeControl(MainWindow.Controls.Main);
 
             });

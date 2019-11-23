@@ -35,7 +35,6 @@ namespace Server.Modules
             }
 
             StartNewGame(document.Game);
-            db.ChangeRoomStatus(document.Id, RoomStatus.Ongoing);
 
             header.Code = ResponseCode.GameStart;
             header.Message = $"Game started. It is {document.Game.CurrentPlayer.Name}'s turn";
@@ -56,10 +55,7 @@ namespace Server.Modules
             User winner;
 
             // Antwort an Spielpartner schicken
-            header.Targets = new List<User>
-            {
-                document.Game.CurrentPlayer
-            };
+            header.Targets = new List<User> { document.Game.CurrentPlayer };
 
             // Wenn ein  Spieler das Spiel verlassen hat, hat der verbleibende Spieler gewonnen
             if (document.Game.Player1 is null || document.Game.Player2 is null)
@@ -74,7 +70,7 @@ namespace Server.Modules
                     document.Game.Player2 = document.Game.CurrentPlayer;
                     winner = document.Game.Player2;
                 }
-              
+
             }
             else
             {
@@ -90,8 +86,8 @@ namespace Server.Modules
             }
 
             // Wenn ein Gewinner ermittelt werden konnte wird der verbleibende Spieler zur Antwort hinzugefügt und es wir ermittelt,
-            // ob es ein Untentschieden oder Sieg ist
-            header.Targets.Add(document.Game.Player1 == document.Game.CurrentPlayer ? document.Game.Player2 : document.Game.Player1);
+            // ob es ein Unentschieden oder Sieg ist
+            header.Targets.Add(header.Targets.Any(x => x.Name.ToLower() == document.Game.Player1.Name.ToLower()) ? document.Game.Player2 : document.Game.Player1);
 
             if (string.IsNullOrEmpty(winner.Name))
             {

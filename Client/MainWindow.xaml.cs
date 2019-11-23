@@ -75,9 +75,7 @@ namespace Client
 
         public void ChangeControl(Controls control)
         {
-            // Neue Instanz des Controls erzeugen
             currentControl = (BaseControl)Activator.CreateInstance(controls[control]);
-            // Control anzeigen
             grid_main.Children.Clear();
             grid_main.Children.Add(currentControl);
         }

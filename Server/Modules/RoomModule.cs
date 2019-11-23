@@ -91,7 +91,8 @@ namespace Server.Modules
             };
 
             rooms = db.GetRooms().Where(x => x.Id == body.Id).ToList();
-
+            
+            // Wenn es keine Räume zu der Raum Id gibt
             if (rooms.Count() == 0)
             {
                 header.Code = ResponseCode.PlannedError;
@@ -100,6 +101,7 @@ namespace Server.Modules
                 return new Response() { Header = header, Body = body };
             }
 
+            // Wenn es mehr als einen Raum zu der Id gibt
             if (rooms.Count() > 2)
             {
                 header.Code = ResponseCode.PlannedError;
@@ -108,6 +110,7 @@ namespace Server.Modules
                 return new Response() { Header = header, Body = body };
             }
 
+            // Wenn der Raum nicht offen ist
             if (rooms.First(x => x.Id == body.Id).RoomStatus != RoomStatus.Open)
             {
                 header.Code = ResponseCode.PlannedError;
@@ -125,6 +128,8 @@ namespace Server.Modules
 
             header.Code = ResponseCode.JoinedRoom;
             header.Message = $"Player {request.Header.User.Name} joined the room";
+            
+            // Den Spieler im Game-Objekt füllen, abhängig davon, welcher noch nicht gefüllt ist
             if (body.Game.Player1 is null)
             {
                 body.Game.Player1 = request.Header.User;
@@ -136,6 +141,7 @@ namespace Server.Modules
                 header.Targets.Add(body.Game.Player1);
             }
 
+            // Wenn jetzt zwei Spieler im Raum sind wird dieser auf "Full" gesetzt
             if (!(body.Game.Player1 is null || body.Game.Player2 is null))
             {
                 db.ChangeRoomStatus(body.Id, RoomStatus.Full);
@@ -172,6 +178,7 @@ namespace Server.Modules
             header.Code = ResponseCode.LeftRoom;
             header.Message = $"Player {body.PlayerToRemove} left the room.";
 
+            // Wenn der Raum jetzt leer ist, wird er gelöscht, ansonsten wieder offen
             if (body.Room.Game.Player1 is null || body.Room.Game.Player2 is null)
             {
                 db.ChangeRoomStatus(body.Room.Id, RoomStatus.Closed);
@@ -184,6 +191,8 @@ namespace Server.Modules
                 header.Message += Environment.NewLine + "Room open";
             }
 
+            // Wenn der Sender der Anfrage aus dem Raum entfernt werden soll
+            // muss dieser aus dem Raum ermittelt werden, warum habe ich vergessen
             if(request.Header.User.Name.ToLower() != body.PlayerToRemove.Name.ToLower())
             {
                 header.Targets.Add(body.PlayerToRemove);

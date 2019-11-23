@@ -23,6 +23,7 @@ namespace Server.Modules
         {
             ResponseHeader header = new ResponseHeader { Targets = new List<User> { request.Header.User } };
 
+            // Prüfen, ob der Nuzer bereits eingeloggt ist
             try
             {
                 Authenticate(request.Header.User);
