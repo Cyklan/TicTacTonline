@@ -24,6 +24,7 @@ namespace Client.Communication
         {
             get
             {
+                if (client is null) return false;
                 return client.Connected;
             }
         }

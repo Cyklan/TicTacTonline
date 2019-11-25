@@ -107,6 +107,8 @@ namespace Client
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (!Client.IsConnected) return;
+
             // warten bis diese Abfrage durch ist, bevor wir ausloggen
             try
             {

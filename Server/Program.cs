@@ -227,8 +227,8 @@ namespace Server
                 if (!(data != null && data.Length > 0)) throw new ArgumentNullException("Data is empty.");
                 if (stopReceive) { throw new Exception("Handling of requests stopped"); }
 
-                byte[] response = requestHandler.HandleRequest(data, out List<User> targets, out User requestUser);
-                SyncClientData(ipPort, requestUser);
+                byte[] response = requestHandler.HandleRequest(data, out List<User> targets, clients.FirstOrDefault(x => x.Key.IpPort == ipPort).Key);
+                clients[clients.FirstOrDefault(x => x.Key.IpPort == ipPort).Key] = true;
 
                 foreach (User user in targets)
                 {
@@ -247,17 +247,6 @@ namespace Server
 
         }
 
-        private static void SyncClientData(string ipPortRequest, User requestUser)
-        {
-            User connectedClient = clients.FirstOrDefault(x => x.Key.IpPort == ipPortRequest).Key;
-
-            connectedClient.Name = requestUser.Name;
-            connectedClient.PasswordHash = requestUser.PasswordHash;
-
-            requestUser.IpPort = ipPortRequest;
-
-            clients[connectedClient] = true;
-        }
-
+  
     }
 }

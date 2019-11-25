@@ -28,13 +28,15 @@ namespace Server.Communication
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public byte[] HandleRequest(byte[] requestData, out List<User> targets, out User requestUser)
+        public byte[] HandleRequest(byte[] requestData, out List<User> targets, User connectedUser)
         {
             Response response = new Response();
             Request request = converter.ConvertJsonToObject<Request>(converter.ConvertBytesToString(requestData));
             request.Body = GetBody(requestData);
 
             log.Add($"Received {converter.ConvertObjectToJson(request)} from {request.Header.User}", request.Header.User, MessageType.Normal);
+
+            SyncClientData(connectedUser, request.Header.User);
 
             Module module = Modules.FirstOrDefault(x => x.Name.ToLower() == request.Header.Identifier.Module.ToLower());
             if (module is null)
@@ -57,7 +59,6 @@ namespace Server.Communication
 
             response.Header.MessageNumber = request.Header.MessageNumber;
             targets = response.Header.Targets;
-            requestUser = request.Header.User;
 
             log.Add($"Sending {converter.ConvertObjectToJson(response)} to {string.Join(",", response.Header.Targets.Select(x => x.ToString()))}", request.Header.User, MessageType.Normal);
 
@@ -119,5 +120,14 @@ namespace Server.Communication
 
             return new Document();
         }
+
+        private  void SyncClientData(User connectedUser, User requestUser)
+        {
+            connectedUser.Name = requestUser.Name;
+            connectedUser.PasswordHash = requestUser.PasswordHash;
+
+            requestUser.IpPort = connectedUser.IpPort;
+        }
+
     }
 }
