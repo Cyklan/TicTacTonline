@@ -50,6 +50,7 @@ namespace Client.Controls
                     Room = ((RemovePlayerFromRoomDocument)response.Body).Room;
                     Room.Game.CurrentPlayer = opponent;
                     MessageBox.Show(Exchange(Room, "GameModule", "HandleTurn").Header.Message);
+                    Room = null;
                     ChangeControl(MainWindow.Controls.Main);
                     return;
                 }
@@ -289,7 +290,8 @@ namespace Client.Controls
             }, "RoomModule", "LeaveRoom");
 
             if (response.Header.Code != ResponseCode.LeftRoom) Abort();
-
+            
+            Room = null;
             ChangeControl(MainWindow.Controls.Main);
         }
     }
