@@ -52,7 +52,7 @@ namespace Client.Controls
 
                 case ResponseCode.Ok:
 
-                    GetMain.ChangeControl(MainWindow.Controls.Main);
+                    ChangeControl(MainWindow.Controls.Main);
                     break;
 
                 default:

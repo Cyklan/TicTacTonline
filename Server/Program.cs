@@ -23,7 +23,6 @@ namespace Server
         private static Dictionary<User, bool> clients;
         private static readonly Log log = new Log();
         private static bool stopReceive = false;
-        private static readonly Converter converter = new Converter();
         private static RequestHandler requestHandler = new RequestHandler();
         private static Cleaner cleaner = new Cleaner();
 

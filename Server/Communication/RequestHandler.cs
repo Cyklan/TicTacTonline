@@ -121,7 +121,7 @@ namespace Server.Communication
             return new Document();
         }
 
-        private  void SyncClientData(User connectedUser, User requestUser)
+        private void SyncClientData(User connectedUser, User requestUser)
         {
             connectedUser.Name = requestUser.Name;
             connectedUser.PasswordHash = requestUser.PasswordHash;
