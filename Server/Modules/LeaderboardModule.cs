@@ -9,7 +9,7 @@ namespace Server.Modules
     /// <summary>
     /// Kümmert sich um alles, was das Leaderboard können muss
     /// </summary>
-    class LeaderboardModule: Module
+    class LeaderboardModule : Module
     {
 
         public LeaderboardModule() : base("MatchHistoryModule") { }
@@ -22,7 +22,16 @@ namespace Server.Modules
         [Function("Get")]
         public Response GetLeaderboard(Request request)
         {
-            throw new Exception();
+            return new Response()
+            {
+                Header = new ResponseHeader()
+                {
+                    Code = ResponseCode.Ok,
+                    Message = "Ok",
+                    Targets = new List<User>() { request.Header.User }
+                },
+                Body = new LeaderboardDocument() { LeaderboardPositions = new List<LeaderboardPosition>() }
+            };
         }
 
     }

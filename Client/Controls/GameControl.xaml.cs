@@ -37,10 +37,10 @@ namespace Client.Controls
         {
 
             lb_Game_Player1.Content = Room.Game.Player1.Name;
-            lb_Game_Player2.Content = Room.Game.Player1.Name;
+            lb_Game_Player2.Content = Room.Game.Player2.Name;
 
-            if (Room.Game.CurrentPlayer == Room.Game.Player1) { lb_Game_Player1.FontWeight = FontWeights.Bold; lb_Game_Player2.FontWeight = FontWeights.Normal; }
-            if (Room.Game.CurrentPlayer == Room.Game.Player2) { lb_Game_Player2.FontWeight = FontWeights.Bold; lb_Game_Player1.FontWeight = FontWeights.Normal; }
+            if (Room.Game.CurrentPlayer.Name.ToLower() == Room.Game.Player1.Name.ToLower()) { lb_Game_Player1.FontWeight = FontWeights.Bold; lb_Game_Player2.FontWeight = FontWeights.Normal; }
+            if (Room.Game.CurrentPlayer.Name.ToLower() == Room.Game.Player2.Name.ToLower()) { lb_Game_Player2.FontWeight = FontWeights.Bold; lb_Game_Player1.FontWeight = FontWeights.Normal; }
         }
 
         public override void HandleSpontaneousResponse(Response response)
@@ -260,6 +260,9 @@ namespace Client.Controls
                 b.IsEnabled = false;
                 Room.Game.CurrentPlayer = GetOpponent();
 
+                if (Room.Game.CurrentPlayer.Name.ToLower() == Room.Game.Player1.Name.ToLower()) { lb_Game_Player1.FontWeight = FontWeights.Bold; lb_Game_Player2.FontWeight = FontWeights.Normal; }
+                if (Room.Game.CurrentPlayer.Name.ToLower() == Room.Game.Player2.Name.ToLower()) { lb_Game_Player2.FontWeight = FontWeights.Bold; lb_Game_Player1.FontWeight = FontWeights.Normal; }
+
                 Send(Room, "GameModule", "HandleTurn");
             }
 
@@ -283,9 +286,8 @@ namespace Client.Controls
 
             button.IsEnabled = false;
 
-            if (Room.Game.CurrentPlayer == Room.Game.Player1) { lb_Game_Player1.FontWeight = FontWeights.Bold; lb_Game_Player2.FontWeight = FontWeights.Normal; }
-            if (Room.Game.CurrentPlayer == Room.Game.Player2) { lb_Game_Player2.FontWeight = FontWeights.Bold; lb_Game_Player1.FontWeight = FontWeights.Normal; }
-
+            if (Room.Game.CurrentPlayer.Name.ToLower() == Room.Game.Player1.Name.ToLower()) { lb_Game_Player1.FontWeight = FontWeights.Bold; lb_Game_Player2.FontWeight = FontWeights.Normal; }
+            if (Room.Game.CurrentPlayer.Name.ToLower() == Room.Game.Player2.Name.ToLower()) { lb_Game_Player2.FontWeight = FontWeights.Bold; lb_Game_Player1.FontWeight = FontWeights.Normal; }
         }
 
         private void DisableAllButtons()

@@ -146,6 +146,8 @@ namespace Server
             requestHandler.Modules.Add(new LoginModule());
             requestHandler.Modules.Add(new GameModule());
             requestHandler.Modules.Add(new RoomModule());
+            requestHandler.Modules.Add(new MatchHistoryModule());
+            requestHandler.Modules.Add(new LeaderboardModule());
 
             foreach (Module m in requestHandler.Modules) { log.Add("Initialized " + m.Name); }
         }

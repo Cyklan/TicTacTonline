@@ -21,7 +21,17 @@ namespace Server.Modules
         [Function("Get")]
         public Response GetMatchHistory(Request request)
         {
-            throw new NotImplementedException();
+
+            return new Response()
+            {
+                Header = new ResponseHeader()
+                {
+                    Code = ResponseCode.Ok,
+                    Message = "Ok",
+                    Targets = new List<User>() { request.Header.User }
+                },
+                Body = new MatchHistoryDocument() { Matches = db.GetMatchHistory(request.Header.User) }
+            };
         }
 
     }

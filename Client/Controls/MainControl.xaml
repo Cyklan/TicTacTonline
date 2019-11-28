@@ -17,7 +17,7 @@
         <Rectangle Fill="White" HorizontalAlignment="Left" Stroke="#FFCFCFCF" Width="200" Panel.ZIndex="-1" Margin="0,235,0,0"/>
         <Rectangle Fill="White" Stroke="#FFCFCFCF" Panel.ZIndex="-1" Margin="200,0,0,0"/>
         <ScrollViewer Margin="200,0,0,0" >
-            <StackPanel x:Name="mainGameList"  CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True"/>
+            <StackPanel x:Name="mainGameList" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True"/>
         </ScrollViewer>
         <Label Content="Filter" HorizontalAlignment="Left" Margin="6,113,0,0" VerticalAlignment="Top" Width="111" FontWeight="Bold" FontSize="18"/>
         <Button x:Name="btMainRefresh" Content="Refresh" HorizontalAlignment="Left" Margin="45,54,0,0" VerticalAlignment="Top" Width="107" Height="26" Background="White" BorderBrush="#FFCDCDCD" Foreground="#DD464646" FontSize="14" Click="btMainRefresh_Click"/>

@@ -111,11 +111,11 @@ namespace Server.Communication
             }
             else if (type.Contains("MatchHistoryDocument"))
             {
-                return null;
+                return converter.ConvertJsonToObject<MatchHistoryDocument>(bodyJson);
             }
             else if (type.Contains("LeaderboardDocument"))
             {
-                return null;
+                return converter.ConvertJsonToObject<LeaderboardDocument>(bodyJson);
             }
 
             return new Document();

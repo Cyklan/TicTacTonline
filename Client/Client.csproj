@@ -111,6 +111,12 @@
     <Compile Include="Controls\MainControl.xaml.cs">
       <DependentUpon>MainControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MatchHistoryControl.xaml.cs">
+      <DependentUpon>MatchHistoryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MatchHistoryPositionControl.xaml.cs">
+      <DependentUpon>MatchHistoryPositionControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\OptionsControl.xaml.cs">
       <DependentUpon>OptionsControl.xaml</DependentUpon>
     </Compile>
@@ -150,6 +156,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\MainControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MatchHistoryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MatchHistoryPositionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -48,7 +48,7 @@ namespace Client.Controls
 
         private void btMainGameHistory_Click(object sender, RoutedEventArgs e)
         {
-
+            ChangeControl(MainWindow.Controls.MatchHistory);
         }
 
         private void grid_Loaded(object sender, RoutedEventArgs e)

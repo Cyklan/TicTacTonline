@@ -47,7 +47,7 @@ namespace Server.Database
         public void LogoutAllUsers() => database.ExecuteNonQuery("UPDATE users SET loggedin = FALSE WHERE loggedin = TRUE;");
 
         public void CloseAllRooms() => database.ExecuteNonQuery($"UPDATE rooms SET statusid = {(int)RoomStatus.Closed} WHERE statusid != {(int)RoomStatus.Closed};");
-        
+
         public bool RegisterUser(User user) => database.ExecuteNonQuery($"INSERT INTO users(name, hash) VALUES ('{user.Name}', '{user.PasswordHash}');") == 1;
 
         public bool IsUserLoggedIn(User user) => database.ExecuteQuery($"SELECT * FROM users WHERE name='{user.Name}' AND loggedin = TRUE;").Count == 1;
@@ -131,13 +131,40 @@ namespace Server.Database
 
         public void InsertMatch(RoomDocument room, User winner)
         {
-            string winnerName = string.IsNullOrEmpty(winner.Name) ? $"{room.Game.Player1.Name}_{room.Game.Player2.Name}" : $"{winner.Name}"; 
+            string winnerName = string.IsNullOrEmpty(winner.Name) ? $"{room.Game.Player1.Name}_{room.Game.Player2.Name}" : $"{winner.Name}";
             string sql = "";
             sql += $"INSERT INTO matches (won_by, roomid) VALUES ('{winnerName}', {room.Id});" + Environment.NewLine;
             sql += $"INSERT INTO users_played_matches (users_name, matches_id) VALUES ('{room.Game.Player1.Name}', (SELECT id FROM matches WHERE won_by='{winnerName}' ORDER BY timestamp DESC LIMIT 1));" + Environment.NewLine;
             sql += $"INSERT INTO users_played_matches (users_name, matches_id) VALUES ('{room.Game.Player2.Name}', (SELECT id FROM matches WHERE won_by='{winnerName}' ORDER BY timestamp DESC LIMIT 1));";
 
             database.ExecuteNonQuery(sql);
+        }
+
+        public List<MatchHistoryPosition> GetMatchHistory(User user)
+        {
+            string sql = "";
+            sql += $"SELECT id, won_by, timestamp, roomid, users_name,";
+            sql += $"(SELECT users_name FROM users_played_matches WHERE users_played_matches.matches_id = m.id AND users_name NOT LIKE '{user.Name}') AS opponent ";
+            sql += "FROM matches m JOIN users_played_matches um ON m.id = um.matches_id ";
+            sql += $"WHERE um.users_name LIKE '{user.Name}' LIMIT 20;";
+
+            return database.ExecuteQuery(sql).Select(GetMatchHistoryPosition).ToList();
+        }
+
+        private MatchHistoryPosition GetMatchHistoryPosition(Dictionary<string, object> data)
+        {
+            string winner = data["won_by"].ToString().ToLower();
+            bool? won = null;
+
+            if (winner == data["users_name"].ToString().ToLower()) won = true;
+            if (winner == data["opponent"].ToString().ToLower()) won = false;
+
+            return new MatchHistoryPosition()
+            {
+                EnemyUserName = data["opponent"].ToString(),
+                IsWin = won,
+                TimeStamp = DateTime.Parse(data["timestamp"].ToString())
+            };
         }
 
         #endregion

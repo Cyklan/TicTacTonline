@@ -22,7 +22,8 @@ namespace Client
             Main,
             GameLobby,
             Game,
-            Options
+            Options,
+            MatchHistory
         }
 
         public User User { get; set; }
@@ -67,7 +68,8 @@ namespace Client
                 { Controls.Main, typeof(MainControl) },
                 { Controls.GameLobby, typeof(GameLobbyControl) },
                 { Controls.Game, typeof(GameControl) },
-                { Controls.Options, typeof(OptionsControl) }
+                { Controls.Options, typeof(OptionsControl) },
+                { Controls.MatchHistory, typeof(MatchHistoryControl) }
             };
         }
 
