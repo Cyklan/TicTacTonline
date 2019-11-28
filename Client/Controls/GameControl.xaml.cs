@@ -33,6 +33,16 @@ namespace Client.Controls
             return Room.Game.Player1.Name.ToLower() == User.Name.ToLower() ? Room.Game.Player2 : Room.Game.Player1;
         }
 
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            lb_Game_Player1.Content = Room.Game.Player1.Name;
+            lb_Game_Player2.Content = Room.Game.Player1.Name;
+
+            if (Room.Game.CurrentPlayer == Room.Game.Player1) { lb_Game_Player1.FontWeight = FontWeights.Bold; lb_Game_Player2.FontWeight = FontWeights.Normal; }
+            if (Room.Game.CurrentPlayer == Room.Game.Player2) { lb_Game_Player2.FontWeight = FontWeights.Bold; lb_Game_Player1.FontWeight = FontWeights.Normal; }
+        }
+
         public override void HandleSpontaneousResponse(Response response)
         {
             Dispatcher.Invoke(() =>
@@ -272,6 +282,10 @@ namespace Client.Controls
             }
 
             button.IsEnabled = false;
+
+            if (Room.Game.CurrentPlayer == Room.Game.Player1) { lb_Game_Player1.FontWeight = FontWeights.Bold; lb_Game_Player2.FontWeight = FontWeights.Normal; }
+            if (Room.Game.CurrentPlayer == Room.Game.Player2) { lb_Game_Player2.FontWeight = FontWeights.Bold; lb_Game_Player1.FontWeight = FontWeights.Normal; }
+
         }
 
         private void DisableAllButtons()
