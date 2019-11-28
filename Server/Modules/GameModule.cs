@@ -89,17 +89,37 @@ namespace Server.Modules
             // ob es ein Unentschieden oder Sieg ist
             header.Targets.Add(header.Targets.Any(x => x.Name.ToLower() == document.Game.Player1.Name.ToLower()) ? document.Game.Player2 : document.Game.Player1);
 
+            double gameOutcome = 0;
             if (string.IsNullOrEmpty(winner.Name))
             {
                 header.Code = ResponseCode.GameTie;
                 header.Message = $"Turn {document.Game.RoundsPlayed} processed - tie.";
+
+                gameOutcome = 0.5;
             }
             else
             {
                 header.Code = ResponseCode.GameOver;
                 header.Message = $"Turn {document.Game.RoundsPlayed} processed - {winner.Name} won.";
+
+                gameOutcome = document.Game.Player1.Name == winner.Name ? 1 : 0;
             }
 
+            int player1Elo = db.GetElo(document.Game.Player1);
+            int player2Elo = db.GetElo(document.Game.Player2);
+            int eloDelta = CalculateEloDelta(player1Elo, player2Elo, gameOutcome);
+
+            if (winner.Name == document.Game.Player1.Name)
+            {
+                player1Elo += eloDelta;
+                player2Elo -= eloDelta;
+            } else
+            {
+                player1Elo -= eloDelta;
+                player2Elo += eloDelta;
+            }
+
+            db.UpdateElo(document.Game.Player1, document.Game.Player2, player1Elo, player2Elo);
             SaveGame(document, winner);
 
             return new Response() { Header = header, Body = document };
@@ -251,6 +271,13 @@ namespace Server.Modules
             }
 
             return first;
+        }
+
+        private int CalculateEloDelta(int playerOneElo, int playerTwoElo, double playerOneOutcome)
+        {
+            int eloFactor = 10;
+            double playerOneExpectation = 1 / (1 + Math.Pow(10, (playerTwoElo - playerOneElo) / 400.0));
+            return (int)(eloFactor * (playerOneOutcome - playerOneExpectation));
         }
     }
 }

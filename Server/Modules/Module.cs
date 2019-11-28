@@ -43,7 +43,7 @@ namespace Server.Modules
                     return (Response)m.Invoke(this, new object[] { request });
                 }
             }
-
+                        
             throw new NotImplementedException($"Function {request.Header.Identifier.Function} is not part of module {request.Header.Identifier.Module}");
         }
 

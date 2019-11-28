@@ -27,7 +27,7 @@ namespace Server.Database
                 if (row["ip"] is DBNull) { ip = ""; } else { ip = row["ip"].ToString(); }
                 if (row["port"] is DBNull) { port = 0; } else { port = (int)row["port"]; }
 
-                result.Add(new User { Name = row["name"].ToString(), IpAddress = ip, Port = port });
+                result.Add(new User { Name = row["name"].ToString(), IpAddress = ip, Port = port});
             }
 
             return result;
@@ -127,7 +127,7 @@ namespace Server.Database
 
         #endregion
 
-        #region "Game"
+        #region Game
 
         public void InsertMatch(RoomDocument room, User winner)
         {
@@ -166,6 +166,25 @@ namespace Server.Database
                 TimeStamp = DateTime.Parse(data["timestamp"].ToString())
             };
         }
+
+        #endregion
+
+        #region Elo
+
+        public int GetElo(User user)
+        {
+            string sql = $"SELECT elo FROM users WHERE name = '{user.Name}'";
+            return (int)database.ExecuteQuery(sql)[0]["elo"];
+        }
+
+        internal void UpdateElo(User player1, User player2, int player1Elo, int player2Elo)
+        {
+            //UPDATE `tictactonline`.`users` SET `elo`= '1205' WHERE `name`= '1';
+            string sql = $"UPDATE users SET elo = {player1Elo} WHERE name = '{player1.Name}';";
+            sql += $"UPDATE users SET elo = {player2Elo} WHERE name = '{player2.Name}';";
+            database.ExecuteNonQuery(sql);
+        }
+
 
         #endregion
     }
