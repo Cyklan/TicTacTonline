@@ -47,7 +47,7 @@
         <Button x:Name="btGame_3_3" HorizontalAlignment="Left" Margin="349,330,0,0" VerticalAlignment="Top" Width="80" Height="80" BorderBrush="White" BorderThickness="0.2" Background="White" Foreground="#DD000000" FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" MouseEnter="imgBt_MouseEnter" MouseLeave="imgBt_MouseLeave" Click="btGameField_Click">
             <Image x:Name="imgBt_3_3" Height="60" Width="60" Source="../Resources/icon_empty.png"/>
         </Button>
-        <Label x:Name="lb_Game_Player1" Content="Player 1" HorizontalAlignment="Left" Margin="122,83,0,0" VerticalAlignment="Top" FontFamily="Yu Gothic" FontSize="20"/>
-        <Label x:Name="lb_Game_Player2" Content="Player 2" HorizontalAlignment="Left" Margin="344,83,0,0" VerticalAlignment="Top" FontFamily="Yu Gothic" FontSize="20"/>
+        <Label x:Name="lb_Game_Player1" Content="Player 1" HorizontalAlignment="Left" Margin="179,55,0,0" VerticalAlignment="Top" FontFamily="Yu Gothic" FontSize="20"/>
+        <Label x:Name="lb_Game_Player2" Content="Player 2" HorizontalAlignment="Left" Margin="179,102,0,0" VerticalAlignment="Top" FontFamily="Yu Gothic" FontSize="20"/>
     </Grid>
 </controls:BaseControl>

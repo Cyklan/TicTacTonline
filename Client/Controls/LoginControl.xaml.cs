@@ -51,7 +51,7 @@ namespace Client.Controls
                     break;
 
                 case ResponseCode.Ok:
-
+                    GetMain.UpdateInfoLabel();
                     ChangeControl(MainWindow.Controls.Main);
                     break;
 

@@ -93,27 +93,30 @@ namespace Server.Modules
             if (string.IsNullOrEmpty(winner.Name))
             {
                 header.Code = ResponseCode.GameTie;
-                header.Message = $"Turn {document.Game.RoundsPlayed} processed - tie.";
+                header.Message = $"Tie";
 
                 gameOutcome = 0.5;
             }
             else
             {
                 header.Code = ResponseCode.GameOver;
-                header.Message = $"Turn {document.Game.RoundsPlayed} processed - {winner.Name} won.";
+                header.Message = $"{winner.Name} won";
 
-                gameOutcome = document.Game.Player1.Name == winner.Name ? 1 : 0;
+                gameOutcome = document.Game.Player1.Name.ToLower() == winner.Name.ToLower() ? 1 : 0;
             }
 
             int player1Elo = db.GetElo(document.Game.Player1);
             int player2Elo = db.GetElo(document.Game.Player2);
             int eloDelta = CalculateEloDelta(player1Elo, player2Elo, gameOutcome);
 
-            if (winner.Name == document.Game.Player1.Name)
+            if(eloDelta < 0) { eloDelta *= -1; } // Elo Delta ist negativ, wenn Spieler 2 gewinnt, sodass Delta invertiert werden muss.
+
+            if (winner.Name.ToLower() == document.Game.Player1.Name.ToLower())
             {
                 player1Elo += eloDelta;
                 player2Elo -= eloDelta;
-            } else
+            } 
+            else
             {
                 player1Elo -= eloDelta;
                 player2Elo += eloDelta;

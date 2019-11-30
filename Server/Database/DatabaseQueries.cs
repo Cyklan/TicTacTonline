@@ -198,11 +198,11 @@ namespace Server.Database
             return (int)database.ExecuteQuery(sql)[0]["elo"];
         }
 
-        internal void UpdateElo(User player1, User player2, int player1Elo, int player2Elo)
+        public void UpdateElo(User player1, User player2, int player1Elo, int player2Elo)
         {
-            //UPDATE `tictactonline`.`users` SET `elo`= '1205' WHERE `name`= '1';
-            string sql = $"UPDATE users SET elo = {player1Elo} WHERE name = '{player1.Name}';";
-            sql += $"UPDATE users SET elo = {player2Elo} WHERE name = '{player2.Name}';";
+            string sql = "";
+            sql += $"UPDATE users SET elo = {player1Elo} WHERE name LIKE '{player1.Name}';";
+            sql += $"UPDATE users SET elo = {player2Elo} WHERE name LIKE '{player2.Name}';";
             database.ExecuteNonQuery(sql);
         }
 

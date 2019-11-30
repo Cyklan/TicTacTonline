@@ -51,6 +51,10 @@ namespace Client.Controls
                 lbConnectionError.Content = ex.Message;
                 return;
             }
+            finally
+            {
+                GetMain.UpdateInfoLabel();
+            }
 
             while (!Client.IsConnected)
             {
@@ -67,6 +71,7 @@ namespace Client.Controls
                 }
             }
 
+            GetMain.UpdateInfoLabel();
             GetMain.ChangeControl(MainWindow.Controls.Login);
         }
 

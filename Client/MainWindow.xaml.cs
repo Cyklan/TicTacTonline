@@ -75,6 +75,14 @@ namespace Client
 
         #region "Public Stuff"
 
+        public void UpdateInfoLabel(string text = "")
+        {
+            lbInfo.Content = $"Version: {typeof(MainWindow).Assembly.GetName().Version} " +
+                             $"| Connected: {Client.IsConnected} " +
+                             $"| User: {(User is null? "" : User.Name)}" +
+                             $"{(string.IsNullOrEmpty(text)? "" : " | " + text)}";
+        }
+
         public void ChangeControl(Controls control)
         {
             currentControl = (BaseControl)Activator.CreateInstance(controls[control]);
