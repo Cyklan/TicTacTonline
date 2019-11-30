@@ -21,13 +21,18 @@ namespace Client.Controls
     /// </summary>
     public partial class LeaderboardPlayerControl : BaseControl
     {
-        public LeaderboardPlayerControl()
+        public LeaderboardPlayerControl(LeaderboardPosition leaderboardPosition)
         {
             InitializeComponent();
+
+            lbUser.Content = leaderboardPosition.UserName;
+            lbElo.Content = leaderboardPosition.Elo;
+            lbPosition.Content = leaderboardPosition.Position;
         }
+
         public override void HandleSpontaneousResponse(Response response)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

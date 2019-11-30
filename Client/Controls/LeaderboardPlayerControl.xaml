@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Client.Controls"
-                mc:Ignorable="d" d:DesignWidth="800" Height="40" Background="White">
-    <Grid VerticalAlignment="Center">
-        <Label Content="Label" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
-
+             mc:Ignorable="d" Height="40" Background="White" Foreground="#FFE2E2E2" Margin="1">
+    <Grid Width="589">
+        <Label x:Name="lbUser" Content="Spieler" HorizontalAlignment="Left" Margin="120,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
+        <Label x:Name="lbElo" Content="1200" HorizontalAlignment="Left" Margin="407,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
+        <Label x:Name="lbPosition" Content="1" HorizontalAlignment="Left" Margin="8,5,0,0" VerticalAlignment="Top" Height="30" FontSize="16"/>
     </Grid>
 </controls:BaseControl>

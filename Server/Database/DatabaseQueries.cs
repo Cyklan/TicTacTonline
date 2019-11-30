@@ -27,7 +27,7 @@ namespace Server.Database
                 if (row["ip"] is DBNull) { ip = ""; } else { ip = row["ip"].ToString(); }
                 if (row["port"] is DBNull) { port = 0; } else { port = (int)row["port"]; }
 
-                result.Add(new User { Name = row["name"].ToString(), IpAddress = ip, Port = port});
+                result.Add(new User { Name = row["name"].ToString(), IpAddress = ip, Port = port });
             }
 
             return result;
@@ -142,29 +142,50 @@ namespace Server.Database
 
         public List<MatchHistoryPosition> GetMatchHistory(User user)
         {
+            List<MatchHistoryPosition> result = new List<MatchHistoryPosition>();
+
             string sql = "";
             sql += $"SELECT id, won_by, timestamp, roomid, users_name,";
             sql += $"(SELECT users_name FROM users_played_matches WHERE users_played_matches.matches_id = m.id AND users_name NOT LIKE '{user.Name}') AS opponent ";
             sql += "FROM matches m JOIN users_played_matches um ON m.id = um.matches_id ";
-            sql += $"WHERE um.users_name LIKE '{user.Name}' LIMIT 20;";
+            sql += $"WHERE um.users_name LIKE '{user.Name}' ORDER BY timestamp DESC LIMIT 50;";
 
-            return database.ExecuteQuery(sql).Select(GetMatchHistoryPosition).ToList();
+            database.ExecuteQuery(sql)
+                .ForEach(data =>
+                {
+                    string winner = data["won_by"].ToString().ToLower();
+                    bool? won = null;
+
+                    if (winner == data["users_name"].ToString().ToLower()) won = true;
+                    if (winner == data["opponent"].ToString().ToLower()) won = false;
+
+                    result.Add(new MatchHistoryPosition()
+                    {
+                        EnemyUserName = data["opponent"].ToString(),
+                        IsWin = won,
+                        TimeStamp = DateTime.Parse(data["timestamp"].ToString())
+                    });
+                });
+
+            return result;
         }
 
-        private MatchHistoryPosition GetMatchHistoryPosition(Dictionary<string, object> data)
+        public List<LeaderboardPosition> GetLeaderboard()
         {
-            string winner = data["won_by"].ToString().ToLower();
-            bool? won = null;
+            List<LeaderboardPosition> result = new List<LeaderboardPosition>();
 
-            if (winner == data["users_name"].ToString().ToLower()) won = true;
-            if (winner == data["opponent"].ToString().ToLower()) won = false;
+            database.ExecuteQuery("SELECT * FROM users ORDER BY elo DESC;")
+                .ForEach(pos =>
+                {
+                    result.Add(new LeaderboardPosition()
+                    {
+                        UserName = pos["name"].ToString(),
+                        Elo = (int)pos["elo"],
+                        Position = result.Count() + 1
+                    });
+                });
 
-            return new MatchHistoryPosition()
-            {
-                EnemyUserName = data["opponent"].ToString(),
-                IsWin = won,
-                TimeStamp = DateTime.Parse(data["timestamp"].ToString())
-            };
+            return result;
         }
 
         #endregion

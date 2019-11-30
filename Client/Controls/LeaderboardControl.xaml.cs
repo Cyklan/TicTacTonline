@@ -33,7 +33,15 @@ namespace Client.Controls
 
         public override void HandleSpontaneousResponse(Response response)
         {
-            throw new NotImplementedException();
+            return;
+        }
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((LeaderboardDocument)Exchange(new Document(), "LeaderboardModule", "Get").Body).LeaderboardPositions.ForEach(pos =>
+           {
+               spLeaderboard.Children.Add(new LeaderboardPlayerControl(pos));
+           });
         }
     }
 }

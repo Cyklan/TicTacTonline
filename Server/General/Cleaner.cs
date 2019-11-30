@@ -59,7 +59,7 @@ namespace Server.General
         /// </summary>
         private void HandleCleanThread()
         {
-            DateTime startTime = new DateTime();
+            DateTime startTime = DateTime.Now;
 
             while (run)
             {

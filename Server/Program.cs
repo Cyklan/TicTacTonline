@@ -35,7 +35,7 @@ namespace Server
             {
                 CheckConfig();
 
-                log.Add("Starting server");
+                log.Add($"Starting server ({ typeof(Program).Assembly.GetName().Version})");
 
                 serverConfig.Load();
                 clients = new Dictionary<User, bool>();
@@ -228,8 +228,8 @@ namespace Server
                 if (!(data != null && data.Length > 0)) throw new ArgumentNullException("Data is empty.");
                 if (stopReceive) { throw new Exception("Handling of requests stopped"); }
 
-                byte[] response = requestHandler.HandleRequest(data, out List<User> targets, clients.FirstOrDefault(x => x.Key.IpPort == ipPort).Key);
                 clients[clients.FirstOrDefault(x => x.Key.IpPort == ipPort).Key] = true;
+                byte[] response = requestHandler.HandleRequest(data, out List<User> targets, clients.FirstOrDefault(x => x.Key.IpPort == ipPort).Key);
 
                 foreach (User user in targets)
                 {

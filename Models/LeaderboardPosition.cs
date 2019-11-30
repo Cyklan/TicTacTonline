@@ -6,5 +6,8 @@ namespace Models
 {
     public class LeaderboardPosition
     {
+        public int Position { get; set; }
+        public string UserName { get; set; }
+        public int Elo { get; set; }
     }
 }

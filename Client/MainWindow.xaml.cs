@@ -134,7 +134,7 @@ namespace Client
             }
             catch { }
 
-            if (User != null) Client.Send(new Request()
+            if (User != null) Client.Exchange(new Request()
             {
                 Header = new RequestHeader()
                 {

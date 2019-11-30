@@ -12,7 +12,7 @@ namespace Server.Modules
     class LeaderboardModule : Module
     {
 
-        public LeaderboardModule() : base("MatchHistoryModule") { }
+        public LeaderboardModule() : base("LeaderboardModule") { }
 
         /// <summary>
         /// Gibt die Rangliste aus
@@ -30,7 +30,7 @@ namespace Server.Modules
                     Message = "Ok",
                     Targets = new List<User>() { request.Header.User }
                 },
-                Body = new LeaderboardDocument() { LeaderboardPositions = new List<LeaderboardPosition>() }
+                Body = new LeaderboardDocument() { LeaderboardPositions = db.GetLeaderboard() }
             };
         }
 
