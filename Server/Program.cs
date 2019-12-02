@@ -114,6 +114,10 @@ namespace Server
                     cleaner.CleanAll();
                     break;
 
+                case ".clear":
+                    Console.Clear();
+                    break;
+
                 default:
                     log.Add($"Commands: {Environment.NewLine}" +
                         $" .stop {Environment.NewLine}" +
@@ -121,7 +125,8 @@ namespace Server
                         $" .pause {Environment.NewLine}" +
                         $" .continue {Environment.NewLine}" +
                         $" .clean {Environment.NewLine}" +
-                        $" .cleanall", MessageType.Debug);
+                        $" .cleanall {Environment.NewLine}" +
+                        $" .clear", MessageType.Debug);
                     break;
             }
 

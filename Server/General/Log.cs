@@ -80,45 +80,60 @@ namespace Server.General
         /// </summary>
         private static void HandleLogQueue()
         {
+            int lines = 0;
+
             while (run)
             {
-                while (logQueue.Any())
+                try
                 {
-                    Message message = logQueue.Dequeue();
+                    if (lines >= 5000) { Console.Clear(); lines = 0; }
 
-                    switch (message.MessageType)
+                    while (logQueue.Any())
                     {
-                        case MessageType.Normal:
-                            Console.ForegroundColor = ConsoleColor.White;
-                            break;
-                        case MessageType.Warning:
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            break;
-                        case MessageType.Error:
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            break;
-                        case MessageType.Debug:
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            break;
-                        case MessageType.Question:
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            break;
-                    }
 
-                    File.AppendAllText(pathmanager.LogFilePath, message + Environment.NewLine);
-                    if (message.MessageType == MessageType.Question)
-                    {
-                        Console.Write(message);
-                    }
-                    else
-                    {
-                        Console.WriteLine(message);
-                    }
+                        try
+                        {
+                            Message message = logQueue.Dequeue();
+                            switch (message.MessageType)
+                            {
+                                case MessageType.Normal:
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    break;
+                                case MessageType.Warning:
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    break;
+                                case MessageType.Error:
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    break;
+                                case MessageType.Debug:
+                                    Console.ForegroundColor = ConsoleColor.Gray;
+                                    break;
+                                case MessageType.Question:
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    break;
+                            }
 
-                    // Die Textfarbe der Konsole wird nicht zurückgesetzt, weil diese *immer* für jede Nachricht neu gesetzt wird.
+                            File.AppendAllText(pathmanager.LogFilePath, message + Environment.NewLine);
+                            if (message.MessageType == MessageType.Question)
+                            {
+                                Console.Write(message);
+                            }
+                            else
+                            {
+                                Console.WriteLine(message);
+                            }
+
+                            lines++;
+                        }
+                        catch
+                        {
+                            /* https://i.ytimg.com/vi/0oBx7Jg4m-o/maxresdefault.jpg */
+                        }
+
+                    }
                 }
+                finally { Thread.Sleep(10); }
 
-                Thread.Sleep(10);
             }
 
         }

@@ -63,12 +63,20 @@ namespace Server.General
 
             while (run)
             {
-                if (DateTime.Now > startTime.AddMinutes(CleanerConfiguration.IntervalInMinutes))
+                try
                 {
-                    Log("Cleaning started");
-                    startTime = DateTime.Now;
-                    Clean();
+                    if (DateTime.Now > startTime.AddMinutes(CleanerConfiguration.IntervalInMinutes))
+                    {
+                        Log("Cleaning started");
+                        startTime = DateTime.Now;
+                        Clean();
+                    }
                 }
+                catch (Exception ex)
+                {
+                    log.Add(ex.ToString(), cleanerUser, MessageType.Error);
+                }
+
             }
         }
 
@@ -130,12 +138,12 @@ namespace Server.General
                             break;
                         }
                         continue;
-    
+
                 }
                 Log($"Cleaned room {room.Id}");
             }
 
-            foreach(int room in db.GetRoomsWithoutPlayers())
+            foreach (int room in db.GetRoomsWithoutPlayers())
             {
                 db.ChangeRoomStatus(room, RoomStatus.Closed);
                 Log($"Cleaned room {room}");

@@ -109,13 +109,13 @@ namespace Server.Modules
             int player2Elo = db.GetElo(document.Game.Player2);
             int eloDelta = CalculateEloDelta(player1Elo, player2Elo, gameOutcome);
 
-            if(eloDelta < 0) { eloDelta *= -1; } // Elo Delta ist negativ, wenn Spieler 2 gewinnt, sodass Delta invertiert werden muss.
+            if (eloDelta < 0) { eloDelta *= -1; } // Elo Delta ist negativ, wenn Spieler 2 gewinnt, sodass Delta invertiert werden muss.
 
             if (winner.Name.ToLower() == document.Game.Player1.Name.ToLower())
             {
                 player1Elo += eloDelta;
                 player2Elo -= eloDelta;
-            } 
+            }
             else
             {
                 player1Elo -= eloDelta;
@@ -133,7 +133,8 @@ namespace Server.Modules
         {
             ResponseHeader header = new ResponseHeader();
             ChatDocument body = (ChatDocument)request.Body;
-            header.Targets = new List<User> { body.Target };
+            header.Targets = new List<User>();
+            if (body.Target != null) { header.Targets.Add(body.Target); }
             header.Code = ResponseCode.Message;
 
             db.SaveMessage(request.Header.User.Name, body.Message, body.RoomId);
