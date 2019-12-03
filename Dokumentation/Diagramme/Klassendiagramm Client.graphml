@@ -18,7 +18,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="188.98414374869105" width="280.984869528796" x="1106.5240622053002" y="440.5680195170858"/>
+          <y:Geometry height="232.38137097382196" width="280.984869528796" x="1106.5240622053002" y="440.56801951708576"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="83.42822265625" x="98.77832343627301" y="3.0">MainWindow<y:LabelModel>
@@ -30,6 +30,8 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel>+grid_main: Grid
++Grid: Grid
++lbInfo: Label
 +user: User
 -currentControl: BaseControl
 +CurrentRoom: RoomDocument</y:AttributeLabel>
@@ -37,6 +39,7 @@
 -RegisterControls(): void
 +ChangeControl(Controls): void
 +Connect(): void
++UpdateInfoLabel(string): void
 -ClientReceive(object, EventArgs): void
 -Window_Closing(object, CancelEventArgs): void
 </y:MethodLabel>
@@ -375,7 +378,7 @@ BaseControl<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="151.0" width="339.0" x="3274.0848695287955" y="705.2269602571889"/>
+          <y:Geometry height="179.93148481675394" width="339.0" x="3274.0848695287955" y="705.2269602571889"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="128.95361328125" x="105.023193359375" y="3.0">LeaderboardControl<y:LabelModel>
@@ -388,11 +391,13 @@ BaseControl<y:LabelModel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel>+Grid: Grid
 +Label: Label
-+StackPanel:StackPanel
++spLeaderboard: StackPanel
++ScrollViewer: Scrollviewer
 +btLeaderboardBack: Button</y:AttributeLabel>
             <y:MethodLabel>+LeaderboardControl()
 +HandleSpontaneousResponse(Response): void
-+btLeaderboardBack_Click(object, RoutedEventArgs): void</y:MethodLabel>
+-btLeaderboardBack_Click(object, RoutedEventArgs): void
+-Grid_Loaded(object, RoutedEventArgs): void</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -528,7 +533,7 @@ BaseControl<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="123.0" width="100.0" x="896.0" y="473.56009139143134"/>
+          <y:Geometry height="123.0" width="100.0" x="896.0" y="495.25870500399674"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="69.0380859375" x="15.48095703125" y="3.0">&lt;&lt;enum&gt;&gt;
@@ -588,7 +593,7 @@ Main</y:AttributeLabel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="91.0" width="288.8000000000002" x="3666.7999999999993" y="705.2269602571889"/>
+          <y:Geometry height="129.85112657759157" width="288.8000000000002" x="3666.7999999999993" y="705.2269602571889"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="167.9853515625" x="60.40732421875009" y="3.0">LeaderboardPlayerControl<y:LabelModel>
@@ -599,7 +604,10 @@ Main</y:AttributeLabel>
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel>+Label: Label</y:AttributeLabel>
+            <y:AttributeLabel>+lbUser: Label
++lbPosition: Label
++lbElo: Label
++Grid: Grid</y:AttributeLabel>
             <y:MethodLabel>+LeaderboardPlayerControl()
 +HandleSpontaneousResponse(Response): void</y:MethodLabel>
           </y:UML>
@@ -627,7 +635,7 @@ Main</y:AttributeLabel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="646.0556369982546" width="387.3417801047126" x="4009.315130471203" y="705.2269602571889"/>
+          <y:Geometry height="693.0692998254799" width="387.3417801047126" x="4009.315130471203" y="705.2269602571889"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="86.341796875" x="150.4999916148563" y="3.0">GameControl<y:LabelModel>
@@ -663,6 +671,8 @@ Main</y:AttributeLabel>
 +imgBt_3_2: Image
 +btGame_3_3: Button
 +imgBt_3_3: Image
++lb_Game_Player1: Label
++lb_Game_Player2: Label
 -autoScroll: bool</y:AttributeLabel>
             <y:MethodLabel>+GameControl()
 +HandleSpontaneousResponse(Response): void
@@ -678,7 +688,8 @@ Main</y:AttributeLabel>
 -btGameField_Click(object, RoutedEventArgs): void
 -UpdateButtons(): void
 -DisableAllButtons(): void
--btGameLeave_Click(object, RoutedEventArgs): void</y:MethodLabel>
+-btGameLeave_Click(object, RoutedEventArgs): void
+-Grid_Loaded(object, RoutedEventArgs): void</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -739,7 +750,6 @@ Main</y:AttributeLabel>
     </node>
     <node id="n27">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="303.2795811518321" width="360.17277486910916" x="4886.669423246072" y="705.2269602571889"/>
@@ -782,6 +792,77 @@ Main</y:AttributeLabel>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="10.673828125" x="9.6630859375" y="5.6494140625">1<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:Shape type="rectangle3d"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="n29">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="176.31504921465967" width="339.0" x="5283.659078743451" y="705.2269602571889"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="132.55908203125" x="103.220458984375" y="3.0">MatchHistoryControl<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel>+Grid: Grid
++Label: Label
++ScrollViewer; ScrollViewer
++spMatchHistory: StackPanel
++btMatchHistoryBack: Button</y:AttributeLabel>
+            <y:MethodLabel>+LeaderboardControl()
++HandleSpontaneousResponse(Response): void
+-btLeaderboardBack_Click(object, RoutedEventArgs): void
+-Grid_Loaded(object, RoutedEventArgs): void</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n30">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="145.56863789570673" width="288.8000000000002" x="5676.374209214655" y="705.2269602571889"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="183.83544921875" x="52.48227539062509" y="3.0">MatchHistoryPositionControl<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel>+Grid: Grid
++lbVs: Label
++lbUser1: Label
++lbUser2: Label
++lbStatus: Label</y:AttributeLabel>
+            <y:MethodLabel>+MatchHistoryPositionControl()
++HandleSpontaneousResponse(Response): void</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n31">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="30.0" x="5646.374209214654" y="745.9474131577921"/>
+          <y:Fill hasColor="false" transparent="false"/>
+          <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="22.01171875" x="3.994140625" y="5.6494140625">0..*<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -974,7 +1055,7 @@ Main</y:AttributeLabel>
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="140.4650834148099" sy="-56.130178010471184" tx="0.0" ty="0.0"/>
+          <y:Path sx="140.51655103606504" sy="-77.82879162303658" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -1021,7 +1102,7 @@ Main</y:AttributeLabel>
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="169.46917838785203" sy="-30.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="169.50858498752768" sy="-25.04017911958124" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="plain"/>
           <y:BendStyle smoothed="false"/>
@@ -1030,7 +1111,6 @@ Main</y:AttributeLabel>
     </edge>
     <edge id="e19" source="n25" target="n10">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -1045,7 +1125,6 @@ Main</y:AttributeLabel>
     </edge>
     <edge id="e20" source="n26" target="n10">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -1060,7 +1139,6 @@ Main</y:AttributeLabel>
     </edge>
     <edge id="e21" source="n27" target="n10">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="127.34250097144951">
@@ -1075,7 +1153,6 @@ Main</y:AttributeLabel>
     </edge>
     <edge id="e22" source="n1" target="n27">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -1085,6 +1162,47 @@ Main</y:AttributeLabel>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="standard" target="none"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e23" source="n29" target="n30">
+      <data key="d8"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="169.47826952042124" sy="-17.10137968586389" tx="-144.43231006826045" ty="-1.7281740263873644"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e24" source="n29" target="n10">
+      <data key="d8"/>
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+            <y:Point x="5453.159078743451" y="655.9435312500027"/>
+            <y:Point x="1839.75" y="655.9435312500027"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e25" source="n30" target="n10">
+      <data key="d8"/>
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+            <y:Point x="5820.774209214655" y="655.9435312500027"/>
+            <y:Point x="1839.75" y="655.9435312500027"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>

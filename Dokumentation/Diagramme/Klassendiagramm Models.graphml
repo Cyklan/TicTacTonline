@@ -243,7 +243,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="109.28000000000003" width="153.0" x="-462.606" y="789.0218666666672"/>
+          <y:Geometry height="80.6133333333334" width="153.0" x="-462.606" y="789.0218666666672"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="134.01904296875" x="9.490478515625" y="3.0">LeaderboardPosition<y:LabelModel>
@@ -256,9 +256,7 @@
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel>+UserName: string
 +Position: int
-+Wins: int
-+Loses: int
-+Ties: int</y:AttributeLabel>
++Elo: int</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>
         </y:UMLClassNode>
@@ -308,7 +306,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="94.21333333333337" width="153.0" x="-269.97800000000007" y="789.0218666666672"/>
+          <y:Geometry height="80.61333333333334" width="153.0" x="-269.97800000000007" y="789.0218666666672"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="137.62451171875" x="7.687744140625" y="3.0">MatchHistoryPosition<y:LabelModel>
@@ -320,9 +318,8 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel>+EnemyUserName: string
-+isWin: bool
-+isLose: bool
-+isTie: bool</y:AttributeLabel>
++isWin: bool?
++TimeStamp: DateTime</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>
         </y:UMLClassNode>
@@ -1109,7 +1106,6 @@ Closed</y:AttributeLabel>
     </edge>
     <edge id="e25" source="n35" target="n4">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="90.01042500897029" ty="59.68371700278345">
@@ -1123,7 +1119,6 @@ Closed</y:AttributeLabel>
     </edge>
     <edge id="e26" source="n35" target="n8">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="76.4873491209188" ty="-33.10666666666668"/>

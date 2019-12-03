@@ -30,7 +30,7 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="static" use3DEffect="true">
             <y:AttributeLabel>-server: WatsonWsServer
--clients:List&lt;User&gt;
+-clients: Dictionary&lt;User, bool&gt;
 -stopReceive: bool</y:AttributeLabel>
             <y:MethodLabel>-Main(string[]): void
 -ShowAndHandleMenu(string): bool
@@ -142,7 +142,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="205.85745549738215" width="340.2000000000003" x="1229.156702557177" y="890.6461325811553"/>
+          <y:Geometry height="218.69411668145096" width="340.2000000000003" x="1232.6100558096205" y="884.2278019891207"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="85.62451171875" x="127.28774414062514" y="3.0">GameModule<y:LabelModel>
@@ -164,7 +164,8 @@
 -StartNewGame(Game): void
 -UpdateField(int, int, FieldStatus, Game): void
 -CheckForWinner(Game): FieldStatus
--CompareRows(int, int, int, int, Game): FieldStatus</y:MethodLabel>
+-CompareRows(int, int, int, int, Game): FieldStatus
+-CalculateEloDelta(int, int, double): int</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -185,7 +186,8 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+HandleRequest(byte[], List&lt;User&gt;, User): byte[]
+            <y:MethodLabel>+RequestHandler()
++HandleRequest(byte[], List&lt;User&gt;, User): byte[]
 -GetErrorResponse(string, List&lt;User&gt;): Response
 -GetBody(byte[]): Document
 -SyncClientData(User, User): void</y:MethodLabel>
@@ -223,7 +225,7 @@
           <y:Geometry height="30.0" width="30.0" x="855.8548452756222" y="1013.4400255471834"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="22.01171875" x="3.994140625" y="5.6494140625">1..*<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="22.01171875" x="3.994140625" y="5.649414062499886">1..*<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -305,7 +307,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="297.43457719064907" width="295.2000000000003" x="742.1564850814486" y="1371.7257844277"/>
+          <y:Geometry height="339.2205836492068" width="295.2000000000003" x="742.1564850814486" y="1353.185213568414"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="110.2216796875" x="92.48916015625014" y="3.0">DatabaseQueries<y:LabelModel>
@@ -334,7 +336,9 @@
 +RemoveUserFromRoom(User): bool
 +ChangeRoomStatus(int, RoomStatus):bool
 +InsertMatch(Game, User): void
-
++GetElo(User): int
++UpdateElo(User, User, int, int): void
++GetLeaderboard(): List&lt;LeaderboardPosition&gt;
 </y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
@@ -718,7 +722,6 @@ Question</y:AttributeLabel>
     </node>
     <node id="n31">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="203.69347179913612" width="170.13562970936493" x="802.8017877024915" y="9.552206673843031"/>
@@ -749,7 +752,6 @@ Question</y:AttributeLabel>
     </node>
     <node id="n32">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="82.71313333333342" width="157.11130097087425" x="1716.7787498661169" y="1136.7701829924654"/>
@@ -864,7 +866,7 @@ Question</y:AttributeLabel>
     <node id="n38">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="30.0" width="30.0" x="696.9161989048575" y="1429.485968256311"/>
+          <y:Geometry height="30.0" width="30.0" x="696.9161989048575" y="1470.4430730230247"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="10.673828125" x="9.6630859375" y="5.6494140625">1<y:LabelModel>
@@ -881,7 +883,7 @@ Question</y:AttributeLabel>
     <node id="n39">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="30.0" width="30.0" x="910.3103310712867" y="1276.9482971078214"/>
+          <y:Geometry height="30.0" width="30.0" x="898.3714720831274" y="1323.185213568414"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="10.673828125" x="9.6630859375" y="5.6494140625">1<y:LabelModel>
@@ -1178,7 +1180,6 @@ Question</y:AttributeLabel>
       </data>
     </edge>
     <edge id="e22" source="n0" target="n31">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1189,7 +1190,6 @@ Question</y:AttributeLabel>
       </data>
     </edge>
     <edge id="e23" source="n31" target="n33">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="85.06800382085771" sy="-41.30011371982263" tx="0.0" ty="0.0"/>
@@ -1200,7 +1200,6 @@ Question</y:AttributeLabel>
       </data>
     </edge>
     <edge id="e24" source="n33" target="n18">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1212,7 +1211,6 @@ Question</y:AttributeLabel>
     </edge>
     <edge id="e25" source="n1" target="n32">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -1227,7 +1225,6 @@ Question</y:AttributeLabel>
     </edge>
     <edge id="e26" source="n5" target="n32">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -1242,7 +1239,6 @@ Question</y:AttributeLabel>
     </edge>
     <edge id="e27" source="n4" target="n32">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1254,7 +1250,6 @@ Question</y:AttributeLabel>
     </edge>
     <edge id="e28" source="n3" target="n32">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -1269,7 +1264,6 @@ Question</y:AttributeLabel>
     </edge>
     <edge id="e29" source="n2" target="n32">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -1284,7 +1278,6 @@ Question</y:AttributeLabel>
     </edge>
     <edge id="e30" source="n31" target="n16">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="56.963644383785265" ty="-97.39870341916588">
@@ -1298,7 +1291,6 @@ Question</y:AttributeLabel>
     </edge>
     <edge id="e31" source="n31" target="n12">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-85.10870483723568" sy="-44.625261605920215" tx="0.0" ty="0.0">
@@ -1313,7 +1305,6 @@ Question</y:AttributeLabel>
     </edge>
     <edge id="e32" source="n7" target="n12">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
