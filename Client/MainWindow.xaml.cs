@@ -118,6 +118,7 @@ namespace Client
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!Client.IsConnected) return;
+            if (User.Name == null) return;
 
             // warten bis diese Abfrage durch ist, bevor wir ausloggen
             try

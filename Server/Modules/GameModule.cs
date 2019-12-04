@@ -109,18 +109,8 @@ namespace Server.Modules
             int player2Elo = db.GetElo(document.Game.Player2);
             int eloDelta = CalculateEloDelta(player1Elo, player2Elo, gameOutcome);
 
-            if (eloDelta < 0) { eloDelta *= -1; } // Elo Delta ist negativ, wenn Spieler 2 gewinnt, sodass Delta invertiert werden muss.
-
-            if (winner.Name.ToLower() == document.Game.Player1.Name.ToLower())
-            {
-                player1Elo += eloDelta;
-                player2Elo -= eloDelta;
-            }
-            else
-            {
-                player1Elo -= eloDelta;
-                player2Elo += eloDelta;
-            }
+            player1Elo += eloDelta;
+            player2Elo -= eloDelta;
 
             db.UpdateElo(document.Game.Player1, document.Game.Player2, player1Elo, player2Elo);
             SaveGame(document, winner);
