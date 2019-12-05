@@ -1,96 +1,34 @@
-# Berger Projekt
+# TicTacTonline
 
-## Grundidee: Online Multiplayer Tic Tac Toe
+Ein online Tic Tac Toe mit Client und Server-Architektur.
 
-### Tech Stack
+## How to use
 
-.Net Core 3 (Server), .Net Framework 4.7 (Client), MySQL
+1. Klonen
+2. Datenbank hosten (Modell in Dokumentation/Diagramme/)
+3. Server-Projekt bauen
+4. Server-Projekt starten
+5. Server-Konfiguration anpassen
+6. Server neustarten
+7. Client bauen
+8. ??
+9. Profit
 
-### Features
+## Server
 
-- Tic Tac Toe online spielen
-- Frontend
-- .NET Core Server
-- Raumsystem
-- Simpler Nutzername durch Nutzereingabe
+Geschrieben in .NET Core. Läuft auf allen Betriebssystemen.
 
-### Erweiterungen
+## Client
 
-- Register / Login
-- Reconnect
+Geschrieben in .NET Framework WPF. Läuft nur auf Windows.
+
+## Features
+
+- Benutzerkonten
 - Chat
-- Leaderboards
-- Match History
+- Spielhistorie
+- Rangliste mit [Elo-System](https://de.wikipedia.org/wiki/Elo-Zahl)
 
-### Erweiterte Erweiterungen
+### Info
 
-- Lokaler Multiplayer
-- Spectating
-- SSL Verschlüsselung
-
-### Erweteiterte Erweiterungserweiterungen
-
-- APM
-- Matchmaking / Ranked
-
-## Was müssen wir tuten?
-
-- UML Diagramm
-- 1 Anwendungsfalldiagramm
-- 1 Sequenzdiagramm
-- grober Zeitplan
-- Testprotokoll (Zeitplanungsdingens)
-- Präsentation _(reveal.js)_
-
-## Termine
-
-- 5.12.2019: Präsentation
-- 19.12.2019: Projekt-/Dokumentationsabgabe
-
-## Featuredefinitionen
-
-### Raumsystem
-
-- Neues Spiel erstellen
-- Spiel beitreten
-- Alle Spiele in Liste anzeigen
-  - Filter: aktive Spiele zeigen, volle Spiele zeigen
-- Raumname
-- Raum UUID
-
-### Register / Login
-
-- Nutzername
-- Passwort
-
-### Chat
-
-Chatten mit Gegner
-
-#### Details:
-
-- Chatlogs speichern
-  - Nutzer
-  - Nachricht
-  - Timestamp
-  - Zu Raum zuordbar
-
-### Leaderboards
-
-Ranglisten-Anzeige
-
-#### Details:
-
-- Nutzername
-- Position
-- Win/Lose/Tie
-- Win/Lose%
-
-### Match History
-
-Letzte 10 Spiele einsehen
-
-#### Details:
-
-- Gegenspieler
-- Sieg / Niederlage
+Dieses Projekt entstand im Rahmen eines Berufsschulprojekts im dritten Lehrjahr in einem Gruppenprojekt.

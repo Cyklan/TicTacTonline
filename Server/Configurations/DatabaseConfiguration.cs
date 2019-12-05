@@ -32,9 +32,9 @@ namespace Server.Configurations
         {
             Ip = "127.0.0.1";
             Port = 3306;
-            Database = "tictactonline";
-            User = "TTO";
-            Password = "tictactonline";
+            Database = "";
+            User = "";
+            Password = "";
 
             SaveConfiguration(pathmanager.DatabaseConfigurationPath);
         }
