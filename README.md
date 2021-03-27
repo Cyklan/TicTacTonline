@@ -1,3 +1,7 @@
+# ARCHIVED
+
+This was a school project and is in its final state. No changes will be made to this.
+
 # TicTacTonline
 
 Ein online Tic Tac Toe mit Client und Server-Architektur.
